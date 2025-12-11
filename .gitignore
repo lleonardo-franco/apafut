@@ -1,2 +1,50 @@
-/.hintrc
-/.vscode
+# Variáveis de ambiente (NUNCA COMMITAR)
+.env
+
+# Logs
+logs/
+*.log
+
+# Cache e arquivos temporários
+cache/
+tmp/
+temp/
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# IDEs e Editores
+.hintrc
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Dependências (futuro)
+vendor/
+node_modules/
+composer.lock
+package-lock.json
+
+# Backups
+*.bak
+*.backup
+*.sql.gz
+backups/
+
+# Uploads de usuários (se houver)
+uploads/
+files/
+
+# Arquivos compilados
+*.compiled
+
+# Testes
+phpunit.xml
+.phpunit.result.cache
