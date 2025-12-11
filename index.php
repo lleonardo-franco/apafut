@@ -514,103 +514,66 @@
             </button>
             
             <div class="noticias-container">
-                <!-- Notícia 1 -->
-                <div class="noticia-card active" data-noticia="1">
-                    <div class="noticia-imagem">
-                        <img src="assets/hero.png" alt="Vitória no campeonato regional">
-                        <div class="patrocinadores-faixa">
-                            <div class="patrocinadores-track">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
+                <?php
+                // Buscar notícias ativas do banco de dados
+                try {
+                    require_once 'config/db.php';
+                    $conn = getConnection();
+                    
+                    $stmt = $conn->query("
+                        SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                        FROM noticias 
+                        WHERE ativo = 1 
+                        ORDER BY destaque DESC, data_publicacao DESC 
+                        LIMIT 6
+                    ");
+                    $noticias = $stmt->fetchAll();
+                    
+                    if (empty($noticias)) {
+                        echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
+                    } else {
+                        $first = true;
+                        foreach ($noticias as $noticia):
+                            $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+                            $dataFormatada = date('d M Y', strtotime($noticia['data_publicacao']));
+                ?>
+                    <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
+                        <div class="noticia-imagem">
+                            <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>">
+                            <div class="patrocinadores-faixa">
+                                <div class="patrocinadores-track">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                </div>
+                            </div>
+                            <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
+                            <div class="noticia-data">
+                                <i class="far fa-calendar"></i> <?= $dataFormatada ?>
                             </div>
                         </div>
-                        <div class="noticia-categoria">Campeonatos</div>
-                        <div class="noticia-data">
-                            <i class="far fa-calendar"></i> 05 Dez 2025
+                        <div class="noticia-conteudo">
+                            <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
+                            <p class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
+                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="btn-noticia">
+                                Ler mais <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
-                    <div class="noticia-conteudo">
-                        <h3>Apafut conquista título inédito do Regional da Serra</h3>
-                        <p class="noticia-resumo">Em uma final emocionante, o time Sub-17 da Apafut sagrou-se campeão regional após vencer nos pênaltis. A equipe mostrou garra e determinação durante toda a competição.</p>
-                        <a href="noticia.php?id=1" class="btn-noticia">
-                            Ler mais <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Notícia 2 -->
-                <div class="noticia-card" data-noticia="2">
-                    <div class="noticia-imagem">
-                        <img src="assets/noticia2.jpg" alt="Novos talentos">
-                        <div class="patrocinadores-faixa">
-                            <div class="patrocinadores-track">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                            </div>
-                        </div>
-                        <div class="noticia-categoria">Categorias de Base</div>
-                        <div class="noticia-data">
-                            <i class="far fa-calendar"></i> 01 Dez 2025
-                        </div>
-                    </div>
-                    <div class="noticia-conteudo">
-                        <h3>Peneiras 2026: Apafut abre inscrições para categorias de base</h3>
-                        <p class="noticia-resumo">Estão abertas as inscrições para as peneiras da Apafut. Jovens talentos de 8 a 17 anos podem se inscrever e fazer parte do nosso time. Vagas limitadas!</p>
-                        <a href="noticia.php?id=2" class="btn-noticia">
-                            Ler mais <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Notícia 3 -->
-                <div class="noticia-card" data-noticia="3">
-                    <div class="noticia-imagem">
-                        <img src="assets/noticia3.jpg" alt="Infraestrutura">
-                        <div class="patrocinadores-faixa">
-                            <div class="patrocinadores-track">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                                <img src="assets/ucs.png" alt="UCS">
-                                <img src="assets/brisa.png" alt="Brisa">
-                                <img src="assets/saltur.png" alt="Saltur">
-                                <img src="assets/chiesa.png" alt="Chiesa">
-                            </div>
-                        </div>
-                        <div class="noticia-categoria">Infraestrutura</div>
-                        <div class="noticia-data">
-                            <i class="far fa-calendar"></i> 28 Nov 2025
-                        </div>
-                    </div>
-                    <div class="noticia-conteudo">
-                        <h3>Inauguração do novo campo de treino com grama sintética</h3>
-                        <p class="noticia-resumo">A Apafut inaugura mais um campo de treino com grama sintética de última geração. O investimento visa proporcionar ainda mais qualidade na preparação dos atletas.</p>
-                        <a href="noticia.php?id=3" class="btn-noticia">
-                            Ler mais <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
+                <?php
+                            $first = false;
+                        endforeach;
+                    }
+                } catch (Exception $e) {
+                    logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
+                    echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
+                }
+                ?>
             </div>
             
             <button class="carousel-nav next-noticia" aria-label="Próxima notícia">
@@ -619,9 +582,11 @@
         </div>
 
         <div class="carousel-dots">
-            <span class="dot active" data-slide="0"></span>
-            <span class="dot" data-slide="1"></span>
-            <span class="dot" data-slide="2"></span>
+            <?php if (!empty($noticias)): ?>
+                <?php for ($i = 0; $i < count($noticias); $i++): ?>
+                    <span class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>"></span>
+                <?php endfor; ?>
+            <?php endif; ?>
         </div>
     </section>
     <!-- footer -->

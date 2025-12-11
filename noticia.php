@@ -10,7 +10,7 @@ Security::setSecurityHeaders();
 $noticiaId = Security::validateInt($_GET['id'] ?? 0, 1);
 
 if ($noticiaId === false) {
-    header('Location: index.html#noticias');
+    header('Location: index.php#noticias');
     exit;
 }
 
@@ -24,7 +24,7 @@ try {
     $noticia = $stmt->fetch();
     
     if (!$noticia) {
-        header('Location: index.html#noticias');
+        header('Location: index.php#noticias');
         exit;
     }
     
@@ -36,12 +36,20 @@ try {
     // Conteúdo permite HTML básico
     $noticia['conteudo'] = Security::sanitizeHtml($noticia['conteudo'], '<p><br><strong><em><ul><ol><li><h2><h3><h4>');
     
-    // Buscar notícias relacionadas
-    $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 3");
+    // Buscar notícias relacionadas (mesma categoria ou mais recentes)
+    $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
     $stmt->bindParam(':categoria', $noticia['categoria'], PDO::PARAM_STR);
     $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
     $stmt->execute();
     $relacionadas = $stmt->fetchAll();
+    
+    // Se não houver notícias suficientes da mesma categoria, buscar outras
+    if (count($relacionadas) < 3) {
+        $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
+        $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
+        $stmt->execute();
+        $relacionadas = $stmt->fetchAll();
+    }
     
     // Sanitiza notícias relacionadas
     foreach ($relacionadas as &$rel) {
@@ -54,7 +62,7 @@ try {
         'id' => $noticiaId,
         'error' => $e->getMessage()
     ]);
-    header('Location: index.html#noticias');
+    header('Location: index.php#noticias');
     exit;
 }
 ?>
@@ -89,13 +97,13 @@ try {
             </div>
             <div class="menu">
                 <ul>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#sobre">Sobre</a></li>
-                    <li><a href="index.html#categorias">Categorias</a></li>
-                    <li><a href="index.html#depoimentos">Depoimentos</a></li>
-                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li><a href="index.php#home">Home</a></li>
+                    <li><a href="index.php#sobre">Sobre</a></li>
+                    <li><a href="index.php#categorias">Categorias</a></li>
+                    <li><a href="index.php#depoimentos">Depoimentos</a></li>
+                    <li><a href="index.php#noticias">Notícias</a></li>
                 </ul>
-                <a href="index.html#planos" class="btn-agendar">Seja Sócio</a>
+                <a href="index.php#planos" class="btn-agendar">Seja Sócio</a>
             </div>
             <div class="hamburger">
                 <span></span>
@@ -108,7 +116,10 @@ try {
     <!-- Conteúdo da Notícia -->
     <article class="noticia-completa">
         <div class="noticia-hero">
-            <img src="<?= htmlspecialchars($noticia['imagem']) ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>">
+            <?php 
+            $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+            ?>
+            <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" onerror="this.src='assets/hero.png'">
             <div class="noticia-hero-content">
                 <span class="categoria-tag"><?= htmlspecialchars($noticia['categoria']) ?></span>
                 <h1 class="titulo"><?= htmlspecialchars($noticia['titulo']) ?></h1>
@@ -162,7 +173,7 @@ try {
                 </div>
             </div>
 
-            <a href="index.html#noticias" class="btn-voltar">
+            <a href="index.php#noticias" class="btn-voltar">
                 <i class="fas fa-arrow-left"></i> Voltar para Notícias
             </a>
         </div>
@@ -176,11 +187,14 @@ try {
             <div class="noticias-grid">
                 <?php foreach($relacionadas as $rel): ?>
                 <a href="noticia.php?id=<?= $rel['id'] ?>" class="mini-noticia-card">
-                    <img src="<?= htmlspecialchars($rel['imagem']) ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>">
-                    <div class="mini-noticia-content">
+                    <?php 
+                    $relImagemUrl = !empty($rel['imagem']) ? htmlspecialchars($rel['imagem']) : 'assets/hero.png';
+                    ?>
+                    <img src="<?= $relImagemUrl ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" onerror="this.src='assets/hero.png'">
+                    <div class="mini-noticia-conteudo">
                         <span class="mini-categoria"><?= htmlspecialchars($rel['categoria']) ?></span>
                         <h3><?= htmlspecialchars($rel['titulo']) ?></h3>
-                        <span class="mini-data"><?= formatarData($rel['data_publicacao']) ?></span>
+                        <p class="mini-data"><i class="far fa-calendar"></i> <?= formatarData($rel['data_publicacao']) ?></p>
                     </div>
                 </a>
                 <?php endforeach; ?>
