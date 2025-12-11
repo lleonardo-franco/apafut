@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Apafut - Associação de Pais e Amigos do Futebol de Caxias do Sul. Formação de jovens atletas com infraestrutura completa e treinadores especializados.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Apafut - Caxias do Sul</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
+    <!-- Lato Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <!-- NAVBAR -->
+        <nav>
+            <div class="logo">
+                <img src="assets/logo.png" alt="Logo Apafut">
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#categorias">Categorias</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#patrocinadores">Patrocinadores</a></li>
+                </ul>
+                <a href="#planos" class="btn-agendar">Seja Sócio</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <!-- Hero -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Bem-vindo à Apafut<br>Caxias do Sul</h1>
+                <p>Referência na formação de atletas na cidade de Caxias do Sul/RS.</p>
+                <a href="#sobre" class="btn-hero">Saiba Mais</a>
+            </div>
+            <div class="hero-image">
+                <img src="assets/hero.png" alt="Imagem Hero">
+            </div>
+        </section>
+    </main>
+    <section>
+        <!-- Sobre -->
+        <section id="sobre" class="sobre">
+            <div class="sobre-content">
+                <h2>Sobre a Apafut</h2>
+                <p>A Apafut é uma academia de futebol dedicada a formar atletas de alta performance, promovendo o desenvolvimento técnico, tático e físico dos jogadores. Com uma equipe de treinadores experientes e uma infraestrutura moderna, oferecemos um ambiente ideal para o crescimento esportivo.</p>
+                <a href="historia.html" class="btn-sobre">Saiba mais</a>
+            </div>
+            <div class="sobre-image">
+                <!-- Carrousel de imagens -->
+                <div class="carousel">
+                    <img src="assets/img1.jpg" alt="Imagem Sobre 1" class="active">
+                    <img src="assets/img2.jpg" alt="Imagem Sobre 2">
+                    <img src="assets/img3.jpg" alt="Imagem Sobre 3">
+                    <button class="prev">&#10094;</button>
+                    <button class="next">&#10095;</button>
+                </div>
+            </div>
+        </section>
+        <section id="categorias" class="categorias">
+            <h2>Nossas Categorias</h2>
+            <div class="bento-grid">
+                <div class="card" data-categoria="sub8">
+                    <div class="card-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <h3>Sub-8 <i class="fas fa-chevron-down arrow-icon"></i></h3>
+                    <p>Iniciação esportiva com foco em diversão e desenvolvimento motor básico.</p>
+                    <div class="categoria-detalhes">
+                        <div class="detalhes-content">
+                            <div class="detalhe-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Idade:</strong> 6 a 8 anos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <strong>Horários:</strong> Segunda, Quarta e Sexta - 16h às 17h
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <strong>Foco:</strong> Coordenação motora e diversão
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>Treinador:</strong> Prof. Carlos Silva
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" data-categoria="sub11">
+                    <div class="card-icon">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h3>Sub-11 <i class="fas fa-chevron-down arrow-icon"></i></h3>
+                    <p>Desenvolvimento de habilidades técnicas fundamentais e coordenação motora.</p>
+                    <div class="categoria-detalhes">
+                        <div class="detalhes-content">
+                            <div class="detalhe-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Idade:</strong> 9 a 11 anos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <strong>Horários:</strong> Terça e Quinta - 17h às 18h30
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <strong>Foco:</strong> Técnica individual e fundamentos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>Treinador:</strong> Prof. Ricardo Oliveira
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" data-categoria="sub13">
+                    <div class="card-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3>Sub-13 <i class="fas fa-chevron-down arrow-icon"></i></h3>
+                    <p>Aprimoramento técnico e introdução a conceitos táticos básicos.</p>
+                    <div class="categoria-detalhes">
+                        <div class="detalhes-content">
+                            <div class="detalhe-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Idade:</strong> 12 a 13 anos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <strong>Horários:</strong> Segunda a Sexta - 18h às 19h30
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <strong>Foco:</strong> Tática básica e preparação física
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>Treinador:</strong> Prof. Fernando Costa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" data-categoria="sub15">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Sub-15 <i class="fas fa-chevron-down arrow-icon"></i></h3>
+                    <p>Formação tática avançada e preparação física específica para o futebol.</p>
+                    <div class="categoria-detalhes">
+                        <div class="detalhes-content">
+                            <div class="detalhe-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Idade:</strong> 14 a 15 anos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <strong>Horários:</strong> Segunda a Sexta - 19h às 21h
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <strong>Foco:</strong> Tática avançada e físico
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>Treinador:</strong> Prof. Marcelo Santos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" data-categoria="sub17">
+                    <div class="card-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Sub-17 <i class="fas fa-chevron-down arrow-icon"></i></h3>
+                    <p>Preparação para o futebol profissional com treinos de alta performance.</p>
+                    <div class="categoria-detalhes">
+                        <div class="detalhes-content">
+                            <div class="detalhe-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Idade:</strong> 16 a 17 anos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <strong>Horários:</strong> Segunda a Sábado - 8h às 11h
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <strong>Foco:</strong> Alta performance e competição
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>Treinador:</strong> Prof. André Ferreira
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" data-categoria="sub20">
+                    <div class="card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Sub-20 <i class="fas fa-chevron-down arrow-icon"></i></h3>
+                    <p>Transição para o profissionalismo com foco em competições de alto nível.</p>
+                    <div class="categoria-detalhes">
+                        <div class="detalhes-content">
+                            <div class="detalhe-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Idade:</strong> 18 a 20 anos
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <strong>Horários:</strong> Segunda a Sábado - 9h às 12h
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <strong>Foco:</strong> Profissionalização e alto rendimento
+                            </div>
+                            <div class="detalhe-item">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>Treinador:</strong> Prof. Paulo Mendes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time Profissional -->
+        <section id="profissional" class="time-profissional">
+            <div class="profissional-title">
+                <div class="profissional-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2>Time Profissional</h2>
+            </div>
+
+            <!-- Elenco -->
+            <div class="elenco-section">
+                <div class="jogadores-carousel">
+                    <button class="carousel-btn prev-jogador">❮</button>
+                    <div class="jogadores-container">
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador1.jpg" alt="Jogador 1">
+                                <div class="jogador-numero">10</div>
+                            </div>
+                            <h4>Carlos Silva</h4>
+                            <p class="jogador-posicao">Atacante</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador2.jpg" alt="Jogador 2">
+                                <div class="jogador-numero">7</div>
+                            </div>
+                            <h4>Rafael Santos</h4>
+                            <p class="jogador-posicao">Meio-Campo</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador3.jpg" alt="Jogador 3">
+                                <div class="jogador-numero">3</div>
+                            </div>
+                            <h4>Lucas Oliveira</h4>
+                            <p class="jogador-posicao">Zagueiro</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador4.jpg" alt="Jogador 4">
+                                <div class="jogador-numero">1</div>
+                            </div>
+                            <h4>Thiago Costa</h4>
+                            <p class="jogador-posicao">Goleiro</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador5.jpg" alt="Jogador 5">
+                                <div class="jogador-numero">8</div>
+                            </div>
+                            <h4>Fernando Lima</h4>
+                            <p class="jogador-posicao">Volante</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador6.jpg" alt="Jogador 6">
+                                <div class="jogador-numero">11</div>
+                            </div>
+                            <h4>Gabriel Souza</h4>
+                            <p class="jogador-posicao">Ponta</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador7.jpg" alt="Jogador 7">
+                                <div class="jogador-numero">4</div>
+                            </div>
+                            <h4>Rodrigo Alves</h4>
+                            <p class="jogador-posicao">Lateral</p>
+                        </div>
+                        <div class="jogador-card">
+                            <div class="jogador-foto">
+                                <img src="assets/jogador8.jpg" alt="Jogador 8">
+                                <div class="jogador-numero">9</div>
+                            </div>
+                            <h4>Bruno Ferreira</h4>
+                            <p class="jogador-posicao">Centroavante</p>
+                        </div>
+                    </div>
+                    <button class="carousel-btn next-jogador">❯</button>
+                </div>
+            </div>
+
+            <!-- Campeonatos -->
+            <div class="campeonatos-section">
+                <h3>Campeonatos que Disputamos</h3>
+                <div class="campeonatos-grid">
+                    <div class="campeonato-card">
+                        <div class="campeonato-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h4>Campeonato Gaúcho</h4>
+                        <p>Principal competição estadual do Rio Grande do Sul</p>
+                    </div>
+                    <div class="campeonato-card">
+                        <div class="campeonato-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h4>Copa FGF</h4>
+                        <p>Torneio oficial da Federação Gaúcha de Futebol</p>
+                    </div>
+                    <div class="campeonato-card">
+                        <div class="campeonato-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <h4>Campeonato Regional</h4>
+                        <p>Competição da região da Serra Gaúcha</p>
+                    </div>
+                    <div class="campeonato-card">
+                        <div class="campeonato-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h4>Copa Caxias</h4>
+                        <p>Torneio municipal com times da cidade</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <!-- 6 depoimentos de pais-->
+    <section id="depoimentos" class="depoimentos">
+        <h2>O que os Pais Dizem</h2>
+        <div class="testimonials">
+            <div class="testimonial-card">
+                <p>"A Apafut tem sido fundamental no desenvolvimento do meu filho. A equipe é dedicada e o ambiente é muito positivo."</p>
+                <h3>- Maria S.</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"Desde que meu filho começou na Apafut, ele melhorou muito tecnicamente e ganhou muita confiança em campo."</p>
+                <h3>- João P.</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"A estrutura e o profissionalismo da Apafut são excepcionais. Recomendo a todos os pais que querem o melhor para seus filhos."</p>
+                <h3>- Ana L.</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"Meu filho adora treinar na Apafut. Ele está sempre motivado e feliz, o que é o mais importante para nós."</p>
+                <h3>- Carlos M.</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"Os treinadores são muito atenciosos e realmente se importam com o desenvolvimento dos atletas. Excelente academia!"</p>
+                <h3>- Fernanda R.</h3>
+            </div>
+            <div class="testimonial-card">
+                <p>"O ambiente de treinamento na Apafut é muito positivo e estimulante. Os atletas se divertem e aprendem muito."</p>
+                <h3>- Pedro C.</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planos -->
+    <section id="planos" class="planos">
+        <div class="planos-header">
+            <h2>Escolha Seu Plano</h2>
+            <p>Invista no futuro do seu atleta com nossos planos completos</p>
+        </div>
+        <div class="planos-container">
+            <!-- Plano Prata -->
+            <div class="plano-card">
+                <div class="plano-badge">Prata</div>
+                <h3>Sócio APA Prata</h3>
+                <div class="plano-preco">
+                    <span class="preco-por">R$ 200<span class="preco-mes">/ano</span></span>
+                </div>
+                <div class="parcelamento">
+                    <i class="fas fa-credit-card"></i> ou 2x de R$ 100
+                </div>
+                <ul class="plano-beneficios">
+                    <li><i class="fas fa-check"></i> Jantar de fim de temporada</li>
+                    <li><i class="fas fa-check"></i> Descontos com parceiros</li>
+                    <li><i class="fas fa-check"></i> Carteirinha de sócio</li>
+                    <li><i class="fas fa-check"></i> Newsletter exclusiva</li>
+                    <li><i class="fas fa-times"></i> Camiseta oficial</li>
+                    <li><i class="fas fa-times"></i> Acesso prioritário a eventos</li>
+                </ul>
+                <a href="#contato" class="btn-plano">Assinar Agora</a>
+            </div>
+
+            <!-- Plano Ouro (Destaque) -->
+            <div class="plano-card plano-destaque">
+                <div class="plano-badge badge-popular">Ouro</div>
+                <h3>Sócio APA Ouro</h3>
+                <div class="plano-preco">
+                    <span class="preco-por">R$ 300<span class="preco-mes">/ano</span></span>
+                </div>
+                <div class="economia-tag">
+                    <i class="fas fa-star"></i> Plano Completo
+                </div>
+                <div class="parcelamento">
+                    <i class="fas fa-credit-card"></i> ou 2x de R$ 150
+                </div>
+                <ul class="plano-beneficios">
+                    <li><i class="fas fa-check"></i> Camiseta oficial exclusiva</li>
+                    <li><i class="fas fa-check"></i> Jantar de fim de temporada</li>
+                    <li><i class="fas fa-check"></i> Descontos com parceiros</li>
+                    <li><i class="fas fa-check"></i> Carteirinha de sócio premium</li>
+                    <li><i class="fas fa-check"></i> Newsletter exclusiva</li>
+                    <li><i class="fas fa-check"></i> Acesso prioritário a eventos</li>
+                    <li><i class="fas fa-check"></i> Conteúdo exclusivo dos bastidores</li>
+                </ul>
+                <a href="#contato" class="btn-plano btn-plano-destaque">Garantir Vaga</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- patrocinadores -->
+    <section id="patrocinadores" class="patrocinadores">
+        <h2>Nossos Patrocinadores</h2>
+        <div class="sponsors-logos">
+            <img src="assets/ucs.png" alt="Patrocinador 1">
+            <img src="assets/brisa.png" alt="Patrocinador 2" class="logo-brisa">
+            <img src="assets/saltur.png" alt="Patrocinador 3">
+            <img src="assets/chiesa.png" alt="Patrocinador 4">
+        </div>
+    </section>
+    <!-- footer -->
+    <footer id="contato">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="assets/logo.png" alt="Logo Apafut">
+                    <h3>Apafut Caxias do Sul</h3>
+                </div>
+                <p>Formando campeões dentro e fora de campo desde 2010.</p>
+                <div class="social-media">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#categorias">Categorias</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#patrocinadores">Patrocinadores</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contato</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Rua Exemplo, 123<br>Caxias do Sul - RS</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>(54) 3232-3232</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>contato@apafut.com.br</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Horário de Atendimento</h4>
+                <div class="schedule">
+                    <p><strong>Segunda a Sexta:</strong><br>08:00 - 18:00</p>
+                    <p><strong>Sábado:</strong><br>08:00 - 12:00</p>
+                    <p><strong>Domingo:</strong><br>Fechado</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Apafut Caxias do Sul. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>

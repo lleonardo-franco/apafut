@@ -1,0 +1,104 @@
+.historia-hero {
+    min-height: 60vh;
+    background: linear-gradient(135deg, var(--azul-secundario) 0%, #0a1035 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.historia-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(235, 56, 53, 0.1) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+}
+
+.historia-hero-content {
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+}
+
+.historia-hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 20px;
+    font-weight: 900;
+}
+
+.historia-hero p {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.valores-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 80px 5%;
+    text-align: center;
+}
+
+.valores-section h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--azul-secundario);
+    margin-bottom: 50px;
+    font-weight: 900;
+}
+
+.valores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.valor-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.valor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(235, 56, 53, 0.2);
+}
+
+.valor-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--vermelho-primario) 0%, #c62828 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 20px rgba(235, 56, 53, 0.3);
+}
+
+.valor-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.valor-card h3 {
+    color: var(--azul-secundario);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.valor-card p {
+    color: #666;
+    line-height: 1.7;
+}
