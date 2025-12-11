@@ -254,72 +254,132 @@
 
             <!-- Elenco -->
             <div class="elenco-section">
+                <!-- Filtros de Posição -->
+                <div class="posicao-filtros">
+                    <button class="filtro-btn active" data-posicao="todos">
+                        <i class="fas fa-users"></i> Todos
+                    </button>
+                    <button class="filtro-btn" data-posicao="Goleiro">
+                        <i class="fas fa-hand-paper"></i> Goleiros
+                    </button>
+                    <button class="filtro-btn" data-posicao="Zagueiro">
+                        <i class="fas fa-shield-alt"></i> Zagueiros
+                    </button>
+                    <button class="filtro-btn" data-posicao="Lateral">
+                        <i class="fas fa-exchange-alt"></i> Laterais
+                    </button>
+                    <button class="filtro-btn" data-posicao="Volante">
+                        <i class="fas fa-compress"></i> Volantes
+                    </button>
+                    <button class="filtro-btn" data-posicao="Meio-Campo">
+                        <i class="fas fa-futbol"></i> Meio-Campos
+                    </button>
+                    <button class="filtro-btn" data-posicao="Ponta">
+                        <i class="fas fa-running"></i> Pontas
+                    </button>
+                    <button class="filtro-btn" data-posicao="Atacante">
+                        <i class="fas fa-bullseye"></i> Atacantes
+                    </button>
+                </div>
+                
                 <div class="jogadores-carousel">
                     <button class="carousel-btn prev-jogador">❮</button>
                     <div class="jogadores-container">
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Atacante">
                             <div class="jogador-foto">
-                                <img src="assets/jogador1.jpg" alt="Jogador 1">
+                                <img src="assets/jogador1.jpg" alt="Carlos Silva">
                                 <div class="jogador-numero">10</div>
                             </div>
-                            <h4>Carlos Silva</h4>
-                            <p class="jogador-posicao">Atacante</p>
+                            <div class="jogador-info">
+                                <h4>Carlos Silva</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-bullseye"></i> Atacante
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Meio-Campo">
                             <div class="jogador-foto">
-                                <img src="assets/jogador2.jpg" alt="Jogador 2">
+                                <img src="assets/jogador2.jpg" alt="Rafael Santos">
                                 <div class="jogador-numero">7</div>
                             </div>
-                            <h4>Rafael Santos</h4>
-                            <p class="jogador-posicao">Meio-Campo</p>
+                            <div class="jogador-info">
+                                <h4>Rafael Santos</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-futbol"></i> Meio-Campo
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Zagueiro">
                             <div class="jogador-foto">
-                                <img src="assets/jogador3.jpg" alt="Jogador 3">
+                                <img src="assets/jogador3.jpg" alt="Lucas Oliveira">
                                 <div class="jogador-numero">3</div>
                             </div>
-                            <h4>Lucas Oliveira</h4>
-                            <p class="jogador-posicao">Zagueiro</p>
+                            <div class="jogador-info">
+                                <h4>Lucas Oliveira</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-shield-alt"></i> Zagueiro
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Goleiro">
                             <div class="jogador-foto">
-                                <img src="assets/jogador4.jpg" alt="Jogador 4">
+                                <img src="assets/jogador4.jpg" alt="Thiago Costa">
                                 <div class="jogador-numero">1</div>
                             </div>
-                            <h4>Thiago Costa</h4>
-                            <p class="jogador-posicao">Goleiro</p>
+                            <div class="jogador-info">
+                                <h4>Thiago Costa</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-hand-paper"></i> Goleiro
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Volante">
                             <div class="jogador-foto">
-                                <img src="assets/jogador5.jpg" alt="Jogador 5">
+                                <img src="assets/jogador5.jpg" alt="Fernando Lima">
                                 <div class="jogador-numero">8</div>
                             </div>
-                            <h4>Fernando Lima</h4>
-                            <p class="jogador-posicao">Volante</p>
+                            <div class="jogador-info">
+                                <h4>Fernando Lima</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-compress"></i> Volante
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Ponta">
                             <div class="jogador-foto">
-                                <img src="assets/jogador6.jpg" alt="Jogador 6">
+                                <img src="assets/jogador6.jpg" alt="Gabriel Souza">
                                 <div class="jogador-numero">11</div>
                             </div>
-                            <h4>Gabriel Souza</h4>
-                            <p class="jogador-posicao">Ponta</p>
+                            <div class="jogador-info">
+                                <h4>Gabriel Souza</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-running"></i> Ponta
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Lateral">
                             <div class="jogador-foto">
-                                <img src="assets/jogador7.jpg" alt="Jogador 7">
+                                <img src="assets/jogador7.jpg" alt="Rodrigo Alves">
                                 <div class="jogador-numero">4</div>
                             </div>
-                            <h4>Rodrigo Alves</h4>
-                            <p class="jogador-posicao">Lateral</p>
+                            <div class="jogador-info">
+                                <h4>Rodrigo Alves</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-exchange-alt"></i> Lateral
+                                </p>
+                            </div>
                         </div>
-                        <div class="jogador-card">
+                        <div class="jogador-card" data-posicao="Atacante">
                             <div class="jogador-foto">
-                                <img src="assets/jogador8.jpg" alt="Jogador 8">
+                                <img src="assets/jogador8.jpg" alt="Bruno Ferreira">
                                 <div class="jogador-numero">9</div>
                             </div>
-                            <h4>Bruno Ferreira</h4>
-                            <p class="jogador-posicao">Centroavante</p>
+                            <div class="jogador-info">
+                                <h4>Bruno Ferreira</h4>
+                                <p class="jogador-posicao">
+                                    <i class="fas fa-bullseye"></i> Centroavante
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <button class="carousel-btn next-jogador">❯</button>

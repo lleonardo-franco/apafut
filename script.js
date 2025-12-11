@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextJogadorBtn = document.querySelector('.next-jogador');
 
     if (jogadoresContainer && prevJogadorBtn && nextJogadorBtn) {
-        const scrollAmount = 275; // largura do card + gap
+        const scrollAmount = 250; // largura do card + gap ajustada
 
         nextJogadorBtn.addEventListener('click', () => {
             jogadoresContainer.scrollBy({
@@ -238,6 +238,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
         jogadoresContainer.addEventListener('touchend', () => {
             startX = null;
+        });
+    }
+
+    // Filtros de Posição dos Jogadores
+    const filtrosBtns = document.querySelectorAll('.filtro-btn');
+    const jogadorCards = document.querySelectorAll('.jogador-card');
+
+    if (filtrosBtns.length > 0 && jogadorCards.length > 0) {
+        filtrosBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active de todos os botões
+                filtrosBtns.forEach(b => b.classList.remove('active'));
+                // Adiciona active ao botão clicado
+                btn.classList.add('active');
+
+                const posicaoSelecionada = btn.getAttribute('data-posicao');
+
+                jogadorCards.forEach(card => {
+                    const posicaoCard = card.getAttribute('data-posicao');
+                    
+                    if (posicaoSelecionada === 'todos') {
+                        // Mostra todos os cards
+                        card.style.display = 'flex';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 10);
+                    } else if (posicaoCard === posicaoSelecionada || 
+                               (posicaoSelecionada === 'Atacante' && posicaoCard === 'Atacante')) {
+                        // Mostra cards da posição selecionada
+                        card.style.display = 'flex';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        // Esconde cards de outras posições
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+
+                // Scroll suave para o início da seção após filtrar
+                if (jogadoresContainer) {
+                    jogadoresContainer.scrollTo({
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Adicionar transição CSS aos cards
+        jogadorCards.forEach(card => {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         });
     }
 

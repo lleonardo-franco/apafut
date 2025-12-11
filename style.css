@@ -4,12 +4,12 @@
     --azul-secundario: #111D69;
     --branco-padrao: #FFFFFF;
 
-    /* Tamanhos fluidos */
-    --fs-h1: clamp(2rem, 5vw, 3.5rem);
-    --fs-h2: clamp(1.75rem, 4vw, 2.625rem);
-    --fs-h3: clamp(1.25rem, 3vw, 1.5rem);
-    --fs-body: clamp(0.875rem, 2vw, 1rem);
-    --fs-large: clamp(1rem, 2.5vw, 1.25rem);
+    /* Tamanhos fluidos - reduzidos para notebooks */
+    --fs-h1: clamp(1.75rem, 4vw, 2.75rem);
+    --fs-h2: clamp(1.5rem, 3.5vw, 2.125rem);
+    --fs-h3: clamp(1.1rem, 2.5vw, 1.3rem);
+    --fs-body: clamp(0.875rem, 1.8vw, 0.95rem);
+    --fs-large: clamp(0.95rem, 2.2vw, 1.1rem);
 }
 
 * {
@@ -42,7 +42,7 @@ body {
 /* header e navbar */
 header {
     width: 100%;
-    height: 70px;
+    height: 60px;
     background-color: var(--azul-secundario);
     display: flex;
     justify-content: center;
@@ -81,8 +81,8 @@ header nav {
 }
 
 header nav .logo img {
-    height: clamp(50px, 10vw, 70px);
-    width: clamp(50px, 10vw, 70px);
+    height: clamp(45px, 9vw, 60px);
+    width: clamp(45px, 9vw, 60px);
     object-fit: contain;
     margin-right: 10px;
     transition: all 0.3s ease;
@@ -298,7 +298,7 @@ header nav .hamburger i {
 .hero {
     width: 100%;
     min-height: 100vh;
-    margin-top: 70px;
+    margin-top: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -545,13 +545,13 @@ section#home .content .btn-saiba-mais:hover {
 
 /* sobre section */
 section#sobre {
-    padding: clamp(40px, 8vh, 80px) 5%;
+    padding: clamp(30px, 6vh, 50px) 5%;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     justify-content: space-between;
-    gap: clamp(30px, 6vw, 60px);
+    gap: clamp(25px, 5vw, 50px);
     position: relative;
     z-index: 1;
 }
@@ -738,7 +738,7 @@ section#sobre .btn-sobre:hover {
 
 /* Categorias */
 section#categorias {
-    padding: clamp(30px, 6vh, 80px) 5%;
+    padding: clamp(30px, 6vh, 50px) 5%;
     background-color: #ffffff;
     text-align: center;
 }
@@ -905,7 +905,7 @@ section#categorias h2 {
 
 /* Depoimentos */
 .depoimentos {
-    padding: clamp(30px, 6vh, 80px) 5%;
+    padding: clamp(30px, 6vh, 50px) 5%;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     text-align: center;
 }
@@ -1050,14 +1050,14 @@ section#categorias h2 {
 
 /* Seção de Notícias */
 .noticias {
-    padding: clamp(50px, 8vh, 80px) 5%;
+    padding: clamp(35px, 7vh, 50px) 5%;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     overflow: hidden;
 }
 
 .noticias-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
 }
 
 .noticias-header h2 {
@@ -1113,7 +1113,7 @@ section#categorias h2 {
     position: relative;
     overflow: hidden;
     height: 100%;
-    min-height: 450px;
+    min-height: 380px;
 }
 
 .noticia-imagem img {
@@ -1201,38 +1201,38 @@ section#categorias h2 {
 }
 
 .noticia-conteudo {
-    padding: 40px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .noticia-conteudo h3 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: var(--azul-secundario);
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .noticia-resumo {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: #555;
-    line-height: 1.7;
-    margin-bottom: 25px;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .btn-noticia {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 32px;
+    gap: 8px;
+    padding: 12px 28px;
     background: var(--vermelho-primario);
     color: white;
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(235, 56, 53, 0.25);
     width: fit-content;
@@ -2092,31 +2092,31 @@ video {
 
 /* Seção Time Profissional */
 .time-profissional {
-    padding: 80px 5%;
+    padding: 50px 5%;
     background: linear-gradient(135deg, var(--azul-secundario) 0%, #0d1440 100%);
     color: white;
 }
 
 .profissional-title {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
 }
 
 .profissional-icon {
     display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background: linear-gradient(135deg, var(--vermelho-primario) 0%, #d32f2f 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0 auto 15px;
     box-shadow: 0 4px 16px rgba(235, 56, 53, 0.3);
 }
 
 .profissional-icon i {
-    font-size: 2.5em;
+    font-size: 1.8em;
     color: white;
 }
 
@@ -2151,70 +2151,143 @@ video {
     display: none;
 }
 
-.jogador-card {
-    flex: 0 0 250px;
+/* Filtros de Posição */
+.posicao-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.filtro-btn {
     background: rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 24px;
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filtro-btn i {
+    font-size: 1.1em;
+}
+
+.filtro-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--vermelho-primario);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(235, 56, 53, 0.3);
+}
+
+.filtro-btn.active {
+    background: var(--vermelho-primario);
+    border-color: var(--vermelho-primario);
+    box-shadow: 0 4px 16px rgba(235, 56, 53, 0.4);
+}
+
+.filtro-btn.active:hover {
+    background: #d42f2c;
+    transform: translateY(-2px);
+}
+
+.jogador-card {
+    flex: 0 0 240px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
 }
 
 .jogador-card:hover {
     transform: translateY(-6px);
-    background: rgba(255, 255, 255, 0.12);
     border-color: var(--vermelho-primario);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 32px rgba(235, 56, 53, 0.3);
+}
+
+.jogador-card:hover .jogador-foto img {
+    transform: scale(1.08);
 }
 
 .jogador-foto {
     position: relative;
-    width: 180px;
-    height: 180px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
+    width: 100%;
+    height: 260px;
     overflow: hidden;
-    border: 4px solid var(--vermelho-primario);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, var(--azul-secundario) 0%, #0a1234 100%);
 }
 
 .jogador-foto img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .jogador-numero {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     background: var(--vermelho-primario);
     color: white;
-    width: 45px;
+    min-width: 45px;
     height: 45px;
-    border-radius: 50%;
+    padding: 0 10px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.3em;
-    font-weight: 700;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-weight: 900;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.jogador-info {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
 }
 
 .jogador-card h4 {
-    font-size: 1.3em;
-    margin-bottom: 8px;
+    font-size: 1.1em;
+    margin: 0;
     font-weight: 700;
+    color: white;
 }
 
 .jogador-posicao {
     color: var(--vermelho-primario);
-    font-size: 1em;
+    font-size: 0.85em;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0;
+}
+
+.jogador-posicao i {
+    font-size: 1.1em;
 }
 
 /* Botões do Carrossel */
@@ -2273,13 +2346,27 @@ video {
         padding: 0 50px;
     }
 
+    .filtro-btn {
+        padding: 10px 18px;
+        font-size: 0.85em;
+    }
+
     .jogador-card {
-        flex: 0 0 220px;
+        flex: 0 0 240px;
     }
 
     .jogador-foto {
-        width: 150px;
-        height: 150px;
+        height: 280px;
+    }
+
+    .jogador-info {
+        padding: 16px;
+    }
+
+    .jogador-numero {
+        min-width: 45px;
+        height: 45px;
+        font-size: 1.3em;
     }
 
     .carousel-btn {
@@ -2294,20 +2381,44 @@ video {
         padding: 0 45px;
     }
 
+    .posicao-filtros {
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+
+    .filtro-btn {
+        padding: 8px 14px;
+        font-size: 0.8em;
+        flex: 1 1 auto;
+        min-width: calc(50% - 4px);
+    }
+
     .jogador-card {
-        flex: 0 0 200px;
-        padding: 15px;
+        flex: 0 0 220px;
     }
 
     .jogador-foto {
-        width: 130px;
-        height: 130px;
+        height: 260px;
+    }
+
+    .jogador-info {
+        padding: 14px;
+    }
+
+    .jogador-card h4 {
+        font-size: 1.1em;
+    }
+
+    .jogador-posicao {
+        font-size: 0.85em;
     }
 
     .jogador-numero {
-        width: 35px;
-        height: 35px;
-        font-size: 1.1em;
+        min-width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+        top: 12px;
+        right: 12px;
     }
 
     .carousel-btn {
@@ -2319,7 +2430,7 @@ video {
 
 /* Seção Campeonatos */
 .campeonatos-section {
-    margin-top: 80px;
+    margin-top: 40px;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -2327,22 +2438,22 @@ video {
 
 .campeonatos-section h3 {
     text-align: center;
-    font-size: 2em;
-    margin-bottom: 40px;
+    font-size: 1.75em;
+    margin-bottom: 30px;
     font-weight: 700;
 }
 
 .campeonatos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
     padding: 0 20px;
 }
 
 .campeonato-card {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    padding: 32px 28px;
+    padding: 28px 24px;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(10px);
@@ -2418,7 +2529,7 @@ video {
 
 /* Seção de Planos */
 .planos {
-    padding: 80px 5%;
+    padding: 50px 5%;
     background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
     position: relative;
     overflow: hidden;
