@@ -241,6 +241,112 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Carrossel de Notícias
+    const noticiasContainer = document.querySelector('.noticias-container');
+    const noticiaCards = document.querySelectorAll('.noticia-card');
+    const prevNoticiaBtn = document.querySelector('.prev-noticia');
+    const nextNoticiaBtn = document.querySelector('.next-noticia');
+    const dots = document.querySelectorAll('.carousel-dots .dot');
+    let currentNoticiaIndex = 0;
+    let noticiaAutoPlayInterval;
+
+    if (noticiasContainer && noticiaCards.length > 0) {
+        function showNoticia(index) {
+            noticiaCards.forEach((card, i) => {
+                card.classList.remove('active');
+                if (i === index) {
+                    card.classList.add('active');
+                }
+            });
+
+            // Atualizar dots
+            dots.forEach((dot, i) => {
+                dot.classList.remove('active');
+                if (i === index) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function nextNoticia() {
+            currentNoticiaIndex = (currentNoticiaIndex + 1) % noticiaCards.length;
+            showNoticia(currentNoticiaIndex);
+        }
+
+        function prevNoticia() {
+            currentNoticiaIndex = (currentNoticiaIndex - 1 + noticiaCards.length) % noticiaCards.length;
+            showNoticia(currentNoticiaIndex);
+        }
+
+        function startNoticiaAutoPlay() {
+            noticiaAutoPlayInterval = setInterval(nextNoticia, 6000); // Muda a cada 6 segundos
+        }
+
+        function stopNoticiaAutoPlay() {
+            clearInterval(noticiaAutoPlayInterval);
+        }
+
+        // Botões de navegação
+        if (nextNoticiaBtn) {
+            nextNoticiaBtn.addEventListener('click', function() {
+                nextNoticia();
+                stopNoticiaAutoPlay();
+                startNoticiaAutoPlay();
+            });
+        }
+
+        if (prevNoticiaBtn) {
+            prevNoticiaBtn.addEventListener('click', function() {
+                prevNoticia();
+                stopNoticiaAutoPlay();
+                startNoticiaAutoPlay();
+            });
+        }
+
+        // Dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                currentNoticiaIndex = index;
+                showNoticia(currentNoticiaIndex);
+                stopNoticiaAutoPlay();
+                startNoticiaAutoPlay();
+            });
+        });
+
+        // Suporte para swipe em mobile
+        let touchStartXNoticia = 0;
+        let touchEndXNoticia = 0;
+
+        noticiasContainer.addEventListener('touchstart', (e) => {
+            touchStartXNoticia = e.changedTouches[0].screenX;
+        });
+
+        noticiasContainer.addEventListener('touchend', (e) => {
+            touchEndXNoticia = e.changedTouches[0].screenX;
+            handleSwipeNoticia();
+        });
+
+        function handleSwipeNoticia() {
+            if (touchEndXNoticia < touchStartXNoticia - 50) {
+                nextNoticia();
+                stopNoticiaAutoPlay();
+                startNoticiaAutoPlay();
+            }
+            if (touchEndXNoticia > touchStartXNoticia + 50) {
+                prevNoticia();
+                stopNoticiaAutoPlay();
+                startNoticiaAutoPlay();
+            }
+        }
+
+        // Iniciar autoplay
+        startNoticiaAutoPlay();
+
+        // Pausar ao passar o mouse
+        noticiasContainer.addEventListener('mouseenter', stopNoticiaAutoPlay);
+        noticiasContainer.addEventListener('mouseleave', startNoticiaAutoPlay);
+    }
+
     // Melhorar performance de scroll
     let ticking = false;
     window.addEventListener('scroll', function() {
