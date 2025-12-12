@@ -42,8 +42,19 @@ backups/
 uploads/
 files/
 
+# Imagens otimizadas geradas automaticamente
+assets/images/webp/
+assets/images/*-320w.*
+assets/images/*-640w.*
+assets/images/*-960w.*
+assets/images/*-1280w.*
+assets/images/*-1920w.*
+
 # Arquivos compilados
 *.compiled
+
+# Configurações sensíveis
+config/db.php
 
 # Testes
 phpunit.xml
