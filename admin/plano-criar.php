@@ -2,6 +2,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
 require_once '../config/db.php';
+require_once '../src/Cache.php';
 require_once 'auth.php';
 
 $erro = '';
@@ -38,6 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':ativo' => $ativo,
                 ':destaque' => $destaque
             ]);
+            
+            // Limpar cache de planos
+            Cache::delete('planos_ativos');
             
             header('Location: planos.php?sucesso=criado');
             exit;

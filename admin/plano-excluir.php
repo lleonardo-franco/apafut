@@ -2,6 +2,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
 require_once '../config/db.php';
+require_once '../src/Cache.php';
 require_once 'auth.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,6 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Excluir plano
                 $stmt = $pdo->prepare("DELETE FROM planos WHERE id = :id");
                 $stmt->execute([':id' => $id]);
+                
+                // Limpar cache de planos
+                Cache::delete('planos_ativos');
                 
                 header('Location: planos.php?sucesso=excluido');
                 exit;

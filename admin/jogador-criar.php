@@ -1,5 +1,6 @@
 <?php
 require_once 'auth.php';
+require_once '../src/Cache.php';
 Auth::require();
 
 $user = Auth::user();
@@ -69,6 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
         
         $stmt->execute();
+        
+        // Limpar cache de jogadores
+        Cache::delete('jogadores_ativos');
         
         logError('Jogador criado', [
             'nome' => $nome,

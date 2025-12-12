@@ -1,5 +1,6 @@
 <?php
 require_once 'auth.php';
+require_once '../src/Cache.php';
 Auth::require();
 
 $user = Auth::user();
@@ -97,6 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
         $stmt->bindParam(':id', $jogadorId, PDO::PARAM_INT);
         
         $stmt->execute();
+        
+        // Limpar cache de jogadores
+        Cache::delete('jogadores_ativos');
         
         logError('Jogador atualizado', [
             'id' => $jogadorId,

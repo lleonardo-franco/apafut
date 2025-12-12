@@ -1,5 +1,6 @@
 <?php
 require_once 'auth.php';
+require_once '../src/Cache.php';
 Auth::require();
 
 $user = Auth::user();
@@ -33,6 +34,9 @@ try {
     $stmt = $conn->prepare("DELETE FROM jogadores WHERE id = :id");
     $stmt->bindParam(':id', $jogadorId);
     $stmt->execute();
+    
+    // Limpar cache de jogadores
+    Cache::delete('jogadores_ativos');
     
     logError('Jogador excluído', [
         'id' => $jogadorId,
