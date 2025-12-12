@@ -22,25 +22,17 @@
             <i class="fas fa-users"></i>
             <span>Jogadores</span>
         </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-trophy"></i>
-            <span>Campeonatos</span>
-        </a>
-        <a href="#" class="menu-item">
+        <a href="depoimentos.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'depoimentos.php' || strpos(basename($_SERVER['PHP_SELF']), 'depoimento-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-comments"></i>
             <span>Depoimentos</span>
         </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-users-cog"></i>
-            <span>Categorias de Base</span>
-        </a>
-        <a href="#" class="menu-item">
+        <a href="planos.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'planos.php' || strpos(basename($_SERVER['PHP_SELF']), 'plano-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-tags"></i>
             <span>Planos</span>
         </a>
         
         <div class="menu-section-title">Sistema</div>
-        <a href="#" class="menu-item">
+        <a href="configuracoes.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'configuracoes.php' ? 'active' : '' ?>">
             <i class="fas fa-cog"></i>
             <span>Configurações</span>
         </a>

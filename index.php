@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
+mb_internal_encoding('UTF-8');
 require_once 'config/db.php';
 
 // Buscar jogadores ativos
@@ -463,35 +465,107 @@ function getPosicaoIcon($posicao) {
         </section>
     </section>
     <!-- 6 depoimentos de pais-->
+    <?php
+    // Buscar depoimentos ativos
+    $depoimentos = [];
+    try {
+        $stmt = $conn->query("SELECT * FROM depoimentos WHERE ativo = 1 ORDER BY ordem ASC LIMIT 10");
+        $depoimentos = $stmt->fetchAll();
+    } catch (Exception $e) {
+        // Silencioso no front-end
+    }
+    ?>
+    
+    <?php if (!empty($depoimentos)): ?>
     <section id="depoimentos" class="depoimentos">
-        <h2>O que os Pais Dizem</h2>
-        <div class="testimonials">
-            <div class="testimonial-card">
-                <p>"A Apafut tem sido fundamental no desenvolvimento do meu filho. A equipe é dedicada e o ambiente é muito positivo."</p>
-                <h3>- Maria S.</h3>
+        <div class="depoimentos-header">
+            <h2>O que Dizem sobre a Apafut</h2>
+            <p>Conheça a experiência de quem faz parte da nossa família</p>
+        </div>
+        
+        <div class="depoimentos-player">
+            <!-- Player de Vídeo -->
+            <div class="video-container">
+                <video id="videoPlayer" controls>
+                    <source id="videoSource" src="<?= htmlspecialchars(str_replace('../', '', $depoimentos[0]['video'])) ?>" type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
             </div>
-            <div class="testimonial-card">
-                <p>"Desde que meu filho começou na Apafut, ele melhorou muito tecnicamente e ganhou muita confiança em campo."</p>
-                <h3>- João P.</h3>
+            
+            <!-- Informações do Depoimento -->
+            <div class="depoimento-info">
+                <h3 id="depoimento-nome"><?= htmlspecialchars($depoimentos[0]['nome']) ?></h3>
+                <p id="depoimento-descricao"><?= htmlspecialchars($depoimentos[0]['descricao'] ?? '') ?></p>
             </div>
-            <div class="testimonial-card">
-                <p>"A estrutura e o profissionalismo da Apafut são excepcionais. Recomendo a todos os pais que querem o melhor para seus filhos."</p>
-                <h3>- Ana L.</h3>
-            </div>
-            <div class="testimonial-card">
-                <p>"Meu filho adora treinar na Apafut. Ele está sempre motivado e feliz, o que é o mais importante para nós."</p>
-                <h3>- Carlos M.</h3>
-            </div>
-            <div class="testimonial-card">
-                <p>"Os treinadores são muito atenciosos e realmente se importam com o desenvolvimento dos atletas. Excelente academia!"</p>
-                <h3>- Fernanda R.</h3>
-            </div>
-            <div class="testimonial-card">
-                <p>"O ambiente de treinamento na Apafut é muito positivo e estimulante. Os atletas se divertem e aprendem muito."</p>
-                <h3>- Pedro C.</h3>
+            
+            <!-- Controles de Navegação -->
+            <div class="video-controls">
+                <button id="prevVideo" class="control-btn" title="Anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="video-indicator">
+                    <span id="currentVideo">1</span> / <span id="totalVideos"><?= count($depoimentos) ?></span>
+                </div>
+                <button id="nextVideo" class="control-btn" title="Próximo">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </section>
+    
+    <script>
+        // Dados dos depoimentos
+        const depoimentos = <?= json_encode($depoimentos) ?>;
+        let currentIndex = 0;
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoSource = document.getElementById('videoSource');
+        
+        // Atualizar informações do depoimento
+        function updateDepoimentoInfo(index) {
+            const depoimento = depoimentos[index];
+            document.getElementById('depoimento-nome').textContent = depoimento.nome;
+            document.getElementById('depoimento-descricao').textContent = depoimento.descricao || '';
+            document.getElementById('currentVideo').textContent = index + 1;
+        }
+        
+        // Carregar vídeo
+        function loadVideo(index) {
+            if (index >= 0 && index < depoimentos.length) {
+                currentIndex = index;
+                const depoimento = depoimentos[index];
+                
+                // Remover ../ do caminho
+                const videoPath = depoimento.video.replace('../', '');
+                videoSource.src = videoPath;
+                videoPlayer.load();
+                videoPlayer.play();
+                
+                updateDepoimentoInfo(index);
+            }
+        }
+        
+        // Ir para próximo vídeo
+        function nextVideo() {
+            const next = (currentIndex + 1) % depoimentos.length;
+            loadVideo(next);
+        }
+        
+        // Ir para vídeo anterior
+        function prevVideo() {
+            const prev = (currentIndex - 1 + depoimentos.length) % depoimentos.length;
+            loadVideo(prev);
+        }
+        
+        // Auto-play: ir para próximo quando terminar
+        videoPlayer.addEventListener('ended', function() {
+            setTimeout(nextVideo, 1000);
+        });
+        
+        // Event Listeners para os botões
+        document.getElementById('prevVideo')?.addEventListener('click', prevVideo);
+        document.getElementById('nextVideo')?.addEventListener('click', nextVideo);
+    </script>
+    <?php endif; ?>
 
     <!-- Planos -->
     <section id="planos" class="planos">

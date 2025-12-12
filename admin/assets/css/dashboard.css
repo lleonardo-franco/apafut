@@ -56,8 +56,8 @@ body {
 }
 
 .sidebar-logo img {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
 }
 
@@ -176,10 +176,12 @@ body {
     align-items: center;
     gap: 6px;
     transition: all 0.3s;
+    text-decoration: none;
 }
 
 .btn-logout:hover {
     background: #c5221f;
+    text-decoration: none;
 }
 
 /* Content Area */

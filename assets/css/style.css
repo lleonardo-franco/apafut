@@ -1032,27 +1032,31 @@ section#categorias h2 {
 
 /* Depoimentos */
 .depoimentos {
-    padding: clamp(30px, 6vh, 50px) 5%;
+    padding: clamp(30px, 6vh, 80px) 5%;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    text-align: center;
 }
 
 @media (max-width: 432px) {
     .depoimentos {
-        padding: 20px 4%;
+        padding: 40px 4%;
     }
 }
 
-.depoimentos h2 {
+.depoimentos-header {
+    text-align: center;
+    margin-bottom: clamp(30px, 5vh, 50px);
+}
+
+.depoimentos-header h2 {
     font-size: var(--fs-h2);
     font-weight: 900;
     color: var(--azul-secundario);
-    margin-bottom: clamp(25px, 4vh, 50px);
+    margin-bottom: 12px;
     position: relative;
     display: inline-block;
 }
 
-.depoimentos h2::after {
+.depoimentos-header h2::after {
     content: '';
     position: absolute;
     bottom: -10px;
@@ -1064,60 +1068,122 @@ section#categorias h2 {
     border-radius: 2px;
 }
 
-.testimonials {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: clamp(20px, 3vw, 30px);
-    max-width: 1200px;
+.depoimentos-header p {
+    color: #666;
+    font-size: var(--fs-body);
+    margin-top: 20px;
+}
+
+.depoimentos-player {
+    max-width: 700px;
     margin: 0 auto;
 }
 
-.testimonial-card {
-    background: white;
-    padding: clamp(28px, 4vw, 40px) clamp(24px, 3vw, 32px);
-    border-radius: clamp(12px, 2vw, 16px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+.video-container {
     position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 3px solid transparent;
-    min-height: 180px;
+    width: 100%;
+    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    background: #000;
+    margin-bottom: 32px;
 }
 
-.testimonial-card::before {
-    content: '"';
-    font-size: clamp(60px, 10vw, 80px);
-    font-family: Georgia, serif;
-    color: var(--vermelho-primario);
-    opacity: 0.2;
+.video-container video {
     position: absolute;
-    top: 10px;
-    left: 20px;
-    line-height: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.testimonial-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    border-left-color: var(--vermelho-primario);
+.depoimento-info {
+    text-align: center;
+    padding: 24px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.testimonial-card p {
-    font-size: var(--fs-body);
-    color: #555;
-    line-height: 1.8;
-    font-style: italic;
-    margin-bottom: clamp(15px, 2vh, 20px);
-    text-align: left;
-    position: relative;
-    z-index: 1;
-}
-
-.testimonial-card h3 {
-    font-size: clamp(16px, 2.5vw, 18px);
+.depoimento-info h3 {
+    font-size: clamp(20px, 3vw, 28px);
     font-weight: 700;
     color: var(--azul-secundario);
-    text-align: right;
-    margin-top: auto;
+    margin-bottom: 8px;
+}
+
+.depoimento-info p {
+    font-size: var(--fs-body);
+    color: #666;
+    line-height: 1.6;
+}
+
+.video-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.control-btn {
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: var(--vermelho-primario);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(235, 56, 53, 0.3);
+}
+
+.control-btn:hover {
+    background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(235, 56, 53, 0.4);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.video-indicator {
+    font-size: clamp(16px, 2.5vw, 18px);
+    font-weight: 600;
+    color: var(--azul-secundario);
+    padding: 12px 24px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+    .depoimento-info {
+        min-height: 100px;
+        padding: 20px;
+    }
+    
+    .control-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+    
+    .video-controls {
+        gap: 16px;
+    }
+}
 }
 
 /* Responsividade Depoimentos */
