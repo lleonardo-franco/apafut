@@ -2,6 +2,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
 require_once 'config/db.php';
+require_once 'includes/analytics-tracker.php';
 
 // Buscar jogadores ativos
 $jogadores = [];
