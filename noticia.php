@@ -3,6 +3,12 @@ header('Content-Type: text/html; charset=utf-8');
 require_once 'config/security-headers.php';
 require_once 'config/db.php';
 require_once 'src/Security.php';
+require_once 'src/SEO.php';
+require_once 'src/Cache.php';
+require_once 'src/BotProtection.php';
+
+// Proteção contra bots
+BotProtection::check();
 
 // Obter e validar ID da notícia
 $noticiaId = Security::validateInt($_GET['id'] ?? 0, 1);
@@ -15,11 +21,13 @@ if ($noticiaId === false) {
 try {
     $conn = getConnection();
     
-    // Buscar notícia
-    $stmt = $conn->prepare("SELECT * FROM noticias WHERE id = :id AND ativo = 1");
-    $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
-    $stmt->execute();
-    $noticia = $stmt->fetch();
+    // Buscar notícia com cache
+    $noticia = Cache::remember('noticia_' . $noticiaId, function() use ($conn, $noticiaId) {
+        $stmt = $conn->prepare("SELECT * FROM noticias WHERE id = :id AND ativo = 1");
+        $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch();
+    }, 1800); // 30 minutos
     
     if (!$noticia) {
         header('Location: index.php#noticias');
@@ -34,20 +42,24 @@ try {
     // Conteúdo permite HTML básico
     $noticia['conteudo'] = Security::sanitizeHtml($noticia['conteudo'], '<p><br><strong><em><ul><ol><li><h2><h3><h4>');
     
-    // Buscar notícias relacionadas (mesma categoria ou mais recentes)
-    $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
-    $stmt->bindParam(':categoria', $noticia['categoria'], PDO::PARAM_STR);
-    $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
-    $stmt->execute();
-    $relacionadas = $stmt->fetchAll();
-    
-    // Se não houver notícias suficientes da mesma categoria, buscar outras
-    if (count($relacionadas) < 3) {
-        $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
+    // Buscar notícias relacionadas (mesma categoria ou mais recentes) com cache
+    $relacionadas = Cache::remember('relacionadas_' . $noticiaId, function() use ($conn, $noticia, $noticiaId) {
+        $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
+        $stmt->bindParam(':categoria', $noticia['categoria'], PDO::PARAM_STR);
         $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
         $stmt->execute();
         $relacionadas = $stmt->fetchAll();
-    }
+        
+        // Se não houver notícias suficientes da mesma categoria, buscar outras
+        if (count($relacionadas) < 3) {
+            $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
+            $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
+            $stmt->execute();
+            $relacionadas = $stmt->fetchAll();
+        }
+        
+        return $relacionadas;
+    }, 1800); // 30 minutos
     
     // Sanitiza notícias relacionadas
     foreach ($relacionadas as &$rel) {
@@ -67,12 +79,17 @@ try {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="<?= htmlspecialchars($noticia['resumo']) ?>">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title><?= htmlspecialchars($noticia['titulo']) ?> - Apafut Caxias do Sul</title>
+    <?php 
+    SEO::renderMetaTags('noticia', [
+        'title' => htmlspecialchars($noticia['titulo']) . ' - Apafut Caxias do Sul',
+        'description' => htmlspecialchars($noticia['resumo']),
+        'keywords' => 'apafut, ' . htmlspecialchars($noticia['categoria']) . ', notícias futebol, caxias do sul',
+        'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/' . htmlspecialchars($noticia['imagem']),
+        'type' => 'article'
+    ]);
+    
+    SEO::renderNoticiaSchema($noticia);
+    ?>
     <!-- favicon -->
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">

@@ -4,28 +4,38 @@ mb_internal_encoding('UTF-8');
 require_once 'config/security-headers.php';
 require_once 'config/db.php';
 require_once 'includes/analytics-tracker.php';
+require_once 'src/SEO.php';
+require_once 'src/Cache.php';
+require_once 'src/BotProtection.php';
+
+// Proteção contra bots
+BotProtection::check();
 
 // Buscar jogadores ativos com cache
-$jogadores = [];
-try {
-    $conn = getConnection();
-    $stmt = $conn->prepare("SELECT id, nome, numero, posicao, foto, ordem FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
-    $stmt->execute();
-    $jogadores = $stmt->fetchAll();
-} catch (Exception $e) {
-    error_log("Erro ao buscar jogadores: " . $e->getMessage());
-}
+$jogadores = Cache::remember('jogadores_ativos', function() {
+    try {
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT id, nome, numero, posicao, foto, ordem FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Erro ao buscar jogadores: " . $e->getMessage());
+        return [];
+    }
+}, 3600);
 
 // Buscar planos ativos
-$planos = [];
-try {
-    $pdo = getConnection();
-    $stmt = $pdo->prepare("SELECT id, nome, tipo, preco_anual, parcelas, beneficios, destaque FROM planos WHERE ativo = 1 ORDER BY ordem ASC, preco_anual ASC");
-    $stmt->execute();
-    $planos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    error_log("Erro ao buscar planos: " . $e->getMessage());
-}
+$planos = Cache::remember('planos_ativos', function() {
+    try {
+        $pdo = getConnection();
+        $stmt = $pdo->prepare("SELECT id, nome, tipo, preco_anual, parcelas, beneficios, destaque FROM planos WHERE ativo = 1 ORDER BY ordem ASC, preco_anual ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Erro ao buscar planos: " . $e->getMessage());
+        return [];
+    }
+}, 3600);
 
 // Função para mapear ícone da posição
 function getPosicaoIcon($posicao) {
@@ -47,12 +57,14 @@ function getPosicaoIcon($posicao) {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Apafut - Associação de Pais e Amigos do Futebol de Caxias do Sul. Formação de jovens atletas com infraestrutura completa e treinadores especializados.">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Apafut - Caxias do Sul</title>
+    <?php 
+    SEO::renderMetaTags('home', [
+        'title' => 'Apafut - Caxias do Sul | Formação de Jovens Atletas',
+        'description' => 'Apafut - Associação de Pais e Amigos do Futebol de Caxias do Sul. Formação de jovens atletas com infraestrutura completa e treinadores especializados.',
+        'keywords' => 'apafut, caxias do sul, futebol, formação atletas, escolinha de futebol, futebol juvenil',
+        'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/assets/logo.png'
+    ]);
+    ?>
     <!-- favicon -->
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">
@@ -64,6 +76,7 @@ function getPosicaoIcon($posicao) {
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <!-- css -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <?php SEO::renderOrganizationSchema(); ?>
 </head>
 <body>
     <header>

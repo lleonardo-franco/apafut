@@ -3,6 +3,17 @@ session_start();
 require_once 'config/security-headers.php';
 require_once 'config/db.php';
 require_once 'src/Security.php';
+require_once 'src/BotProtection.php';
+
+// Proteção contra bots
+BotProtection::check();
+
+// Validar honeypot (campo invisível - se preenchido, é bot)
+if (!empty($_POST['website']) || !empty($_POST['url']) || !empty($_POST['homepage'])) {
+    error_log("Bot detectado no checkout - Honeypot preenchido");
+    header('Location: obrigado.php');
+    exit;
+}
 
 // Validar token CSRF
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrfToken($_POST['csrf_token'] ?? '')) {

@@ -5,6 +5,11 @@ mb_internal_encoding('UTF-8');
 require_once 'config/security-headers.php';
 require_once 'config/db.php';
 require_once 'src/Security.php';
+require_once 'src/BotProtection.php';
+require_once 'src/SEO.php';
+
+// Proteção contra bots
+BotProtection::check();
 
 // Gerar token CSRF
 $csrf_token = Security::generateCsrfToken();
@@ -712,6 +717,9 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
             <form id="checkoutForm" class="form-content" method="POST" action="processar-checkout.php">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
                 <input type="hidden" name="plano_id" value="<?= htmlspecialchars($plano['id']) ?>">
+                
+                <!-- Bot Protection Honeypot -->
+                <?= BotProtection::renderHoneypot() ?>
                 
                 <!-- Step 1: Personal Information -->
                 <div class="form-step active" data-step="1">

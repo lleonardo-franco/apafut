@@ -1,0 +1,24 @@
+# robots.txt para APAFUT
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /config/
+Disallow: /cache/
+Disallow: /logs/
+Disallow: /sql/
+Disallow: /src/
+Disallow: /processar-checkout.php
+Disallow: /obrigado.php
+
+# Permitir bots legítimos
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Slurp
+Allow: /
+
+# Sitemap
+Sitemap: http://localhost:8000/sitemap.xml
+
+# Crawl-delay para evitar sobrecarga
+Crawl-delay: 10
