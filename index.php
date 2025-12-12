@@ -14,6 +14,17 @@ try {
     // Silencioso no front-end
 }
 
+// Buscar planos ativos
+$planos = [];
+try {
+    $pdo = getConnection();
+    $pdo->exec("SET NAMES utf8mb4");
+    $stmt = $pdo->query("SELECT * FROM planos WHERE ativo = 1 ORDER BY ordem ASC, preco_anual ASC");
+    $planos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    error_log("Erro ao buscar planos: " . $e->getMessage());
+}
+
 // Função para mapear ícone da posição
 function getPosicaoIcon($posicao) {
     $icons = [
@@ -575,51 +586,48 @@ function getPosicaoIcon($posicao) {
             <p>Invista no futuro do seu atleta com nossos planos completos</p>
         </div>
         <div class="planos-container">
-            <!-- Plano Prata -->
-            <div class="plano-card">
-                <div class="plano-badge">Prata</div>
-                <h3>Sócio APA Prata</h3>
-                <div class="plano-preco">
-                    <span class="preco-por">R$ 200<span class="preco-mes">/ano</span></span>
+            <?php if (!empty($planos)): ?>
+                <?php foreach ($planos as $plano): 
+                    $beneficios = explode('|', $plano['beneficios']);
+                    $preco_formatado = number_format($plano['preco_anual'], 2, ',', '.');
+                    $tipo_lower = strtolower($plano['tipo']);
+                    $is_destaque = isset($plano['destaque']) && $plano['destaque'] == 1;
+                ?>
+                <div class="plano-card <?= $is_destaque ? 'plano-destaque' : '' ?>">
+                    <div class="plano-badge <?= $is_destaque ? 'badge-popular' : '' ?>"><?= htmlspecialchars($plano['tipo']) ?></div>
+                    <h3><?= htmlspecialchars($plano['nome']) ?></h3>
+                    <div class="plano-preco">
+                        <span class="preco-por">R$ <?= $preco_formatado ?><span class="preco-mes">/ano</span></span>
+                    </div>
+                    <?php if ($is_destaque): ?>
+                    <div class="economia-tag">
+                        <i class="fas fa-star"></i> Plano Completo
+                    </div>
+                    <?php endif; ?>
+                    <div class="parcelamento">
+                        <i class="fas fa-credit-card"></i> ou <?= $plano['parcelas'] ?>x de R$ <?= number_format($plano['preco_anual'] / $plano['parcelas'], 2, ',', '.') ?>
+                    </div>
+                    <ul class="plano-beneficios">
+                        <?php foreach ($beneficios as $beneficio): 
+                            $beneficio = trim($beneficio);
+                            if (!empty($beneficio)):
+                        ?>
+                            <li><i class="fas fa-check"></i> <?= htmlspecialchars($beneficio) ?></li>
+                        <?php 
+                            endif;
+                        endforeach; ?>
+                    </ul>
+                    <a href="checkout.php?plano=<?= $plano['id'] ?>" class="btn-plano <?= $is_destaque ? 'btn-plano-destaque' : '' ?>">
+                        <?= $is_destaque ? 'Garantir Vaga' : 'Assinar Agora' ?>
+                    </a>
                 </div>
-                <div class="parcelamento">
-                    <i class="fas fa-credit-card"></i> ou 2x de R$ 100
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div style="text-align: center; padding: 60px 20px; grid-column: 1/-1;">
+                    <i class="fas fa-tags" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+                    <p style="font-size: 18px; color: #666;">Em breve novos planos disponíveis</p>
                 </div>
-                <ul class="plano-beneficios">
-                    <li><i class="fas fa-check"></i> Jantar de fim de temporada</li>
-                    <li><i class="fas fa-check"></i> Descontos com parceiros</li>
-                    <li><i class="fas fa-check"></i> Carteirinha de sócio</li>
-                    <li><i class="fas fa-check"></i> Newsletter exclusiva</li>
-                    <li><i class="fas fa-times"></i> Camiseta oficial</li>
-                    <li><i class="fas fa-times"></i> Acesso prioritário a eventos</li>
-                </ul>
-                <a href="#contato" class="btn-plano">Assinar Agora</a>
-            </div>
-
-            <!-- Plano Ouro (Destaque) -->
-            <div class="plano-card plano-destaque">
-                <div class="plano-badge badge-popular">Ouro</div>
-                <h3>Sócio APA Ouro</h3>
-                <div class="plano-preco">
-                    <span class="preco-por">R$ 300<span class="preco-mes">/ano</span></span>
-                </div>
-                <div class="economia-tag">
-                    <i class="fas fa-star"></i> Plano Completo
-                </div>
-                <div class="parcelamento">
-                    <i class="fas fa-credit-card"></i> ou 2x de R$ 150
-                </div>
-                <ul class="plano-beneficios">
-                    <li><i class="fas fa-check"></i> Camiseta oficial exclusiva</li>
-                    <li><i class="fas fa-check"></i> Jantar de fim de temporada</li>
-                    <li><i class="fas fa-check"></i> Descontos com parceiros</li>
-                    <li><i class="fas fa-check"></i> Carteirinha de sócio premium</li>
-                    <li><i class="fas fa-check"></i> Newsletter exclusiva</li>
-                    <li><i class="fas fa-check"></i> Acesso prioritário a eventos</li>
-                    <li><i class="fas fa-check"></i> Conteúdo exclusivo dos bastidores</li>
-                </ul>
-                <a href="#contato" class="btn-plano btn-plano-destaque">Garantir Vaga</a>
-            </div>
+            <?php endif; ?>
         </div>
     </section>
 
