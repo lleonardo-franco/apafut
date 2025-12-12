@@ -1,20 +1,26 @@
 <?php
+session_start();
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
+require_once 'config/security-headers.php';
 require_once 'config/db.php';
+require_once 'src/Security.php';
 
-// Buscar plano selecionado
-$plano_id = isset($_GET['plano']) ? (int)$_GET['plano'] : 0;
+// Gerar token CSRF
+$csrf_token = Security::generateCsrfToken();
+
+// Validar ID do plano
+$plano_id = Security::validateInt($_GET['plano'] ?? 0, 1);
 $plano = null;
 
-if ($plano_id > 0) {
+if ($plano_id) {
     try {
         $pdo = getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM planos WHERE id = ? AND ativo = 1");
+        $stmt = $pdo->prepare("SELECT id, nome, tipo, preco_anual, parcelas, beneficios, destaque FROM planos WHERE id = ? AND ativo = 1");
         $stmt->execute([$plano_id]);
         $plano = $stmt->fetch();
     } catch (Exception $e) {
-        // Silencioso
+        error_log("Erro ao buscar plano: " . $e->getMessage());
     }
 }
 
@@ -25,7 +31,7 @@ if (!$plano) {
 
 // Formatar preço
 $preco_formatado = 'R$ ' . number_format($plano['preco_anual'], 2, ',', '.');
-$beneficios = explode('|', $plano['beneficios']);
+$beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios'])));
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -703,7 +709,10 @@ $beneficios = explode('|', $plano['beneficios']);
             </div>
 
             <!-- Form Steps -->
-            <form id="checkoutForm" class="form-content">
+            <form id="checkoutForm" class="form-content" method="POST" action="processar-checkout.php">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+                <input type="hidden" name="plano_id" value="<?= htmlspecialchars($plano['id']) ?>">
+                
                 <!-- Step 1: Personal Information -->
                 <div class="form-step active" data-step="1">
                     <h2>Dados Pessoais</h2>

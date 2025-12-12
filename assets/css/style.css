@@ -3055,6 +3055,16 @@ video {
     .preco-por {
         font-size: 2.5em;
     }
+    
+    /* Melhorias para touch */
+    a, button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .btn-plano {
+        padding: 16px 32px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -3070,4 +3080,30 @@ video {
         padding: 15px 30px;
         font-size: 1em;
     }
+}
+
+/* Melhorias de performance */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Touch optimization */
+@media (hover: none) and (pointer: coarse) {
+    a, button, .clickable {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* GPU acceleration for animations */
+.plano-card,
+.btn-plano,
+.noticia-card {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }

@@ -1,0 +1,28 @@
+-- Tabela de assinaturas
+CREATE TABLE IF NOT EXISTS assinaturas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plano_id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(11) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    data_nascimento DATE,
+    rg VARCHAR(20),
+    endereco VARCHAR(255),
+    numero VARCHAR(20),
+    complemento VARCHAR(100),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado VARCHAR(2),
+    cep VARCHAR(10),
+    forma_pagamento ENUM('pix', 'card', 'boleto') NOT NULL,
+    status ENUM('pendente', 'ativa', 'cancelada', 'expirada') DEFAULT 'pendente',
+    valor DECIMAL(10,2) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_ativacao TIMESTAMP NULL,
+    data_expiracao TIMESTAMP NULL,
+    FOREIGN KEY (plano_id) REFERENCES planos(id),
+    INDEX idx_status (status),
+    INDEX idx_email (email),
+    INDEX idx_cpf (cpf)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

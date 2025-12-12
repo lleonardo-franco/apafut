@@ -1,10 +1,8 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+require_once 'config/security-headers.php';
 require_once 'config/db.php';
 require_once 'src/Security.php';
-
-// Define headers de segurança
-Security::setSecurityHeaders();
 
 // Obter e validar ID da notícia
 $noticiaId = Security::validateInt($_GET['id'] ?? 0, 1);

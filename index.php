@@ -1,25 +1,27 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
+require_once 'config/security-headers.php';
 require_once 'config/db.php';
 require_once 'includes/analytics-tracker.php';
 
-// Buscar jogadores ativos
+// Buscar jogadores ativos com cache
 $jogadores = [];
 try {
     $conn = getConnection();
-    $stmt = $conn->query("SELECT * FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
+    $stmt = $conn->prepare("SELECT id, nome, numero, posicao, foto, ordem FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
+    $stmt->execute();
     $jogadores = $stmt->fetchAll();
 } catch (Exception $e) {
-    // Silencioso no front-end
+    error_log("Erro ao buscar jogadores: " . $e->getMessage());
 }
 
 // Buscar planos ativos
 $planos = [];
 try {
     $pdo = getConnection();
-    $pdo->exec("SET NAMES utf8mb4");
-    $stmt = $pdo->query("SELECT * FROM planos WHERE ativo = 1 ORDER BY ordem ASC, preco_anual ASC");
+    $stmt = $pdo->prepare("SELECT id, nome, tipo, preco_anual, parcelas, beneficios, destaque FROM planos WHERE ativo = 1 ORDER BY ordem ASC, preco_anual ASC");
+    $stmt->execute();
     $planos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
     error_log("Erro ao buscar planos: " . $e->getMessage());
@@ -96,7 +98,7 @@ function getPosicaoIcon($posicao) {
                 <a href="#sobre" class="btn-hero">Saiba Mais</a>
             </div>
             <div class="hero-image">
-                <img src="assets/hero.png" alt="Imagem Hero">
+                <img src="assets/hero.png" alt="Imagem Hero" loading="eager" width="600" height="400">
             </div>
         </section>
     </main>
@@ -147,17 +149,17 @@ function getPosicaoIcon($posicao) {
                     ?>
                         <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
                             <div class="noticia-imagem">
-                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>">
+                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy" width="400" height="250">
                                 <div class="patrocinadores-faixa">
                                     <div class="patrocinadores-track">
-                                        <img src="assets/ucs.png" alt="UCS">
-                                        <img src="assets/brisa.png" alt="Brisa">
-                                        <img src="assets/saltur.png" alt="Saltur">
-                                        <img src="assets/chiesa.png" alt="Chiesa">
-                                        <img src="assets/ucs.png" alt="UCS">
-                                        <img src="assets/brisa.png" alt="Brisa">
-                                        <img src="assets/saltur.png" alt="Saltur">
-                                        <img src="assets/chiesa.png" alt="Chiesa">
+                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
+                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
+                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
+                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
+                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
+                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
+                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
+                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
                                     </div>
                                 </div>
                                 <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
@@ -426,7 +428,7 @@ function getPosicaoIcon($posicao) {
                             <div class="jogador-card" data-posicao="<?= htmlspecialchars($jogador['posicao']) ?>">
                                 <div class="jogador-foto">
                                     <?php if (!empty($jogador['foto'])): ?>
-                                        <img src="<?= htmlspecialchars(str_replace('../', '', $jogador['foto'])) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>">
+                                        <img src="<?= htmlspecialchars(str_replace('../', '', $jogador['foto'])) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>" loading="lazy" width="280" height="350">
                                     <?php else: ?>
                                         <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-user" style="font-size: 60px; color: white; opacity: 0.7;"></i>
@@ -453,21 +455,21 @@ function getPosicaoIcon($posicao) {
                 <div class="campeonatos-grid">
                     <div class="campeonato-card">
                         <div class="campeonato-icon">
-                            <img src="assets/gauchao.png" alt="Campeonato Gaúcho">
+                            <img src="assets/gauchao.png" alt="Campeonato Gaúcho" loading="lazy" width="200" height="200">
                         </div>
                         <h4>Campeonato Gaúcho</h4>
                         <p>Principal competição estadual do Rio Grande do Sul</p>
                     </div>
                     <div class="campeonato-card">
                         <div class="campeonato-icon">
-                            <img src="assets/fgf.png" alt="Copa FGF">
+                            <img src="assets/fgf.png" alt="Copa FGF" loading="lazy" width="200" height="200">
                         </div>
                         <h4>Copa FGF</h4>
                         <p>Torneio oficial da Federação Gaúcha de Futebol</p>
                     </div>
                     <div class="campeonato-card">
                         <div class="campeonato-icon">
-                            <img src="assets/copa_caxias.png" alt="Copa Caxias">
+                            <img src="assets/copa_caxias.png" alt="Copa Caxias" loading="lazy" width="200" height="200">
                         </div>
                         <h4>Copa Caxias</h4>
                         <p>Torneio municipal com times da cidade</p>
