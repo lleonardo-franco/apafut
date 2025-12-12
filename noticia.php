@@ -92,9 +92,9 @@ try {
     <header>
         <!-- NAVBAR -->
         <nav>
-            <div class="logo">
+            <a href="index.php" class="logo">
                 <img src="assets/logo.png" alt="Logo Apafut">
-            </div>
+            </a>
             <div class="menu">
                 <ul>
                     <li><a href="index.php#home">Home</a></li>

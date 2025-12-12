@@ -1,3 +1,33 @@
+<?php
+require_once 'config/db.php';
+
+// Buscar jogadores ativos
+$jogadores = [];
+try {
+    $conn = getConnection();
+    $stmt = $conn->query("SELECT * FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
+    $jogadores = $stmt->fetchAll();
+} catch (Exception $e) {
+    // Silencioso no front-end
+}
+
+// Função para mapear ícone da posição
+function getPosicaoIcon($posicao) {
+    $icons = [
+        'Goleiro' => 'fa-hand-paper',
+        'Zagueiro' => 'fa-shield-alt',
+        'Lateral' => 'fa-exchange-alt',
+        'Lateral Direito' => 'fa-exchange-alt',
+        'Lateral Esquerdo' => 'fa-exchange-alt',
+        'Volante' => 'fa-compress',
+        'Meio Campo' => 'fa-futbol',
+        'Meia' => 'fa-futbol',
+        'Ponta' => 'fa-running',
+        'Atacante' => 'fa-bullseye'
+    ];
+    return $icons[$posicao] ?? 'fa-futbol';
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -57,24 +87,117 @@
         </section>
     </main>
     <section>
-        <!-- Sobre -->
-        <section id="sobre" class="sobre">
-            <div class="sobre-content">
-                <h2>Sobre a Apafut</h2>
-                <p>A Apafut é uma academia de futebol dedicada a formar atletas de alta performance, promovendo o desenvolvimento técnico, tático e físico dos jogadores. Com uma equipe de treinadores experientes e uma infraestrutura moderna, oferecemos um ambiente ideal para o crescimento esportivo.</p>
-                <a href="historia.html" class="btn-sobre">Saiba mais</a>
+        <!-- Notícias -->
+        <section id="noticias" class="noticias">
+            <div class="noticias-header">
+                <h2>Últimas Notícias</h2>
+                <p>Fique por dentro de tudo que acontece na Apafut</p>
             </div>
-            <div class="sobre-image">
-                <!-- Carrousel de imagens -->
-                <div class="carousel">
-                    <img src="assets/img1.jpg" alt="Imagem Sobre 1" class="active">
-                    <img src="assets/img2.jpg" alt="Imagem Sobre 2">
-                    <img src="assets/img3.jpg" alt="Imagem Sobre 3">
-                    <button class="prev">&#10094;</button>
-                    <button class="next">&#10095;</button>
+            
+            <div class="noticias-carousel">
+                <button class="carousel-nav prev-noticia" aria-label="Notícia anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="noticias-container">
+                    <?php
+                    // Buscar notícias ativas do banco de dados
+                    try {
+                        require_once 'config/db.php';
+                        $conn = getConnection();
+                        
+                        $stmt = $conn->query("
+                            SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                            FROM noticias 
+                            WHERE ativo = 1 
+                            ORDER BY destaque DESC, data_publicacao DESC 
+                            LIMIT 6
+                        ");
+                        $noticias = $stmt->fetchAll();
+                        
+                        if (empty($noticias)) {
+                            echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
+                        } else {
+                            $first = true;
+                            foreach ($noticias as $noticia):
+                                $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+                                
+                                // Formatar data em português
+                                $mesesPt = [
+                                    'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
+                                    'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
+                                    'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
+                                ];
+                                $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
+                                $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
+                    ?>
+                        <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
+                            <div class="noticia-imagem">
+                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>">
+                                <div class="patrocinadores-faixa">
+                                    <div class="patrocinadores-track">
+                                        <img src="assets/ucs.png" alt="UCS">
+                                        <img src="assets/brisa.png" alt="Brisa">
+                                        <img src="assets/saltur.png" alt="Saltur">
+                                        <img src="assets/chiesa.png" alt="Chiesa">
+                                        <img src="assets/ucs.png" alt="UCS">
+                                        <img src="assets/brisa.png" alt="Brisa">
+                                        <img src="assets/saltur.png" alt="Saltur">
+                                        <img src="assets/chiesa.png" alt="Chiesa">
+                                    </div>
+                                </div>
+                                <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
+                                <div class="noticia-data">
+                                    <i class="far fa-calendar"></i> <?= $dataFormatada ?>
+                                </div>
+                            </div>
+                            <div class="noticia-conteudo">
+                                <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
+                                <p class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
+                                <a href="noticia.php?id=<?= $noticia['id'] ?>" class="btn-noticia">
+                                    Ler mais <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    <?php
+                                $first = false;
+                            endforeach;
+                        }
+                    } catch (Exception $e) {
+                        logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
+                        echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
+                    }
+                    ?>
+                </div>
+                
+                <button class="carousel-nav next-noticia" aria-label="Próxima notícia">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="carousel-dots" id="noticias-dots">
+                <?php if (!empty($noticias)): ?>
+                    <?php for ($i = 0; $i < count($noticias); $i++): ?>
+                        <span class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>"></span>
+                    <?php endfor; ?>
+                <?php endif; ?>
+            </div>
+        </section>
+
+        <!-- Sobre -->
+        <section id="sobre" class="sobre sobre-simples">
+            <div class="sobre-content-centralizado">
+                <div class="sobre-texto">
+                    <h2>Sobre a Apafut</h2>
+                    <p>A Apafut é uma academia de futebol dedicada a formar atletas de alta performance, promovendo o desenvolvimento técnico, tático e físico dos jogadores. Com uma equipe de treinadores experientes e uma infraestrutura moderna, oferecemos um ambiente ideal para o crescimento esportivo.</p>
+                    <a href="historia.html" class="btn-sobre">Saiba mais</a>
+                </div>
+                <div class="sobre-logo">
+                    <img src="assets/logo.png" alt="Logo Apafut">
                 </div>
             </div>
         </section>
+
         <section id="categorias" class="categorias">
             <h2>Nossas Categorias</h2>
             <div class="bento-grid">
@@ -285,102 +408,26 @@
                 <div class="jogadores-carousel">
                     <button class="carousel-btn prev-jogador">❮</button>
                     <div class="jogadores-container">
-                        <div class="jogador-card" data-posicao="Atacante">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador1.jpg" alt="Carlos Silva">
-                                <div class="jogador-numero">10</div>
+                        <?php foreach ($jogadores as $jogador): ?>
+                            <div class="jogador-card" data-posicao="<?= htmlspecialchars($jogador['posicao']) ?>">
+                                <div class="jogador-foto">
+                                    <?php if (!empty($jogador['foto'])): ?>
+                                        <img src="<?= htmlspecialchars(str_replace('../', '', $jogador['foto'])) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>">
+                                    <?php else: ?>
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="jogador-numero"><?= $jogador['numero'] ?></div>
+                                </div>
+                                <div class="jogador-info">
+                                    <h4><?= htmlspecialchars($jogador['nome']) ?></h4>
+                                    <p class="jogador-posicao">
+                                        <i class="fas <?= getPosicaoIcon($jogador['posicao']) ?>"></i> <?= htmlspecialchars($jogador['posicao']) ?>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="jogador-info">
-                                <h4>Carlos Silva</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-bullseye"></i> Atacante
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Meio-Campo">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador2.jpg" alt="Rafael Santos">
-                                <div class="jogador-numero">7</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Rafael Santos</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-futbol"></i> Meio-Campo
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Zagueiro">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador3.jpg" alt="Lucas Oliveira">
-                                <div class="jogador-numero">3</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Lucas Oliveira</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-shield-alt"></i> Zagueiro
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Goleiro">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador4.jpg" alt="Thiago Costa">
-                                <div class="jogador-numero">1</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Thiago Costa</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-hand-paper"></i> Goleiro
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Volante">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador5.jpg" alt="Fernando Lima">
-                                <div class="jogador-numero">8</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Fernando Lima</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-compress"></i> Volante
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Ponta">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador6.jpg" alt="Gabriel Souza">
-                                <div class="jogador-numero">11</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Gabriel Souza</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-running"></i> Ponta
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Lateral">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador7.jpg" alt="Rodrigo Alves">
-                                <div class="jogador-numero">4</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Rodrigo Alves</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-exchange-alt"></i> Lateral
-                                </p>
-                            </div>
-                        </div>
-                        <div class="jogador-card" data-posicao="Atacante">
-                            <div class="jogador-foto">
-                                <img src="assets/jogador8.jpg" alt="Bruno Ferreira">
-                                <div class="jogador-numero">9</div>
-                            </div>
-                            <div class="jogador-info">
-                                <h4>Bruno Ferreira</h4>
-                                <p class="jogador-posicao">
-                                    <i class="fas fa-bullseye"></i> Centroavante
-                                </p>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                     <button class="carousel-btn next-jogador">❯</button>
                 </div>
@@ -501,94 +548,6 @@
         </div>
     </section>
 
-    <!-- Notícias -->
-    <section id="noticias" class="noticias">
-        <div class="noticias-header">
-            <h2>Últimas Notícias</h2>
-            <p>Fique por dentro de tudo que acontece na Apafut</p>
-        </div>
-        
-        <div class="noticias-carousel">
-            <button class="carousel-nav prev-noticia" aria-label="Notícia anterior">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
-            <div class="noticias-container">
-                <?php
-                // Buscar notícias ativas do banco de dados
-                try {
-                    require_once 'config/db.php';
-                    $conn = getConnection();
-                    
-                    $stmt = $conn->query("
-                        SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
-                        FROM noticias 
-                        WHERE ativo = 1 
-                        ORDER BY destaque DESC, data_publicacao DESC 
-                        LIMIT 6
-                    ");
-                    $noticias = $stmt->fetchAll();
-                    
-                    if (empty($noticias)) {
-                        echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
-                    } else {
-                        $first = true;
-                        foreach ($noticias as $noticia):
-                            $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
-                            $dataFormatada = date('d M Y', strtotime($noticia['data_publicacao']));
-                ?>
-                    <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
-                        <div class="noticia-imagem">
-                            <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>">
-                            <div class="patrocinadores-faixa">
-                                <div class="patrocinadores-track">
-                                    <img src="assets/ucs.png" alt="UCS">
-                                    <img src="assets/brisa.png" alt="Brisa">
-                                    <img src="assets/saltur.png" alt="Saltur">
-                                    <img src="assets/chiesa.png" alt="Chiesa">
-                                    <img src="assets/ucs.png" alt="UCS">
-                                    <img src="assets/brisa.png" alt="Brisa">
-                                    <img src="assets/saltur.png" alt="Saltur">
-                                    <img src="assets/chiesa.png" alt="Chiesa">
-                                </div>
-                            </div>
-                            <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
-                            <div class="noticia-data">
-                                <i class="far fa-calendar"></i> <?= $dataFormatada ?>
-                            </div>
-                        </div>
-                        <div class="noticia-conteudo">
-                            <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
-                            <p class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
-                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="btn-noticia">
-                                Ler mais <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                <?php
-                            $first = false;
-                        endforeach;
-                    }
-                } catch (Exception $e) {
-                    logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
-                    echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
-                }
-                ?>
-            </div>
-            
-            <button class="carousel-nav next-noticia" aria-label="Próxima notícia">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-
-        <div class="carousel-dots">
-            <?php if (!empty($noticias)): ?>
-                <?php for ($i = 0; $i < count($noticias); $i++): ?>
-                    <span class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>"></span>
-                <?php endfor; ?>
-            <?php endif; ?>
-        </div>
-    </section>
     <!-- footer -->
     <footer id="contato">
         <div class="footer-content">

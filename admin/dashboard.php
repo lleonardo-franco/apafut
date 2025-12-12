@@ -69,7 +69,7 @@ try {
                     <i class="fas fa-newspaper"></i>
                     <span>Notícias</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="jogadores.php" class="menu-item">
                     <i class="fas fa-users"></i>
                     <span>Jogadores</span>
                 </a>

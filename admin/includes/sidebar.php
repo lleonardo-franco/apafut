@@ -18,7 +18,7 @@
             <i class="fas fa-newspaper"></i>
             <span>Notícias</span>
         </a>
-        <a href="#" class="menu-item">
+        <a href="jogadores.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'jogadores.php' || strpos(basename($_SERVER['PHP_SELF']), 'jogador-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-users"></i>
             <span>Jogadores</span>
         </a>
