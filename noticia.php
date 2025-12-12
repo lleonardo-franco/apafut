@@ -100,13 +100,29 @@ try {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <!-- css -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/noticia.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+    <link rel="stylesheet" href="assets/css/noticia.min.css">
+    <style>
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--vermelho-primario);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 10000;
+            font-weight: bold;
+        }
+        .skip-link:focus { top: 0; }
+    </style>
 </head>
 <body>
-    <header>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <header role="banner">
         <!-- NAVBAR -->
-        <nav>
+        <nav role="navigation" aria-label="Menu principal">
             <a href="index.php" class="logo">
                 <img src="assets/logo.png" alt="Logo Apafut">
             </a>
@@ -198,12 +214,13 @@ try {
             </a>
         </div>
     </article>
+    </main>
 
     <?php if (count($relacionadas) > 0): ?>
     <!-- Notícias Relacionadas -->
-    <section class="noticias-relacionadas">
+    <section class="noticias-relacionadas" aria-labelledby="relacionadas-titulo">
         <div class="container">
-            <h2>Notícias Relacionadas</h2>
+            <h2 id="relacionadas-titulo">Notícias Relacionadas</h2>
             <div class="noticias-grid">
                 <?php foreach($relacionadas as $rel): ?>
                 <a href="noticia.php?id=<?= $rel['id'] ?>" class="mini-noticia-card">
@@ -224,7 +241,7 @@ try {
     <?php endif; ?>
 
     <!-- Footer -->
-    <footer>
+    <footer role="contentinfo" aria-label="Rodapé">
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Apafut Caxias do Sul</h3>
@@ -249,4 +266,4 @@ try {
         </div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.min.js"></script>

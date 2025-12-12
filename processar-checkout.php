@@ -67,7 +67,7 @@ try {
             plano_id, nome, cpf, email, telefone, 
             endereco, numero, complemento, bairro, cidade, estado, cep,
             forma_pagamento, status, valor, data_criacao
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?, NOW())
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'aprovado', ?, NOW())
     ");
     
     $stmt->execute([

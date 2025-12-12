@@ -3129,3 +3129,78 @@ video {
     transform: translateZ(0);
     backface-visibility: hidden;
 }
+
+/* Lazy Loading Styles */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 25%,
+        #e0e0e0 50%,
+        #f0f0f0 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.lazy-loading {
+    opacity: 0.6;
+    filter: blur(5px);
+    transition: opacity 0.3s, filter 0.3s;
+}
+
+.lazy-loaded {
+    opacity: 1;
+    filter: blur(0);
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lazy-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.lazy-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.lazy-visible {
+    opacity: 1;
+    visibility: visible;
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -30,6 +30,10 @@
             <i class="fas fa-tags"></i>
             <span>Planos</span>
         </a>
+        <a href="assinaturas.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'assinaturas.php' || strpos(basename($_SERVER['PHP_SELF']), 'assinatura-') === 0 ? 'active' : '' ?>">
+            <i class="fas fa-file-contract"></i>
+            <span>Assinaturas</span>
+        </a>
         
         <div class="menu-section-title">Sistema</div>
         <a href="analytics.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'analytics.php' ? 'active' : '' ?>">

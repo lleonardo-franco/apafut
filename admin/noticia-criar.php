@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ativo = isset($_POST['ativo']) ? 1 : 0;
         $destaque = isset($_POST['destaque']) ? 1 : 0;
         $data_publicacao = $_POST['data_publicacao'] ?? date('Y-m-d');
+        $status = Security::sanitizeString($_POST['status'] ?? 'publicado');
+        $data_agendamento = !empty($_POST['data_agendamento']) ? $_POST['data_agendamento'] : null;
         
         if (empty($titulo) || empty($categoria) || empty($resumo) || empty($conteudo)) {
             throw new Exception('Por favor, preencha todos os campos obrigatórios');
@@ -61,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Inserir notícia
         $stmt = $conn->prepare("
-            INSERT INTO noticias (titulo, categoria, resumo, conteudo, imagem, autor, tempo_leitura, data_publicacao, ativo, destaque)
-            VALUES (:titulo, :categoria, :resumo, :conteudo, :imagem, :autor, :tempo_leitura, :data_publicacao, :ativo, :destaque)
+            INSERT INTO noticias (titulo, categoria, resumo, conteudo, imagem, autor, tempo_leitura, data_publicacao, ativo, destaque, status, data_agendamento)
+            VALUES (:titulo, :categoria, :resumo, :conteudo, :imagem, :autor, :tempo_leitura, :data_publicacao, :ativo, :destaque, :status, :data_agendamento)
         ");
         
         $stmt->bindParam(':titulo', $titulo);
@@ -75,6 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':data_publicacao', $data_publicacao);
         $stmt->bindParam(':ativo', $ativo);
         $stmt->bindParam(':destaque', $destaque);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':data_agendamento', $data_agendamento);
         
         $stmt->execute();
         
@@ -107,6 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/noticias.css">
+    <!-- TinyMCE: Obtenha sua API key gratuita em https://www.tiny.cloud/auth/signup/ -->
+    <!-- Substitua 'SUA_API_KEY_AQUI' pela sua chave real -->
+    <script src="https://cdn.tiny.cloud/1/pjivdo2bif18etpq2hxcq117ejq55w9zlu2aa2u669mwgdpl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -187,6 +194,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-row">
                         <div class="form-group">
+                            <label for="status">Status da Publicação *</label>
+                            <select id="status" name="status" required>
+                                <option value="publicado" <?= ($_POST['status'] ?? 'publicado') === 'publicado' ? 'selected' : '' ?>>Publicado</option>
+                                <option value="rascunho" <?= ($_POST['status'] ?? '') === 'rascunho' ? 'selected' : '' ?>>Rascunho</option>
+                                <option value="agendado" <?= ($_POST['status'] ?? '') === 'agendado' ? 'selected' : '' ?>>Agendado</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="agendamento-group" style="display: none;">
+                            <label for="data_agendamento">
+                                <i class="far fa-calendar-alt" style="color: var(--azul-secundario);"></i> Data e Hora do Agendamento
+                            </label>
+                            <div style="position: relative;">
+                                <input type="datetime-local" id="data_agendamento" name="data_agendamento" value="<?= $_POST['data_agendamento'] ?? '' ?>" 
+                                       style="padding-left: 45px; padding-right: 15px; height: 45px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: all 0.3s;" 
+                                       onmouseover="this.style.borderColor='var(--azul-secundario)'" 
+                                       onmouseout="this.style.borderColor='#e0e0e0'" 
+                                       onfocus="this.style.borderColor='var(--azul-secundario)'; this.style.boxShadow='0 0 0 3px rgba(0, 105, 217, 0.1)'" 
+                                       onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'">
+                                <i class="far fa-clock" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--azul-secundario); pointer-events: none; font-size: 18px;"></i>
+                            </div>
+                            <small style="color: #666; font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 6px; background: #f0f7ff; padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--azul-secundario);">
+                                <i class="fas fa-info-circle" style="color: var(--azul-secundario);"></i> 
+                                <span>A notícia será publicada automaticamente na data e hora definidas</span>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
                             <div class="checkbox-group">
                                 <input type="checkbox" id="ativo" name="ativo" <?= isset($_POST['ativo']) || !$_POST ? 'checked' : '' ?>>
                                 <label for="ativo" style="margin-bottom: 0;">Publicar notícia (ativa)</label>
@@ -213,5 +250,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </main>
     </div>
+    
+    <script>
+        tinymce.init({
+            selector: '#conteudo',
+            language: 'pt_BR',
+            height: 500,
+            menubar: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image link | code',
+            content_style: 'body { font-family: Lato, Arial, sans-serif; font-size: 14px; }',
+            images_upload_url: 'upload-imagem.php',
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            paste_data_images: true,
+            branding: false,
+            promotion: false
+        });
+        
+        // Controle de visibilidade do campo de agendamento
+        const statusSelect = document.getElementById('status');
+        const agendamentoGroup = document.getElementById('agendamento-group');
+        const dataAgendamento = document.getElementById('data_agendamento');
+        
+        statusSelect.addEventListener('change', function() {
+            if (this.value === 'agendado') {
+                agendamentoGroup.style.display = 'block';
+                dataAgendamento.required = true;
+            } else {
+                agendamentoGroup.style.display = 'none';
+                dataAgendamento.required = false;
+            }
+        });
+        
+        // Verificar estado inicial
+        if (statusSelect.value === 'agendado') {
+            agendamentoGroup.style.display = 'block';
+            dataAgendamento.required = true;
+        }
+    </script>
 </body>
 </html>

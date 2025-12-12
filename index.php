@@ -75,13 +75,32 @@ function getPosicaoIcon($posicao) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <!-- css -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+    <style>
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--vermelho-primario);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 10000;
+            font-weight: bold;
+            border-radius: 0 0 4px 0;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+    </style>
     <?php SEO::renderOrganizationSchema(); ?>
 </head>
 <body>
-    <header>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <header role="banner">
         <!-- NAVBAR -->
-        <nav>
+        <nav role="navigation" aria-label="Menu principal">
             <div class="logo">
                 <img src="assets/logo.png" alt="Logo Apafut">
             </div>
@@ -94,13 +113,13 @@ function getPosicaoIcon($posicao) {
                     <li><a href="#noticias">Notícias</a></li>
                 </ul>
                 <div class="nav-buttons">
-                    <a href="#planos" class="btn-agendar">Seja Sócio</a>
-                    <a href="https://wa.me/5554991592954?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20inscri%C3%A7%C3%A3o%20para%20aluno%20da%20APAFUT" target="_blank" class="btn-agendar btn-aluno">
-                        <i class="fab fa-whatsapp"></i> Seja Aluno
+                    <a href="#planos" class="btn-agendar" aria-label="Ver planos de sócio">Seja Sócio</a>
+                    <a href="https://wa.me/5554991592954?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20a%20inscrição%20para%20aluno%20da%20APAFUT" target="_blank" rel="noopener" class="btn-agendar btn-aluno" aria-label="Entre em contato via WhatsApp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i> Seja Aluno
                     </a>
                 </div>
             </div>
-            <div class="hamburger">
+            <div class="hamburger" role="button" aria-label="Abrir menu" aria-expanded="false" tabindex="0">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -204,25 +223,25 @@ function getPosicaoIcon($posicao) {
                     ?>
                 </div>
                 
-                <button class="carousel-nav next-noticia" aria-label="Próxima notícia">
-                    <i class="fas fa-chevron-right"></i>
+                <button class="carousel-nav next-noticia" aria-label="Ver próxima notícia" tabindex="0">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
                 </button>
             </div>
 
-            <div class="carousel-dots" id="noticias-dots">
+            <div class="carousel-dots" id="noticias-dots" role="tablist" aria-label="Navegação entre notícias">
                 <?php if (!empty($noticias)): ?>
                     <?php for ($i = 0; $i < count($noticias); $i++): ?>
-                        <span class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>"></span>
+                        <button class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>" role="tab" aria-label="Ir para notícia <?= $i + 1 ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>" tabindex="<?= $i === 0 ? '0' : '-1' ?>"></button>
                     <?php endfor; ?>
                 <?php endif; ?>
             </div>
         </section>
 
         <!-- Sobre -->
-        <section id="sobre" class="sobre sobre-simples">
+        <section id="sobre" class="sobre sobre-simples" aria-labelledby="sobre-titulo">
             <div class="sobre-content-centralizado">
                 <div class="sobre-texto">
-                    <h2>Sobre a Apafut</h2>
+                    <h2 id="sobre-titulo">Sobre a Apafut</h2>
                     <p>A Apafut é uma academia de futebol dedicada a formar atletas de alta performance, promovendo o desenvolvimento técnico, tático e físico dos jogadores. Com uma equipe de treinadores experientes e uma infraestrutura moderna, oferecemos um ambiente ideal para o crescimento esportivo.</p>
                     <a href="historia.html" class="btn-sobre">Saiba mais</a>
                 </div>
@@ -232,8 +251,8 @@ function getPosicaoIcon($posicao) {
             </div>
         </section>
 
-        <section id="categorias" class="categorias">
-            <h2>Nossas Categorias</h2>
+        <section id="categorias" class="categorias" aria-labelledby="categorias-titulo">
+            <h2 id="categorias-titulo">Nossas Categorias</h2>
             <div class="bento-grid">
                 <div class="card" data-categoria="sub8">
                     <div class="card-icon">
@@ -650,9 +669,10 @@ function getPosicaoIcon($posicao) {
             <?php endif; ?>
         </div>
     </section>
+    </main>
 
     <!-- footer -->
-    <footer id="contato">
+    <footer id="contato" role="contentinfo" aria-label="Rodapé">
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
@@ -660,11 +680,11 @@ function getPosicaoIcon($posicao) {
                     <h3>Apafut Caxias do Sul</h3>
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
-                <div class="social-media">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <div class="social-media" role="navigation" aria-label="Redes sociais">
+                    <a href="#" aria-label="Visite nosso Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Visite nosso Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Fale conosco no WhatsApp" target="_blank" rel="noopener"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Visite nosso YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -712,6 +732,7 @@ function getPosicaoIcon($posicao) {
         </div>
     </footer>
     
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.min.js"></script>
+    <script src="assets/js/lazy-loader.min.js"></script>
 </body>
 </html>
