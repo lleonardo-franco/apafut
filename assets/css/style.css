@@ -162,6 +162,12 @@ header nav .menu ul li:hover a::after {
     transform: scaleX(1);
 }
 
+header nav .nav-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 header nav .btn-agendar {
     padding: 10px 20px;
     background-color: var(--branco-padrao);
@@ -172,20 +178,27 @@ header nav .btn-agendar {
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+header nav .btn-agendar.btn-aluno {
+    background-color: var(--vermelho-primario);
+    color: var(--branco-padrao);
+}
+
+header nav .btn-agendar.btn-aluno:hover {
+    background-color: #d32f2f;
+    color: var(--branco-padrao);
 }
 
 header nav .btn-agendar:hover {
     background-color: var(--vermelho-primario);
-    transition: background-color 0.3s ease-in-out;
     color: var(--branco-padrao);
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    align-self: center;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Menu Hamburger */
@@ -276,9 +289,17 @@ header nav .hamburger i {
         border-bottom: none;
     }
 
+    header nav .menu.active .nav-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        padding: 20px;
+    }
+
     header nav .menu.active .btn-agendar {
-        margin: 20px auto 0;
-        width: fit-content;
+        margin: 0;
+        width: 100%;
+        justify-content: center;
     }
 
     header nav .hamburger.active span:nth-child(1) {
@@ -1798,6 +1819,7 @@ footer {
     justify-content: center;
     color: var(--branco-padrao);
     font-size: 18px;
+    text-decoration: none;
     transition: all 0.3s ease;
     touch-action: manipulation;
 }

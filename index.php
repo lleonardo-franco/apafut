@@ -93,7 +93,12 @@ function getPosicaoIcon($posicao) {
                     <li><a href="#depoimentos">Depoimentos</a></li>
                     <li><a href="#noticias">Notícias</a></li>
                 </ul>
-                <a href="#planos" class="btn-agendar">Seja Sócio</a>
+                <div class="nav-buttons">
+                    <a href="#planos" class="btn-agendar">Seja Sócio</a>
+                    <a href="https://wa.me/5554991592954?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20inscri%C3%A7%C3%A3o%20para%20aluno%20da%20APAFUT" target="_blank" class="btn-agendar btn-aluno">
+                        <i class="fab fa-whatsapp"></i> Seja Aluno
+                    </a>
+                </div>
             </div>
             <div class="hamburger">
                 <span></span>
