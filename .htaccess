@@ -5,11 +5,6 @@
 </FilesMatch>
 
 # Bloquear acesso a diretórios sensíveis
-<DirectoryMatch "^/.*(config|src)">
-    Order allow,deny
-    Deny from all
-</DirectoryMatch>
-
 # Proteção contra listagem de diretórios
 Options -Indexes
 
