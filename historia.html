@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="História da Apafut - Conheça a trajetória da Associação de Pais e Amigos do Futebol de Caxias do Sul">
+    <meta name="description" content="Sobre a Apafut - Conheça a história, unidades e projetos beneficentes da Associação de Pais e Amigos do Futebol de Caxias do Sul">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>História - Apafut Caxias do Sul</title>
+    <title>Sobre Nós - Apafut Caxias do Sul</title>
     <!-- favicon -->
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">
@@ -29,13 +29,13 @@
             </div>
             <div class="menu">
                 <ul>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#sobre">Sobre</a></li>
-                    <li><a href="index.html#categorias">Categorias</a></li>
-                    <li><a href="index.html#depoimentos">Depoimentos</a></li>
-                    <li><a href="index.html#patrocinadores">Patrocinadores</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="index.php#sobre">Sobre</a></li>
+                    <li><a href="index.php#categorias">Categorias</a></li>
+                    <li><a href="index.php#depoimentos">Depoimentos</a></li>
+                    <li><a href="index.php#noticias">Notícias</a></li>
                 </ul>
-                <a href="index.html#planos" class="btn-agendar">Seja Sócio</a>
+                <a href="index.php#planos" class="btn-agendar">Seja Sócio</a>
             </div>
             <div class="hamburger">
                 <span></span>
@@ -48,66 +48,340 @@
     <!-- Hero História -->
     <section class="historia-hero">
         <div class="historia-hero-content">
-            <h1>Nossa História</h1>
-            <p>Uma trajetória de paixão, dedicação e compromisso com a formação de atletas em Caxias do Sul</p>
+            <h1>Sobre a Apafut</h1>
+            <p>Mais de 20 anos de história e compromisso com a formação de jovens talentos em Caxias do Sul</p>
         </div>
     </section>
 
-    <!-- Valores -->
-    <section class="valores-section">
-        <h2>Nossos Valores</h2>
-        <div class="valores-grid">
-            <div class="valor-card">
-                <div class="valor-icon">
-                    <i class="fas fa-heart"></i>
+    <main style="padding-top: 20px;">
+        <!-- Sobre Empresa -->
+        <section class="sobre-empresa-section">
+            <div class="container-empresa" aria-labelledby="quem-somos-title">
+                <div class="empresa-texto" id="quem-somos">
+                    <h2 id="quem-somos-title">Quem Somos</h2>
+                    <p class="lead">A <strong>APAFUT</strong> nasceu com o propósito de ir além do futebol. Desde sua fundação, a academia tem como missão formar atletas e cidadãos, utilizando o esporte como ferramenta de transformação social, educação e desenvolvimento humano.</p>
+                    <p>Ao longo de sua trajetória, a APAFUT construiu um trabalho sólido baseado em treinamento técnico de qualidade, valores éticos e compromisso com o futuro de seus alunos. Com uma equipe de profissionais experientes e uma metodologia focada no desenvolvimento técnico, tático, físico e mental, a academia vem impactando positivamente a vida de jovens atletas.</p>
+                    <p>Atenta às diferentes realidades sociais, a APAFUT acredita na inclusão e na igualdade de oportunidades. Por meio de projetos sociais, parcerias e bolsas de incentivo, ampliamos o acesso ao esporte e reafirmamos nosso compromisso com a responsabilidade social, formando não apenas jogadores, mas pessoas preparadas para os desafios dentro e fora de campo.</p>
                 </div>
-                <h3>Paixão</h3>
-                <p>O amor pelo futebol é o que nos move. Acreditamos que a paixão pelo esporte transforma vidas e cria oportunidades.</p>
+
+                <div class="empresa-imagem" aria-hidden="false">
+                    <div class="img-placeholder" role="img" aria-label="Atletas treinando na Apafut">
+                        <img src="assets/img1.jpg" alt="Atletas treinando na Apafut">
+                    </div>
+                </div>
             </div>
 
-            <div class="valor-card">
-                <div class="valor-icon">
-                    <i class="fas fa-users"></i>
+            <!-- Estatísticas -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h3>20+</h3>
+                    <p>Anos</p>
                 </div>
-                <h3>Família</h3>
-                <p>Valorizamos o envolvimento das famílias no desenvolvimento dos atletas, criando uma comunidade unida e solidária.</p>
+                <div class="stat-box">
+                    <h3>3</h3>
+                    <p>Unidades</p>
+                </div>
+                <div class="stat-box">
+                    <h3>2000+</h3>
+                    <p>Atletas</p>
+                </div>
+                <div class="stat-box">
+                    <h3>100%</h3>
+                    <p>Dedicação</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unidades -->
+        <section class="unidades-section">
+            <div class="section-header">
+                <h2>Nossas Unidades</h2>
+                <p>Presença em toda Caxias do Sul com infraestrutura moderna e treinadores especializados</p>
             </div>
 
-            <div class="valor-card">
-                <div class="valor-icon">
-                    <i class="fas fa-trophy"></i>
+            <div class="unidades-grid">
+                <div class="unidade-card">
+                    <div class="unidade-imagem">
+                        <img src="assets/images/unidades/centro.jpg" alt="Unidade Centro">
+                    </div>
+                    <div class="unidade-info">
+                        <h3><i class="fas fa-map-pin"></i> Centro</h3>
+                        <p><strong>Endereço:</strong> Rua do Futebol, 123</p>
+                        <p><strong>Sub-7 até Sub-14</strong></p>
+                        <p><i class="fas fa-phone"></i> (54) 3221-4567</p>
+                    </div>
                 </div>
-                <h3>Excelência</h3>
-                <p>Buscamos constantemente a excelência em tudo que fazemos, desde o treinamento técnico até a formação de caráter.</p>
+
+                <div class="unidade-card">
+                    <div class="unidade-imagem">
+                        <img src="assets/images/unidades/norte.jpg" alt="Unidade Zona Norte">
+                    </div>
+                    <div class="unidade-info">
+                        <h3><i class="fas fa-map-pin"></i> Zona Norte</h3>
+                        <p><strong>Endereço:</strong> Avenida Brasil, 456</p>
+                        <p><strong>Sub-7 até Sub-16</strong></p>
+                        <p><i class="fas fa-phone"></i> (54) 3221-5678</p>
+                    </div>
+                </div>
+
+                <div class="unidade-card">
+                    <div class="unidade-imagem">
+                        <img src="assets/images/unidades/sul.jpg" alt="Unidade Zona Sul">
+                    </div>
+                    <div class="unidade-info">
+                        <h3><i class="fas fa-map-pin"></i> Zona Sul</h3>
+                        <p><strong>Endereço:</strong> Rua das Flores, 789</p>
+                        <p><strong>Sub-8 até Sub-17</strong></p>
+                        <p><i class="fas fa-phone"></i> (54) 3221-6789</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Projetos Beneficentes -->
+        <section class="projetos-section">
+            <div class="section-header">
+                <h2>Projetos Beneficentes</h2>
+                <p>Transformando vidas através do futebol e da responsabilidade social</p>
             </div>
 
-            <div class="valor-card">
-                <div class="valor-icon">
-                    <i class="fas fa-handshake"></i>
+            <div class="projetos-grid">
+                <div class="projeto-card">
+                    <div class="projeto-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Futebol para Todos</h3>
+                    <p>Bolsas para crianças de famílias de baixa renda, garantindo oportunidades iguais.</p>
                 </div>
-                <h3>Respeito</h3>
-                <p>O respeito pelos adversários, árbitros, colegas e regras do jogo é fundamental em nossa filosofia de trabalho.</p>
+
+                <div class="projeto-card">
+                    <div class="projeto-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Educação em Campo</h3>
+                    <p>Reforço escolar integrado ao treinamento para garantir sucesso acadêmico.</p>
+                </div>
+
+                <div class="projeto-card">
+                    <div class="projeto-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Nutrição do Atleta</h3>
+                    <p>Orientação nutricional e fornecimento de lanches saudáveis durante treinamentos.</p>
+                </div>
+
+                <div class="projeto-card">
+                    <div class="projeto-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3>Saúde em Foco</h3>
+                    <p>Acompanhamento médico e fisioterapêutico gratuito para todos os atletas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notícias -->
+        <section id="noticias" class="noticias">
+            <div class="noticias-header">
+                <h2>Eventos Sociais</h2>
+                <p>Conheça as iniciativas da Apafut voltadas à inclusão e desenvolvimento comunitário</p>
+            </div>
+            
+            <div class="noticias-carousel">
+                <button class="carousel-nav prev-noticia" aria-label="Notícia anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="noticias-container">
+                    <div class="noticia-card active" data-noticia="1">
+                        <div class="noticia-imagem">
+                            <img src="assets/goleiros.jpg" alt="Eventos para Goleiros">
+                            <div class="patrocinadores-faixa">
+                                <div class="patrocinadores-track">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                </div>
+                            </div>
+                            <div class="noticia-categoria">Goleiros</div>
+                            <div class="noticia-data">
+                                <i class="far fa-calendar"></i> Mensal
+                            </div>
+                        </div>
+                        <div class="noticia-conteudo">
+                            <h3>Formação e Eventos para Goleiros de Todas as Categorias</h3>
+                            <p class="noticia-resumo">Promovemos treinamentos especializados e workshops exclusivos para 
+                                goleiros de todas as categorias, com foco no aprimoramento técnico, preparação física e 
+                                desenvolvimento mental. As atividades são conduzidas por profissionais experientes, 
+                                garantindo aprendizado de alto nível e evolução contínua.</p>
+                            <a href="eventos-sociais.html#goleiros" class="btn-noticia">
+                                Saiba Mais <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="noticia-card" data-noticia="2">
+                        <div class="noticia-imagem">
+                            <img src="assets/meninas.jpg" alt="Escolinha para Mulheres">
+                            <div class="patrocinadores-faixa">
+                                <div class="patrocinadores-track">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                </div>
+                            </div>
+                            <div class="noticia-categoria">Futebol Feminino</div>
+                            <div class="noticia-data">
+                                <i class="far fa-calendar"></i> Semanal
+                            </div>
+                        </div>
+                        <div class="noticia-conteudo">
+                            <h3>Futebol Feminino APAFUT</h3>
+                            <p class="noticia-resumo">Programa voltado ao desenvolvimento do futebol feminino, que oferece treinamento técnico e tático de qualidade em um ambiente acolhedor e inclusivo, promovendo a igualdade de oportunidades e o fortalecimento das atletas dentro e fora de campo.</p>
+                            <a href="evento-feminino.html" class="btn-noticia">
+                                Saiba Mais <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="noticia-card" data-noticia="3">
+                        <div class="noticia-imagem">
+                            <img src="assets/noticia3.jpg" alt="Eventos com Crianças Solidárias">
+                            <div class="patrocinadores-faixa">
+                                <div class="patrocinadores-track">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                </div>
+                            </div>
+                            <div class="noticia-categoria">Solidariedade</div>
+                            <div class="noticia-data">
+                                <i class="far fa-calendar"></i> Trimestral
+                            </div>
+                        </div>
+                        <div class="noticia-conteudo">
+                            <h3>Eventos com Crianças Solidárias</h3>
+                            <p class="noticia-resumo">Ações sociais que unem esporte e solidariedade, envolvendo crianças em campanhas de arrecadação, atividades recreativas e projetos comunitários que transformam vidas.</p>
+                            <a href="evento-solidariedade.html" class="btn-noticia">
+                                Saiba Mais <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="noticia-card" data-noticia="4">
+                        <div class="noticia-imagem">
+                            <img src="assets/doaccaosangue.jpg" alt="Campanha de Doação de Sangue">
+                            <div class="patrocinadores-faixa">
+                                <div class="patrocinadores-track">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                    <img src="assets/ucs.png" alt="UCS">
+                                    <img src="assets/brisa.png" alt="Brisa">
+                                    <img src="assets/saltur.png" alt="Saltur">
+                                    <img src="assets/chiesa.png" alt="Chiesa">
+                                </div>
+                            </div>
+                            <div class="noticia-categoria">Solidariedade</div>
+                            <div class="noticia-data">
+                                <i class="far fa-calendar"></i> Anual
+                            </div>
+                        </div>
+                        <div class="noticia-conteudo">
+                            <h3>Campanha de Doação de Sangue</h3>
+                            <p class="noticia-resumo">Campanha solidária realizada em parceria com a Unimed, mobilizando atletas, famílias e comunidade em uma ação que salva vidas através da doação de sangue.</p>
+                            <a href="evento-formacao.html" class="btn-noticia">
+                                Saiba Mais <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-nav next-noticia" aria-label="Próxima notícia">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
 
-            <div class="valor-card">
-                <div class="valor-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3>Educação</h3>
-                <p>Formamos atletas que também são estudantes. A educação é prioridade e trabalhamos junto às famílias nesse aspecto.</p>
+            <div class="carousel-dots" id="noticias-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+            </div>
+        </section>
+
+        <!-- Valores -->
+        <section class="valores-section">
+            <div class="section-header">
+                <h2>Nossos Valores</h2>
             </div>
 
-            <div class="valor-card">
-                <div class="valor-icon">
-                    <i class="fas fa-star"></i>
+            <div class="valores-grid">
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Paixão</h3>
+                    <p>Amor e dedicação em tudo que fazemos pelo futebol e pela comunidade.</p>
                 </div>
-                <h3>Dedicação</h3>
-                <p>O sucesso vem da dedicação diária. Incentivamos nossos atletas a se comprometerem com seus objetivos e sonhos.</p>
+
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Comunidade</h3>
+                    <p>Ambiente familiar e acolhedor para todos que fazem parte da Apafut.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Excelência</h3>
+                    <p>Qualidade em nossos treinamentos e no desenvolvimento de atletas.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Responsabilidade</h3>
+                    <p>Compromisso com a sociedade através de projetos e iniciativas beneficentes.</p>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
+    <!-- Modal: Eventos -->
+    <div id="evento-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer id="contato">
         <div class="footer-content">
             <div class="footer-section">

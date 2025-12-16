@@ -422,4 +422,276 @@ document.addEventListener('DOMContentLoaded', function() {
             ticking = true;
         }
     });
+
+    // Carrossel de Eventos Sociais (historia.html)
+    const eventosContainer = document.querySelector('.eventos-container');
+    const eventoCards = document.querySelectorAll('.evento-card');
+    const prevEventoBtn = document.querySelector('.prev-evento');
+    const nextEventoBtn = document.querySelector('.next-evento');
+    const eventosDots = document.querySelectorAll('#eventos-dots .dot');
+    let currentEventoIndex = 0;
+    let eventoAutoPlayInterval;
+
+    if (eventosContainer && eventoCards.length > 0) {
+        function showEvento(index) {
+            eventoCards.forEach((card, i) => {
+                card.classList.remove('active');
+                if (i === index) {
+                    card.classList.add('active');
+                }
+            });
+
+            // Atualizar dots
+            eventosDots.forEach((dot, i) => {
+                dot.classList.remove('active');
+                if (i === index) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function nextEvento() {
+            currentEventoIndex = (currentEventoIndex + 1) % eventoCards.length;
+            showEvento(currentEventoIndex);
+        }
+
+        function prevEvento() {
+            currentEventoIndex = (currentEventoIndex - 1 + eventoCards.length) % eventoCards.length;
+            showEvento(currentEventoIndex);
+        }
+
+        function startEventoAutoPlay() {
+            eventoAutoPlayInterval = setInterval(nextEvento, 6000);
+        }
+
+        function stopEventoAutoPlay() {
+            clearInterval(eventoAutoPlayInterval);
+        }
+
+        // Botões de navegação
+        if (nextEventoBtn) {
+            nextEventoBtn.addEventListener('click', function() {
+                nextEvento();
+                stopEventoAutoPlay();
+                startEventoAutoPlay();
+            });
+        }
+
+        if (prevEventoBtn) {
+            prevEventoBtn.addEventListener('click', function() {
+                prevEvento();
+                stopEventoAutoPlay();
+                startEventoAutoPlay();
+            });
+        }
+
+        // Dots
+        eventosDots.forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                currentEventoIndex = index;
+                showEvento(currentEventoIndex);
+                stopEventoAutoPlay();
+                startEventoAutoPlay();
+            });
+        });
+
+        // Suporte para swipe em mobile
+        let touchStartXEvento = 0;
+        let touchEndXEvento = 0;
+
+        eventosContainer.addEventListener('touchstart', (e) => {
+            touchStartXEvento = e.changedTouches[0].screenX;
+        });
+
+        eventosContainer.addEventListener('touchend', (e) => {
+            touchEndXEvento = e.changedTouches[0].screenX;
+            handleSwipeEvento();
+        });
+
+        function handleSwipeEvento() {
+            if (touchEndXEvento < touchStartXEvento - 50) {
+                nextEvento();
+                stopEventoAutoPlay();
+                startEventoAutoPlay();
+            }
+            if (touchEndXEvento > touchStartXEvento + 50) {
+                prevEvento();
+                stopEventoAutoPlay();
+                startEventoAutoPlay();
+            }
+        }
+
+        // Iniciar autoplay
+        startEventoAutoPlay();
+
+        // Pausar ao passar o mouse
+        eventosContainer.addEventListener('mouseenter', stopEventoAutoPlay);
+        eventosContainer.addEventListener('mouseleave', startEventoAutoPlay);
+    }
+
+    // Modal para Eventos Sociais
+    const eventoCardsModal = document.querySelectorAll('.evento-card');
+    const modalOverlay = document.getElementById('evento-modal');
+    const modalImage = modalOverlay ? modalOverlay.querySelector('.modal-image img') : null;
+    const modalTitle = modalOverlay ? modalOverlay.querySelector('#modal-title') : null;
+    const modalDesc = modalOverlay ? modalOverlay.querySelector('#modal-desc') : null;
+    const modalClose = modalOverlay ? modalOverlay.querySelector('.modal-close') : null;
+
+    function openEventoModal(card) {
+        if (!modalOverlay) return;
+        const title = card.getAttribute('data-title') || card.querySelector('h3')?.innerText || '';
+        const desc = card.getAttribute('data-desc') || card.querySelector('p')?.innerText || '';
+        const img = card.getAttribute('data-img') || card.querySelector('img')?.getAttribute('src') || '';
+
+        if (modalTitle) modalTitle.textContent = title;
+        if (modalDesc) modalDesc.textContent = desc;
+        if (modalImage) {
+            modalImage.setAttribute('src', img);
+            modalImage.setAttribute('alt', title);
+        }
+
+        modalOverlay.classList.add('open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        // Trap focus: move focus to close button
+        if (modalClose) modalClose.focus();
+    }
+
+    function closeEventoModal() {
+        if (!modalOverlay) return;
+        modalOverlay.classList.remove('open');
+        modalOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    eventoCardsModal.forEach(card => {
+        card.addEventListener('click', function() {
+            openEventoModal(card);
+        });
+        // make keyboard accessible
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openEventoModal(card);
+            }
+        });
+    });
+
+    if (modalClose) modalClose.addEventListener('click', closeEventoModal);
+    if (modalOverlay) modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) closeEventoModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeEventoModal();
+    });
+
+    // Carrossel da Galeria (historia.html)
+    const galeriaSlides = document.querySelectorAll('.galeria-slide');
+    const prevGaleriaBtn = document.querySelector('.prev-galeria');
+    const nextGaleriaBtn = document.querySelector('.next-galeria');
+    const galeriaDots = document.querySelectorAll('#galeria-dots .dot');
+    let currentGaleriaIndex = 0;
+    let galeriaAutoPlayInterval;
+
+    if (galeriaSlides.length > 0) {
+        function showGaleriaSlide(index) {
+            galeriaSlides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+
+            // Atualizar dots
+            galeriaDots.forEach((dot, i) => {
+                dot.classList.remove('active');
+                if (i === index) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function nextGaleria() {
+            currentGaleriaIndex = (currentGaleriaIndex + 1) % galeriaSlides.length;
+            showGaleriaSlide(currentGaleriaIndex);
+        }
+
+        function prevGaleria() {
+            currentGaleriaIndex = (currentGaleriaIndex - 1 + galeriaSlides.length) % galeriaSlides.length;
+            showGaleriaSlide(currentGaleriaIndex);
+        }
+
+        function startGaleriaAutoPlay() {
+            galeriaAutoPlayInterval = setInterval(nextGaleria, 5000);
+        }
+
+        function stopGaleriaAutoPlay() {
+            clearInterval(galeriaAutoPlayInterval);
+        }
+
+        // Botões de navegação
+        if (nextGaleriaBtn) {
+            nextGaleriaBtn.addEventListener('click', function() {
+                nextGaleria();
+                stopGaleriaAutoPlay();
+                startGaleriaAutoPlay();
+            });
+        }
+
+        if (prevGaleriaBtn) {
+            prevGaleriaBtn.addEventListener('click', function() {
+                prevGaleria();
+                stopGaleriaAutoPlay();
+                startGaleriaAutoPlay();
+            });
+        }
+
+        // Dots
+        galeriaDots.forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                currentGaleriaIndex = index;
+                showGaleriaSlide(currentGaleriaIndex);
+                stopGaleriaAutoPlay();
+                startGaleriaAutoPlay();
+            });
+        });
+
+        // Suporte para swipe em mobile
+        const galeriaImages = document.querySelector('.galeria-images');
+        let touchStartXGaleria = 0;
+        let touchEndXGaleria = 0;
+
+        if (galeriaImages) {
+            galeriaImages.addEventListener('touchstart', (e) => {
+                touchStartXGaleria = e.changedTouches[0].screenX;
+            });
+
+            galeriaImages.addEventListener('touchend', (e) => {
+                touchEndXGaleria = e.changedTouches[0].screenX;
+                handleSwipeGaleria();
+            });
+
+            function handleSwipeGaleria() {
+                if (touchEndXGaleria < touchStartXGaleria - 50) {
+                    nextGaleria();
+                    stopGaleriaAutoPlay();
+                    startGaleriaAutoPlay();
+                }
+                if (touchEndXGaleria > touchStartXGaleria + 50) {
+                    prevGaleria();
+                    stopGaleriaAutoPlay();
+                    startGaleriaAutoPlay();
+                }
+            }
+
+            // Pausar ao passar o mouse
+            galeriaImages.addEventListener('mouseenter', stopGaleriaAutoPlay);
+            galeriaImages.addEventListener('mouseleave', startGaleriaAutoPlay);
+        }
+
+        // Iniciar autoplay
+        startGaleriaAutoPlay();
+    }
 });
