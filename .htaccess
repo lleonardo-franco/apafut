@@ -1,5 +1,5 @@
 # Proteção de Arquivos Sensíveis
-<FilesMatch "\.(env|sql|md|log)$">
+<FilesMatch "\.(env|sql|log)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
@@ -11,13 +11,12 @@ Options -Indexes
 # Proteção contra hotlinking
 RewriteEngine On
 RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^https?://(www\.)?apafut\.com\.br [NC]
-RewriteCond %{HTTP_REFERER} !^https?://(www\.)?localhost [NC]
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?apafutoficial\.com\.br [NC]
 RewriteRule \.(jpg|jpeg|png|gif|svg)$ - [F,NC]
 
-# Força HTTPS em produção (comentado por padrão)
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Força HTTPS em produção
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Headers de Segurança
 <IfModule mod_headers.c>
@@ -26,9 +25,7 @@ RewriteRule \.(jpg|jpeg|png|gif|svg)$ - [F,NC]
     Header set X-XSS-Protection "1; mode=block"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-    
-    # Descomente em produção com HTTPS
-    # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 </IfModule>
 
 # Limita tamanho de upload
@@ -43,9 +40,7 @@ php_value session.gc_maxlifetime 7200
 php_value session.cookie_httponly 1
 php_value session.cookie_secure 0
 # Mude para 1 em produção com HTTPS
-# php_value session.cookie_secure 1
-
-# Compressão Gzip
+# php_value session.cookie_secur
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
