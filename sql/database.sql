@@ -1,6 +1,6 @@
 -- Criar banco de dados
-CREATE DATABASE IF NOT EXISTS apafut_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE apafut_db;
+CREATE DATABASE IF NOT EXISTS u754804453_apafut CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE u754804453_apafut;
 
 -- Tabela de jogadores
 CREATE TABLE IF NOT EXISTS jogadores (

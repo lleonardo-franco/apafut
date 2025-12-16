@@ -8,7 +8,7 @@ define('DB_HOST', env('DB_HOST', 'localhost'));
 define('DB_PORT', env('DB_PORT', '3306'));
 define('DB_USER', env('DB_USER', 'root'));
 define('DB_PASS', env('DB_PASS', ''));
-define('DB_NAME', env('DB_NAME', 'apafut_db'));
+define('DB_NAME', env('DB_NAME', 'u754804453_apafut'));
 
 // Criar conexão
 function getConnection() {

@@ -16,7 +16,7 @@ INSTRUÇÕES DE DEPLOY PARA HOSTINGER
    - Edite o arquivo: config/db.php
    - Atualize as credenciais do banco de dados da Hostinger:
      * DB_HOST (geralmente localhost)
-     * DB_NAME (nome do seu banco)
+     * DB_NAME (u754804453_apafut)
      * DB_USER (usuário do banco)
      * DB_PASS (senha do banco)
 
