@@ -187,6 +187,7 @@ function getPosicaoIcon($posicao) {
             </div>
         </section>
 
+
         <!-- Sobre -->
         <section id="sobre" class="sobre sobre-simples">
             <div class="sobre-content-centralizado">
