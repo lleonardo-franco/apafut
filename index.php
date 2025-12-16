@@ -373,10 +373,10 @@ function getPosicaoIcon($posicao) {
         <!-- Time Profissional -->
         <section id="profissional" class="time-profissional">
             <div class="profissional-title">
-                <div class="profissional-icon">
-                    <i class="fas fa-trophy"></i>
+                <h2 style="font-family: 'Brush Script MT', cursive; font-style: italic; font-size: 4rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px;">PROFISSIONAL</h2>
+                <div class="profissional-categorias" style="display: flex; gap: 40px; justify-content: center; margin-bottom: 40px;">
+                    <span style="font-size: 1.5rem; color: #fff; font-weight: 400; letter-spacing: 2px;">MASCULINO</span>
                 </div>
-                <h2>Time Profissional</h2>
             </div>
 
             <!-- Elenco -->
@@ -412,11 +412,31 @@ function getPosicaoIcon($posicao) {
                 <div class="jogadores-carousel">
                     <button class="carousel-btn prev-jogador">❮</button>
                     <div class="jogadores-container">
-                        <?php foreach ($jogadores as $jogador): ?>
-                            <div class="jogador-card" data-posicao="<?= htmlspecialchars($jogador['posicao']) ?>">
+                        <?php 
+                        $contador = 0;
+                        $fotosCustomizadas = ['assets/profi1.png', 'assets/profi2.png', 'assets/profi3.png', 'assets/profi4.png', 'assets/profi5.png', 'assets/profi6.png'];
+                        foreach ($jogadores as $jogador): 
+                            $fotoExibir = ($contador < 6) ? $fotosCustomizadas[$contador] : str_replace('../', '', $jogador['foto']);
+                            $contador++;
+                        ?>
+                            <div class="jogador-card" 
+                                 data-posicao="<?= htmlspecialchars($jogador['posicao']) ?>"
+                                 data-jogador='<?= json_encode([
+                                    'nome' => $jogador['nome'],
+                                    'numero' => $jogador['numero'],
+                                    'nomeCompleto' => $jogador['nome_completo'] ?? $jogador['nome'],
+                                    'cidade' => $jogador['cidade'] ?? '-',
+                                    'altura' => $jogador['altura'] ?? '-',
+                                    'peso' => $jogador['peso'] ?? '-',
+                                    'dataNascimento' => $jogador['data_nascimento'] ?? '-',
+                                    'posicao' => $jogador['posicao'],
+                                    'carreira' => $jogador['carreira'] ?? '-',
+                                    'foto' => $fotoExibir
+                                 ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
+                                 onclick="abrirModalJogador(this)">
                                 <div class="jogador-foto">
-                                    <?php if (!empty($jogador['foto'])): ?>
-                                        <img src="<?= htmlspecialchars(str_replace('../', '', $jogador['foto'])) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>">
+                                    <?php if (!empty($fotoExibir)): ?>
+                                        <img src="<?= htmlspecialchars($fotoExibir) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>">
                                     <?php else: ?>
                                         <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-user" style="font-size: 60px; color: white; opacity: 0.7;"></i>
@@ -424,10 +444,10 @@ function getPosicaoIcon($posicao) {
                                     <?php endif; ?>
                                     <div class="jogador-numero"><?= $jogador['numero'] ?></div>
                                 </div>
-                                <div class="jogador-info">
-                                    <h4><?= htmlspecialchars($jogador['nome']) ?></h4>
-                                    <p class="jogador-posicao">
-                                        <i class="fas <?= getPosicaoIcon($jogador['posicao']) ?>"></i> <?= htmlspecialchars($jogador['posicao']) ?>
+                                <div class="jogador-info" style="background: #e8e8e8; padding: 15px; text-align: left;">
+                                    <h4 style="color: #2d3436; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;"><?= $jogador['numero'] ?>. <?= htmlspecialchars($jogador['nome']) ?></h4>
+                                    <p class="jogador-posicao" style="color: #636e72; font-size: 0.95rem; margin: 0;">
+                                        <?= htmlspecialchars($jogador['posicao']) ?>
                                     </p>
                                 </div>
                             </div>
@@ -684,7 +704,61 @@ function getPosicaoIcon($posicao) {
             <p>&copy; 2025 Apafut Caxias do Sul. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <!-- Modal do Jogador -->
+    <div id="modalJogador" class="modal-jogador">
+        <div class="modal-jogador-content">
+            <span class="modal-close" onclick="fecharModalJogador()">&times;</span>
+            <div class="modal-jogador-body">
+                <div class="modal-jogador-foto">
+                    <img id="modalFoto" src="" alt="">
+                </div>
+                <div class="modal-jogador-info">
+                    <h2 class="modal-titulo">
+                        <span id="modalNumero"></span>. <span id="modalNome"></span>
+                    </h2>
+                    <div class="modal-stats">
+                        <p><strong>Nome completo:</strong> <span id="modalNomeCompleto"></span></p>
+                        <p><strong>Cidade:</strong> <span id="modalCidade"></span></p>
+                        <p><strong>Altura:</strong> <span id="modalAltura"></span></p>
+                        <p><strong>Peso:</strong> <span id="modalPeso"></span></p>
+                        <p><strong>Data de nascimento:</strong> <span id="modalDataNascimento"></span></p>
+                        <p><strong>Posição:</strong> <span id="modalPosicao"></span></p>
+                        <p class="modal-carreira"><strong>Carreira:</strong><br><span id="modalCarreira"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="assets/js/script.js"></script>
+    <script>
+    function abrirModalJogador(element) {
+        const data = JSON.parse(element.getAttribute('data-jogador'));
+        document.getElementById('modalNome').textContent = data.nome;
+        document.getElementById('modalNumero').textContent = data.numero;
+        document.getElementById('modalNomeCompleto').textContent = data.nomeCompleto;
+        document.getElementById('modalCidade').textContent = data.cidade;
+        document.getElementById('modalAltura').textContent = data.altura;
+        document.getElementById('modalPeso').textContent = data.peso;
+        document.getElementById('modalDataNascimento').textContent = data.dataNascimento;
+        document.getElementById('modalPosicao').textContent = data.posicao;
+        document.getElementById('modalCarreira').textContent = data.carreira;
+        document.getElementById('modalFoto').src = data.foto;
+        document.getElementById('modalJogador').style.display = 'flex';
+    }
+
+    function fecharModalJogador() {
+        document.getElementById('modalJogador').style.display = 'none';
+    }
+
+    // Fechar ao clicar fora do modal
+    window.onclick = function(event) {
+        const modal = document.getElementById('modalJogador');
+        if (event.target == modal) {
+            fecharModalJogador();
+        }
+    }
+    </script>
 </body>
 </html>
