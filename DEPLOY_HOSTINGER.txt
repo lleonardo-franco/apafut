@@ -15,12 +15,18 @@ OPÇÃO A: DEPLOY AUTOMÁTICO VIA GIT (RECOMENDADO)
 
 OPÇÃO B: GITHUB ACTIONS COM FTP
 --------------------------------
-1. No GitHub, vá em Settings → Secrets → Actions
-2. Adicione os secrets:
+1. No painel Hostinger, encontre suas credenciais FTP:
+   - Vá em: Files → FTP Accounts
+   - Anote: Servidor FTP (hostname), Usuário e Senha
+   
+2. No GitHub, vá em Settings → Secrets → Actions
+3. Adicione os 3 secrets:
+   - FTP_SERVER: servidor FTP da Hostinger (ex: ftp.hostinger.com ou IP)
    - FTP_USERNAME: seu usuário FTP da Hostinger
    - FTP_PASSWORD: sua senha FTP da Hostinger
-3. Faça push do arquivo .github/workflows/deploy.yml
-4. A cada push na branch main, o deploy será automático
+   
+4. Faça push do arquivo .github/workflows/deploy.yml
+5. A cada push na branch main, o deploy será automático
 
 OPÇÃO C: DEPLOY MANUAL (TRADICIONAL)
 -------------------------------------
