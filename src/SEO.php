@@ -1,10 +1,10 @@
 <?php
 class SEO {
-    private static $defaultTitle = "APAFUT - Associação de Pais e Amigos do Futebol Caxias do Sul";
-    private static $defaultDescription = "A APAFUT é uma associação sem fins lucrativos que promove o desenvolvimento de jovens atletas através do futebol, oferecendo categorias de base e programas de formação em Caxias do Sul/RS.";
+    private static $defaultTitle = "APAFUT - Associação de Pais e Amigos do Futebol | Caxias do Sul";
+    private static $defaultDescription = "APAFUT Caxias do Sul: Associação dedicada à formação de jovens atletas através do futebol. Categorias de base, infraestrutura completa e treinadores especializados. Venha fazer parte!";
     private static $defaultImage = "/assets/hero.png";
-    private static $siteUrl = "http://localhost:8000";
-    private static $siteName = "APAFUT";
+    private static $siteUrl = "https://apafutoficial.com.br";
+    private static $siteName = "APAFUT Caxias do Sul";
     
     public static function renderMetaTags($page = 'home', $data = []) {
         $title = $data['title'] ?? self::$defaultTitle;

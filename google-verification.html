@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instruções - Verificação Google Search Console</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 { color: #111D69; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .step {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #eb3835;
+        }
+    </style>
+</head>
+<body>
+    <h1>📋 Como Verificar o Site no Google Search Console</h1>
+    
+    <div class="step">
+        <h2>1. Acesse o Google Search Console</h2>
+        <p>Vá para: <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">search.google.com/search-console</a></p>
+    </div>
+    
+    <div class="step">
+        <h2>2. Adicione a Propriedade</h2>
+        <p>Clique em "Adicionar propriedade" e escolha "Prefixo do URL"</p>
+        <p>Digite: <code>https://apafutoficial.com.br</code></p>
+    </div>
+    
+    <div class="step">
+        <h2>3. Método de Verificação: Tag HTML</h2>
+        <p>Escolha "Tag HTML" como método de verificação</p>
+        <p>Copie o código fornecido (algo como):</p>
+        <code>&lt;meta name="google-site-verification" content="SEU_CODIGO_AQUI" /&gt;</code>
+    </div>
+    
+    <div class="step">
+        <h2>4. Adicione a Tag no Site</h2>
+        <p>Cole a tag dentro da seção <code>&lt;head&gt;</code> do arquivo <strong>index.php</strong></p>
+        <p>Logo após as outras meta tags SEO (linha ~65)</p>
+    </div>
+    
+    <div class="step">
+        <h2>5. Envie o Sitemap</h2>
+        <p>Após verificado, no Search Console vá em "Sitemaps"</p>
+        <p>Adicione: <code>https://apafutoficial.com.br/sitemap.xml</code></p>
+    </div>
+    
+    <div class="step">
+        <h2>6. Melhorias Aplicadas</h2>
+        <ul>
+            <li>✅ Sitemap.xml atualizado com todas as páginas</li>
+            <li>✅ Robots.txt configurado corretamente</li>
+            <li>✅ Meta tags SEO otimizadas</li>
+            <li>✅ Schema.org JSON-LD implementado</li>
+            <li>✅ Open Graph tags para redes sociais</li>
+            <li>✅ URLs canônicas definidas</li>
+        </ul>
+    </div>
+    
+    <h2>⚡ Próximos Passos</h2>
+    <ol>
+        <li>Verificar propriedade no Google Search Console</li>
+        <li>Enviar sitemap.xml</li>
+        <li>Solicitar indexação das páginas principais</li>
+        <li>Aguardar 2-3 dias para indexação completa</li>
+    </ol>
+</body>
+</html>

@@ -59,10 +59,10 @@ function getPosicaoIcon($posicao) {
 <head>
     <?php 
     SEO::renderMetaTags('home', [
-        'title' => 'Apafut - Caxias do Sul | Formação de Jovens Atletas',
-        'description' => 'Apafut - Associação de Pais e Amigos do Futebol de Caxias do Sul. Formação de jovens atletas com infraestrutura completa e treinadores especializados.',
-        'keywords' => 'apafut, caxias do sul, futebol, formação atletas, escolinha de futebol, futebol juvenil',
-        'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/assets/logo.png'
+        'title' => 'APAFUT - Associação de Pais e Amigos do Futebol | Caxias do Sul',
+        'description' => 'APAFUT Caxias do Sul: Formação de jovens atletas com infraestrutura completa, categorias de base e treinadores especializados. Venha conhecer a melhor escolinha de futebol da região!',
+        'keywords' => 'apafut, apafut caxias do sul, escolinha de futebol caxias, futebol caxias do sul, categorias de base, formação atletas, futebol juvenil, associação futebol, escola de futebol',
+        'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/assets/hero.png'
     ]);
     ?>
     <!-- favicon -->

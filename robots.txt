@@ -10,6 +10,7 @@ Disallow: /sql/
 Disallow: /src/
 Disallow: /processar-checkout.php
 Disallow: /obrigado.php
+Disallow: /manutencao.html
 
 # Permitir bots legítimos
 User-agent: Googlebot
@@ -18,7 +19,7 @@ User-agent: Slurp
 Allow: /
 
 # Sitemap
-Sitemap: http://localhost:8000/sitemap.xml
+Sitemap: https://apafutoficial.com.br/sitemap.xml
 
 # Crawl-delay para evitar sobrecarga
-Crawl-delay: 10
+Crawl-delay: 5
