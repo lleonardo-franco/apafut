@@ -68,13 +68,20 @@ function getPosicaoIcon($posicao) {
     <!-- favicon -->
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">
-    <!-- fontawesome -->
-    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
-    <!-- Lato Font -->
+    
+    <!-- Preconnect para recursos externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://kit.fontawesome.com">
+    
+    <!-- Lato Font com font-display swap -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <!-- css -->
+    
+    <!-- FontAwesome async -->
+    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous" async></script>
+    
+    <!-- css com preload -->
+    <link rel="preload" href="assets/css/style.min.css" as="style">
     <link rel="stylesheet" href="assets/css/style.min.css">
     <style>
         .skip-link {
@@ -779,7 +786,7 @@ function getPosicaoIcon($posicao) {
         </div>
     </div>
     
-    <script src="assets/js/script.min.js"></script>
-    <script src="assets/js/lazy-loader.min.js"></script>
+    <script src="assets/js/script.min.js" defer></script>
+    <script src="assets/js/lazy-loader.min.js" defer></script>
 </body>
 </html>

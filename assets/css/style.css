@@ -1511,8 +1511,11 @@ section#categorias h2 {
     height: 12px;
     border-radius: 50%;
     background: #d0d0d0;
+    border: none;
+    padding: 0;
     cursor: pointer;
     transition: all 0.3s ease;
+    outline: none;
 }
 
 .dot.active {
@@ -1523,6 +1526,11 @@ section#categorias h2 {
 
 .dot:hover {
     background: var(--azul-secundario);
+}
+
+.dot:focus {
+    outline: 2px solid var(--azul-secundario);
+    outline-offset: 2px;
 }
 
 /* Responsivo */

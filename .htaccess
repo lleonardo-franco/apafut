@@ -16,6 +16,9 @@ RewriteEngine On
 RewriteCond %{QUERY_STRING} !preview=apafut2025
 RewriteCond %{REQUEST_URI} !^/manutencao\.html$
 RewriteCond %{REQUEST_URI} !^/assets/
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_URI} !^/config/
 RewriteRule ^(.*)$ /manutencao.html [L]
 
 RewriteCond %{HTTP_REFERER} !^$
