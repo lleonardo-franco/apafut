@@ -1,6 +1,30 @@
 INSTRUÇÕES DE DEPLOY PARA HOSTINGER
 =====================================
 
+OPÇÃO A: DEPLOY AUTOMÁTICO VIA GIT (RECOMENDADO)
+-------------------------------------------------
+1. No painel Hostinger, vá em Advanced → Git
+2. Clique em "Create new repository"
+3. Configure:
+   - Repository URL: https://github.com/seu-usuario/apafut.git
+   - Branch: main
+   - Deployment path: /public_html
+4. Adicione sua chave SSH ou Personal Access Token
+5. Clique em "Pull" para fazer o primeiro deploy
+6. A cada push no GitHub, o deploy será automático
+
+OPÇÃO B: GITHUB ACTIONS COM FTP
+--------------------------------
+1. No GitHub, vá em Settings → Secrets → Actions
+2. Adicione os secrets:
+   - FTP_USERNAME: seu usuário FTP da Hostinger
+   - FTP_PASSWORD: sua senha FTP da Hostinger
+3. Faça push do arquivo .github/workflows/deploy.yml
+4. A cada push na branch main, o deploy será automático
+
+OPÇÃO C: DEPLOY MANUAL (TRADICIONAL)
+-------------------------------------
+
 1. PREPARAÇÃO DO BANCO DE DADOS
    - No painel da Hostinger, crie um banco de dados MySQL
    - Anote: nome do banco, usuário, senha e host
