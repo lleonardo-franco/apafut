@@ -10,6 +10,14 @@ Options -Indexes
 
 # Proteção contra hotlinking
 RewriteEngine On
+
+# MODO MANUTENÇÃO - Acesso com senha via URL
+# Para acessar o site em desenvolvimento: ?preview=apafut2025
+RewriteCond %{QUERY_STRING} !preview=apafut2025
+RewriteCond %{REQUEST_URI} !^/manutencao\.html$
+RewriteCond %{REQUEST_URI} !^/assets/
+RewriteRule ^(.*)$ /manutencao.html [L]
+
 RewriteCond %{HTTP_REFERER} !^$
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?apafutoficial\.com\.br [NC]
 RewriteRule \.(jpg|jpeg|png|gif|svg)$ - [F,NC]

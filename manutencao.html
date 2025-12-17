@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site em Construção - Apafut</title>
+    <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0069d9 0%, #0a1035 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo {
+            width: 150px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .construction {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .social {
+            margin-top: 40px;
+        }
+        
+        .social a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 2rem;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+        
+        .social a:hover {
+            transform: scale(1.2);
+        }
+        
+        .progress {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #eb3835;
+            width: 75%;
+            animation: progress 2s ease-in-out;
+        }
+        
+        @keyframes progress {
+            from { width: 0; }
+            to { width: 75%; }
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <img src="assets/logo.png" alt="Logo Apafut" class="logo">
+        
+        <div class="construction">🚧</div>
+        
+        <h1>Site em Construção</h1>
+        
+        <p>
+            Estamos trabalhando duro para trazer a você uma experiência incrível!<br>
+            Em breve, nosso novo site estará no ar com muitas novidades.
+        </p>
+        
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <p style="margin-top: 30px; font-size: 1rem; opacity: 0.7;">
+            Previsão de lançamento: Em breve
+        </p>
+        
+        <div class="social">
+            <a href="https://facebook.com/apafut" target="_blank" title="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://instagram.com/apafut" target="_blank" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/5554999999999" target="_blank" title="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
