@@ -128,6 +128,12 @@ $planos = $stmt->fetchAll();
             color: #92400e;
         }
         
+        .plano-tipo.diamante {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            color: #9f1239;
+            font-weight: 700;
+        }
+        
         .plano-preco {
             font-size: 28px;
             font-weight: 900;

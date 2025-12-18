@@ -1,0 +1,22 @@
+{
+    "name": "apafut/website",
+    "description": "Site oficial da APAFUT Caxias do Sul",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "scripts": {
+        "minify": "php minify-assets.php",
+        "watch": "php watch-assets.php",
+        "minify-css": "php -r \"require_once 'src/AssetMinifier.php'; AssetMinifier::process('assets/css/style.css');\"",
+        "minify-js": "php -r \"require_once 'src/AssetMinifier.php'; AssetMinifier::process('assets/js/script.js');\"",
+        "post-update-cmd": "@minify",
+        "post-install-cmd": "@minify"
+    },
+    "scripts-descriptions": {
+        "minify": "Minifica todos os arquivos CSS e JS",
+        "watch": "Inicia o watcher para minificação automática",
+        "minify-css": "Minifica apenas o arquivo CSS principal",
+        "minify-js": "Minifica apenas o arquivo JS principal"
+    }
+}
