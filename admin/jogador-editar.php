@@ -33,6 +33,12 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
     try {
         $nome = Security::sanitizeString($_POST['nome'] ?? '');
+        $nomeCompleto = Security::sanitizeString($_POST['nome_completo'] ?? '');
+        $cidade = Security::sanitizeString($_POST['cidade'] ?? '');
+        $altura = Security::sanitizeString($_POST['altura'] ?? '');
+        $peso = Security::sanitizeString($_POST['peso'] ?? '');
+        $dataNascimento = Security::sanitizeString($_POST['data_nascimento'] ?? '');
+        $carreira = Security::sanitizeString($_POST['carreira'] ?? '');
         $posicao = Security::sanitizeString($_POST['posicao'] ?? '');
         $numero = Security::validateInt($_POST['numero'] ?? 0, 1);
         $ativo = isset($_POST['ativo']) ? 1 : 0;
@@ -84,12 +90,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
         
         $stmt = $conn->prepare("
             UPDATE jogadores 
-            SET nome = :nome, posicao = :posicao, numero = :numero, 
+            SET nome = :nome, nome_completo = :nome_completo, cidade = :cidade, 
+                altura = :altura, peso = :peso, data_nascimento = :data_nascimento, 
+                carreira = :carreira, posicao = :posicao, numero = :numero, 
                 foto = :foto, ativo = :ativo, ordem = :ordem
             WHERE id = :id
         ");
         
         $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':nome_completo', $nomeCompleto);
+        $stmt->bindParam(':cidade', $cidade);
+        $stmt->bindParam(':altura', $altura);
+        $stmt->bindParam(':peso', $peso);
+        $stmt->bindParam(':data_nascimento', $dataNascimento);
+        $stmt->bindParam(':carreira', $carreira);
         $stmt->bindParam(':posicao', $posicao);
         $stmt->bindParam(':numero', $numero, PDO::PARAM_INT);
         $stmt->bindParam(':foto', $fotoPath);
@@ -171,8 +185,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
                     <form method="POST" enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="nome">Nome Completo *</label>
+                                <label for="nome">Nome *</label>
                                 <input type="text" id="nome" name="nome" required value="<?= htmlspecialchars($jogador['nome']) ?>">
+                                <small>Nome curto para exibição no card</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="nome_completo">Nome Completo</label>
+                                <input type="text" id="nome_completo" name="nome_completo" value="<?= htmlspecialchars($jogador['nome_completo'] ?? '') ?>">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" id="cidade" name="cidade" placeholder="Ex: Caxias do Sul (RS)" value="<?= htmlspecialchars($jogador['cidade'] ?? '') ?>">
                             </div>
                             <div class="form-group">
                                 <label for="numero">Número da Camisa *</label>
@@ -194,10 +220,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="data_nascimento">Data de Nascimento</label>
+                                <input type="text" id="data_nascimento" name="data_nascimento" placeholder="Ex: 15/03/2000" value="<?= htmlspecialchars($jogador['data_nascimento'] ?? '') ?>">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="altura">Altura</label>
+                                <input type="text" id="altura" name="altura" placeholder="Ex: 1.85m" value="<?= htmlspecialchars($jogador['altura'] ?? '') ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="peso">Peso</label>
+                                <input type="text" id="peso" name="peso" placeholder="Ex: 78kg" value="<?= htmlspecialchars($jogador['peso'] ?? '') ?>">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
                                 <label for="ordem">Ordem de Exibição</label>
                                 <input type="number" id="ordem" name="ordem" min="0" value="<?= htmlspecialchars($jogador['ordem']) ?>">
                                 <small>Jogadores com menor ordem aparecem primeiro</small>
                             </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="carreira">Carreira</label>
+                            <textarea id="carreira" name="carreira" rows="4" placeholder="Ex: 2022 – Fluminense (RJ) 2023; – Red Bull Bragantino (SP); 2024 – APOEL (Chipre)"><?= htmlspecialchars($jogador['carreira'] ?? '') ?></textarea>
+                            <small>Descreva o histórico de clubes do jogador</small>
                         </div>
 
                         <div class="form-group">
