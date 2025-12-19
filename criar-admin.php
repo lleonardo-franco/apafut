@@ -103,8 +103,8 @@ $senha_hash = password_hash($senha_padrao, PASSWORD_DEFAULT);
                 INSERT INTO usuarios_admin (email, senha, nome, ativo) 
                 VALUES (:email, :senha, :nome, 1)
                 ON DUPLICATE KEY UPDATE 
-                    senha = :senha,
-                    nome = :nome,
+                    senha = VALUES(senha),
+                    nome = VALUES(nome),
                     ativo = 1
             ";
             
