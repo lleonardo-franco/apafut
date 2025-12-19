@@ -10,7 +10,6 @@ Disallow: /sql/
 Disallow: /src/
 Disallow: /processar-checkout.php
 Disallow: /obrigado.php
-Disallow: /manutencao.html
 
 # Permitir bots legítimos
 User-agent: Googlebot

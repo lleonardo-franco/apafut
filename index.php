@@ -494,7 +494,6 @@ function getPosicaoIcon($posicao) {
                                     'dataNascimento' => $jogador['data_nascimento'] ?? '-',
                                     'posicao' => $jogador['posicao'],
                                     'foto' => $fotoExibir
-                                    'foto' => $fotoExibir
                                  ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
                                  onclick="abrirModalJogador(this)">
                                 <div class="jogador-foto">
