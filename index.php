@@ -497,11 +497,12 @@ function getPosicaoIcon($posicao) {
                                     'dataNascimento' => $jogador['data_nascimento'] ?? '-',
                                     'posicao' => $jogador['posicao'],
                                     'foto' => $fotoExibir
+                                    'foto' => $fotoExibir
                                  ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
                                  onclick="abrirModalJogador(this)">
                                 <div class="jogador-foto">
-                                    <?php if (!empty($jogador['foto'])): ?>
-                                        <img src="<?= htmlspecialchars(str_replace('../', '', $jogador['foto'])) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>" loading="lazy" width="280" height="350">
+                                    <?php if (!empty($fotoExibir)): ?>
+                                        <img src="<?= htmlspecialchars($fotoExibir) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>" loading="lazy" width="280" height="350">
                                     <?php else: ?>
                                         <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-user" style="font-size: 60px; color: white; opacity: 0.7;"></i>
