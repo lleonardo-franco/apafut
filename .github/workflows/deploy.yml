@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # Permite executar manualmente
 
 jobs:
   deploy:
@@ -23,17 +24,14 @@ jobs:
         # composer install --no-dev --optimize-autoloader
         echo "No dependencies to install"
     
-    - name: Deploy via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    - name: Deploy via SFTP
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /domains/apafutoficial.com.br/public_html/
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/*.md
-          .env.example
-          .github/**
+        port: 22
+        local_path: './*'
+        remote_path: '/domains/apafutoficial.com.br/public_html/'
+        sftp_only: true
+        args: '-o ConnectTimeout=60'
