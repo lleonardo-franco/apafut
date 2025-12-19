@@ -39,19 +39,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 </IfModule>
 
-# Limita tamanho de upload
-php_value upload_max_filesize 5M
-php_value post_max_size 6M
-
-# Desabilita listagem de funções PHP perigosas
-php_value disable_functions "exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source"
-
-# Timeout de sessão
-php_value session.gc_maxlifetime 7200
-php_value session.cookie_httponly 1
-php_value session.cookie_secure 0
-# Mude para 1 em produção com HTTPS
-# php_value session.cookie_secur
+# Compressão GZIP
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
