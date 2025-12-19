@@ -196,8 +196,8 @@ header('Content-Type: text/html; charset=utf-8');
                     <span class="value success">✓ Preview Mode ATIVO - Você pode acessar o site!</span>
                 </div>
                 <div class="code">
-                    &lt;a href="/"&gt;Ir para o site&lt;/a&gt; ou 
-                    &lt;a href="/?preview=apafut2025"&gt;Home com preview&lt;/a&gt;
+                    &lt;a href="?preview=apafut2025"&gt;Ir para o site com preview&lt;/a&gt; ou 
+                    &lt;a href="/index.php?preview=apafut2025"&gt;Home com preview&lt;/a&gt;
                 </div>
             <?php else: ?>
                 <div class="info-row">
@@ -210,14 +210,15 @@ header('Content-Type: text/html; charset=utf-8');
         <div class="instructions">
             <h3>📋 Como Usar o Preview Mode:</h3>
             <ol>
-                <li>Adicione <code>?preview=apafut2025</code> ao final de qualquer URL</li>
-                <li>Exemplos:
+                <li>Adicione <code>?preview=apafut2025</code> ao final de qualquer URL (SEM BARRA antes do ?)</li>
+                <li>Exemplos CORRETOS:
                     <div class="code">
-                        https://apafutoficial.com.br/?preview=apafut2025<br>
+                        https://apafutoficial.com.br?preview=apafut2025<br>
                         https://apafutoficial.com.br/index.php?preview=apafut2025<br>
                         https://apafutoficial.com.br/historia.html?preview=apafut2025
                     </div>
                 </li>
+                <li>❌ ERRADO: https://apafutoficial.com.br/?preview=apafut2025 (com barra)</li>
                 <li>Se o mod_rewrite estiver desabilitado acima, contate o suporte da Hostinger</li>
                 <li>Se o .htaccess não existe, faça upload manual via FTP/File Manager</li>
             </ol>
