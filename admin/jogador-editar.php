@@ -12,6 +12,7 @@ if (!$jogadorId) {
 }
 
 $error = '';
+$success = '';
 
 // Buscar jogador
 try {
@@ -38,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
         $altura = Security::sanitizeString($_POST['altura'] ?? '');
         $peso = Security::sanitizeString($_POST['peso'] ?? '');
         $dataNascimento = Security::sanitizeString($_POST['data_nascimento'] ?? '');
-        $carreira = Security::sanitizeString($_POST['carreira'] ?? '');
         $posicao = Security::sanitizeString($_POST['posicao'] ?? '');
         $numero = Security::validateInt($_POST['numero'] ?? 0, 1);
         $ativo = isset($_POST['ativo']) ? 1 : 0;
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
             UPDATE jogadores 
             SET nome = :nome, nome_completo = :nome_completo, cidade = :cidade, 
                 altura = :altura, peso = :peso, data_nascimento = :data_nascimento, 
-                carreira = :carreira, posicao = :posicao, numero = :numero, 
+                posicao = :posicao, numero = :numero, 
                 foto = :foto, ativo = :ativo, ordem = :ordem
             WHERE id = :id
         ");
@@ -103,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
         $stmt->bindParam(':altura', $altura);
         $stmt->bindParam(':peso', $peso);
         $stmt->bindParam(':data_nascimento', $dataNascimento);
-        $stmt->bindParam(':carreira', $carreira);
         $stmt->bindParam(':posicao', $posicao);
         $stmt->bindParam(':numero', $numero, PDO::PARAM_INT);
         $stmt->bindParam(':foto', $fotoPath);
@@ -122,8 +121,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
             'user' => $user['email']
         ]);
         
-        header('Location: jogadores.php?success=updated');
-        exit;
+        $success = 'Jogador atualizado com sucesso!';
+        
+        // Recarregar dados do jogador
+        $stmt = $conn->prepare("SELECT * FROM jogadores WHERE id = :id");
+        $stmt->bindParam(':id', $jogadorId);
+        $stmt->execute();
+        $jogador = $stmt->fetch();
         
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -147,6 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/jogadores.css">
+    <link rel="stylesheet" href="assets/css/alerts.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -159,6 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
                 <?php if ($error): ?>
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i> <?= $error ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($success): ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> <?= $success ?>
                     </div>
                 <?php endif; ?>
 
@@ -243,12 +254,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
                                 <small>Jogadores com menor ordem aparecem primeiro</small>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="carreira">Carreira</label>
-                            <textarea id="carreira" name="carreira" rows="4" placeholder="Ex: 2022 – Fluminense (RJ) 2023; – Red Bull Bragantino (SP); 2024 – APOEL (Chipre)"><?= htmlspecialchars($jogador['carreira'] ?? '') ?></textarea>
-                            <small>Descreva o histórico de clubes do jogador</small>
-                        </div>
 
                         <div class="form-group">
                             <label for="foto">Nova Foto do Jogador</label>
@@ -297,5 +302,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
             }
         }
     </script>
+    <script src="assets/js/masks.js"></script>
 </body>
 </html>

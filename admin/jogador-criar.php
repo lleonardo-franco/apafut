@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $altura = Security::sanitizeString($_POST['altura'] ?? '');
         $peso = Security::sanitizeString($_POST['peso'] ?? '');
         $dataNascimento = Security::sanitizeString($_POST['data_nascimento'] ?? '');
-        $carreira = Security::sanitizeString($_POST['carreira'] ?? '');
         
         // Validações
         if (empty($nome)) {
@@ -66,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Inserir no banco
         $conn = getConnection();
         $stmt = $conn->prepare("
-            INSERT INTO jogadores (nome, nome_completo, cidade, altura, peso, data_nascimento, carreira, posicao, numero, foto, ativo, ordem)
-            VALUES (:nome, :nome_completo, :cidade, :altura, :peso, :data_nascimento, :carreira, :posicao, :numero, :foto, :ativo, :ordem)
+            INSERT INTO jogadores (nome, nome_completo, cidade, altura, peso, data_nascimento, posicao, numero, foto, ativo, ordem)
+            VALUES (:nome, :nome_completo, :cidade, :altura, :peso, :data_nascimento, :posicao, :numero, :foto, :ativo, :ordem)
         ");
         
         $stmt->bindParam(':nome', $nome);
@@ -76,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':altura', $altura);
         $stmt->bindParam(':peso', $peso);
         $stmt->bindParam(':data_nascimento', $dataNascimento);
-        $stmt->bindParam(':carreira', $carreira);
         $stmt->bindParam(':posicao', $posicao);
         $stmt->bindParam(':numero', $numero, PDO::PARAM_INT);
         $stmt->bindParam(':foto', $fotoPath);
@@ -118,6 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/jogadores.css">
+    <link rel="stylesheet" href="assets/css/alerts.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -128,8 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="content">
                 <?php if ($error): ?>
-                    <div class="alert alert-danger">
+                    <div class="alert alert-error">
                         <i class="fas fa-exclamation-circle"></i> <?= $error ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($success): ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> <?= $success ?>
                     </div>
                 <?php endif; ?>
 
@@ -205,12 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <small>Jogadores com menor ordem aparecem primeiro</small>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="carreira">Carreira</label>
-                            <textarea id="carreira" name="carreira" rows="4" placeholder="Ex: 2022 – Fluminense (RJ) 2023; – Red Bull Bragantino (SP); 2024 – APOEL (Chipre)"><?= htmlspecialchars($_POST['carreira'] ?? '') ?></textarea>
-                            <small>Descreva o histórico de clubes do jogador</small>
-                        </div>
 
                         <div class="form-group">
                             <label for="foto">Foto do Jogador</label>
@@ -242,6 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
+    <script src="assets/js/masks.js"></script>
     <script>
         function previewFoto(input) {
             const preview = document.getElementById('foto-preview');

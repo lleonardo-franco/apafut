@@ -1,4 +1,7 @@
 <?php
+// Verificação de modo manutenção
+require_once __DIR__ . '/includes/maintenance-check.php';
+
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
 require_once 'config/security-headers.php';
@@ -15,7 +18,7 @@ BotProtection::check();
 $jogadores = Cache::remember('jogadores_ativos', function() {
     try {
         $conn = getConnection();
-        $stmt = $conn->prepare("SELECT id, nome, numero, posicao, foto, ordem FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
+        $stmt = $conn->prepare("SELECT id, nome, nome_completo, cidade, altura, peso, data_nascimento, numero, posicao, foto, ordem FROM jogadores WHERE ativo = 1 ORDER BY ordem ASC, numero ASC");
         $stmt->execute();
         return $stmt->fetchAll();
     } catch (Exception $e) {
@@ -493,7 +496,6 @@ function getPosicaoIcon($posicao) {
                                     'peso' => $jogador['peso'] ?? '-',
                                     'dataNascimento' => $jogador['data_nascimento'] ?? '-',
                                     'posicao' => $jogador['posicao'],
-                                    'carreira' => $jogador['carreira'] ?? '-',
                                     'foto' => $fotoExibir
                                  ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
                                  onclick="abrirModalJogador(this)">
@@ -684,12 +686,6 @@ function getPosicaoIcon($posicao) {
                 <div class="plano-preco">
                     <span class="preco-por">12x R$ 30<span class="preco-mes">,00</span></span>
                 </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div style="text-align: center; padding: 60px 20px; grid-column: 1/-1;">
-                    <i class="fas fa-tags" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
-                    <p style="font-size: 18px; color: #666;">Em breve novos planos disponíveis</p>
-                </div>
                 <div class="parcelamento">
                     <i class="fas fa-credit-card"></i> Cartão de crédito ou Pix
                 </div>
@@ -807,12 +803,62 @@ function getPosicaoIcon($posicao) {
                         <p><strong>Peso:</strong> <span id="modalPeso"></span></p>
                         <p><strong>Data de nascimento:</strong> <span id="modalDataNascimento"></span></p>
                         <p><strong>Posição:</strong> <span id="modalPosicao"></span></p>
-                        <p class="modal-carreira"><strong>Carreira:</strong><br><span id="modalCarreira"></span></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script>
+    // Funções do Modal do Jogador
+    function abrirModalJogador(element) {
+        try {
+            const jogadorDataStr = element.getAttribute('data-jogador');
+            console.log('Data string:', jogadorDataStr); // Debug
+            
+            const jogadorData = JSON.parse(jogadorDataStr);
+            console.log('Parsed data:', jogadorData); // Debug
+            
+            const modal = document.getElementById('modalJogador');
+            
+            document.getElementById('modalFoto').src = jogadorData.foto || '';
+            document.getElementById('modalNumero').textContent = jogadorData.numero || '';
+            document.getElementById('modalNome').textContent = jogadorData.nome || '';
+            document.getElementById('modalNomeCompleto').textContent = jogadorData.nomeCompleto || '-';
+            document.getElementById('modalCidade').textContent = jogadorData.cidade || '-';
+            document.getElementById('modalAltura').textContent = jogadorData.altura || '-';
+            document.getElementById('modalPeso').textContent = jogadorData.peso || '-';
+            document.getElementById('modalDataNascimento').textContent = jogadorData.dataNascimento || '-';
+            document.getElementById('modalPosicao').textContent = jogadorData.posicao || '';
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        } catch (error) {
+            console.error('Erro ao abrir modal:', error);
+            alert('Erro ao carregar informações do jogador');
+        }
+    }
+    
+    function fecharModalJogador() {
+        const modal = document.getElementById('modalJogador');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Fechar modal ao clicar fora
+    document.getElementById('modalJogador')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharModalJogador();
+        }
+    });
+    
+    // Fechar modal com tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            fecharModalJogador();
+        }
+    });
+    </script>
     
     <script src="assets/js/script.min.js" defer></script>
     <script src="assets/js/lazy-loader.min.js" defer></script>

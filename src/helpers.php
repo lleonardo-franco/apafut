@@ -5,13 +5,30 @@
 
 /**
  * Carrega variáveis de ambiente do arquivo .env
+ * Detecta automaticamente se está em localhost ou produção
  */
 function loadEnv($path = __DIR__ . '/../.env') {
-    if (!file_exists($path)) {
+    // Detecta ambiente automaticamente
+    $isLocal = in_array($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost', [
+        'localhost',
+        '127.0.0.1',
+        'localhost:8000',
+        '::1'
+    ]);
+    
+    // Escolhe o arquivo .env apropriado
+    $envFile = $path;
+    if ($isLocal && file_exists(__DIR__ . '/../.env.local')) {
+        $envFile = __DIR__ . '/../.env.local';
+    } elseif (!$isLocal && file_exists(__DIR__ . '/../.env.production')) {
+        $envFile = __DIR__ . '/../.env.production';
+    }
+    
+    if (!file_exists($envFile)) {
         return false;
     }
     
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
         // Ignora comentários
         if (strpos(trim($line), '#') === 0) {
