@@ -1,7 +1,4 @@
 <?php
-// Verificação de modo manutenção
-require_once __DIR__ . '/includes/maintenance-check.php';
-
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
 require_once 'config/security-headers.php';
