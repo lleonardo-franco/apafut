@@ -4,16 +4,12 @@ Options -Indexes
 # Ativar Rewrite Engine
 RewriteEngine On
 
-# IMPORTANTE: Verifica preview ANTES de qualquer outro redirect
-# Permite acesso direto se preview=apafut2025 estiver presente
-RewriteCond %{QUERY_STRING} preview=apafut2025
-RewriteRule .* - [S=10]
-
-# Força HTTPS (só executa se não tiver preview)
+# Força HTTPS mantendo query string
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,QSA]
 
-# MODO MANUTENÇÃO - Bloqueia acesso sem preview
+# MODO MANUTENÇÃO
+# Permite acesso se tiver preview=apafut2025 OU for arquivo permitido
 RewriteCond %{QUERY_STRING} !preview=apafut2025
 RewriteCond %{REQUEST_URI} !^/manutencao\.html$
 RewriteCond %{REQUEST_URI} !^/test-preview\.php$
