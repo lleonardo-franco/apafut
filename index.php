@@ -139,99 +139,57 @@ function getPosicaoIcon($posicao) {
     </main>
     <section>
         <!-- Notícias -->
-        <section id="noticias" class="noticias">
+        <section id="noticias" class="noticias-section">
             <div class="noticias-header">
                 <h2>Últimas Notícias</h2>
-                <p>Fique por dentro de tudo que acontece na Apafut</p>
+                <p style="text-align:center; color:#6a6a6a; font-size:1.15rem; margin-bottom:2.5rem;">Fique por dentro de tudo que acontece na Apafut</p>
             </div>
-            
-            <div class="noticias-carousel">
-                <button class="carousel-nav prev-noticia" aria-label="Notícia anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="noticias-container">
-                    <?php
-                    // Buscar notícias ativas do banco de dados
-                    try {
-                        require_once 'config/db.php';
-                        $conn = getConnection();
-                        
-                        $stmt = $conn->query("
-                            SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
-                            FROM noticias 
-                            WHERE ativo = 1 
-                            ORDER BY destaque DESC, data_publicacao DESC 
-                            LIMIT 6
-                        ");
-                        $noticias = $stmt->fetchAll();
-                        
-                        if (empty($noticias)) {
-                            echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
-                        } else {
-                            $first = true;
-                            foreach ($noticias as $noticia):
-                                $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
-                                
-                                // Formatar data em português
-                                $mesesPt = [
-                                    'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
-                                    'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
-                                    'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
-                                ];
-                                $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
-                                $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
-                    ?>
-                        <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
-                            <div class="noticia-imagem">
-                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy" width="400" height="250">
-                                <div class="patrocinadores-faixa">
-                                    <div class="patrocinadores-track">
-                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
-                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
-                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
-                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
-                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
-                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
-                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
-                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
-                                    </div>
-                                </div>
-                                <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
-                                <div class="noticia-data">
-                                    <i class="far fa-calendar"></i> <?= $dataFormatada ?>
-                                </div>
-                            </div>
-                            <div class="noticia-conteudo">
-                                <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
-                                <p class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
-                                <a href="noticia.php?id=<?= $noticia['id'] ?>" class="btn-noticia">
-                                    Ler mais <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    <?php
-                                $first = false;
-                            endforeach;
-                        }
-                    } catch (Exception $e) {
-                        logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
-                        echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
-                    }
-                    ?>
+            <div class="noticias-list">
+                <?php
+                try {
+                    require_once 'config/db.php';
+                    $conn = getConnection();
+                    $stmt = $conn->query("
+                        SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                        FROM noticias 
+                        WHERE ativo = 1 
+                        ORDER BY destaque DESC, data_publicacao DESC 
+                        LIMIT 6
+                    ");
+                    $noticias = $stmt->fetchAll();
+                    if (empty($noticias)) {
+                        echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
+                    } else {
+                        foreach ($noticias as $noticia):
+                            $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+                            $mesesPt = [
+                                'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
+                                'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
+                                'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
+                            ];
+                            $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
+                            $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
+                ?>
+                <div class="noticia-card-clean">
+                    <img class="noticia-img" src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy" width="400" height="250">
+                    <div class="noticia-info">
+                        <span class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></span>
+                        <span class="noticia-data"><i class="far fa-calendar"></i> <?= $dataFormatada ?></span>
+                        <div class="noticia-titulo"><?= htmlspecialchars($noticia['titulo']) ?></div>
+                        <div class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></div>
+                        <a href="noticia.php?id=<?= $noticia['id'] ?>" class="noticia-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
-                
-                <button class="carousel-nav next-noticia" aria-label="Ver próxima notícia" tabindex="0">
-                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                </button>
-            </div>
-
-            <div class="carousel-dots" id="noticias-dots" role="tablist" aria-label="Navegação entre notícias">
-                <?php if (!empty($noticias)): ?>
-                    <?php for ($i = 0; $i < count($noticias); $i++): ?>
-                        <button class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>" role="tab" aria-label="Ir para notícia <?= $i + 1 ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>" tabindex="<?= $i === 0 ? '0' : '-1' ?>"></button>
-                    <?php endfor; ?>
-                <?php endif; ?>
+                <?php endforeach;
+                    }
+                }
+                catch (Exception $e) {
+                    logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
+                    echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
+                }
+                ?>
             </div>
         </section>
 
