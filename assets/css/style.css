@@ -1363,39 +1363,32 @@ section#categorias h2 {
 }
 
 .noticias-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     overflow: hidden;
     position: relative;
 }
 
 .noticia-card {
-    min-width: 100%;
-    flex-shrink: 0;
-    opacity: 0;
-    transition: opacity 0.5s ease;
     background: white;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    position: absolute;
-    width: 100%;
-    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.noticia-card.active {
-    opacity: 1;
-    position: relative;
-    visibility: visible;
+.noticia-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
 }
 
 .noticia-imagem {
     position: relative;
     overflow: hidden;
-    height: 100%;
-    min-height: 380px;
+    height: 200px;
 }
 
 .noticia-imagem img {
@@ -1404,1108 +1397,1115 @@ section#categorias h2 {
     object-fit: cover;
 }
 
-/* Faixa de Patrocinadores Animada */
-.patrocinadores-faixa {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    padding: 8px 0;
-    overflow: hidden;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.patrocinadores-track {
-    display: flex;
-    gap: 30px;
-    animation: scrollPatrocinadores 20s linear infinite;
-    width: max-content;
-}
-
-.patrocinadores-track img {
-    height: 30px;
-    width: auto;
-    object-fit: contain;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-.patrocinadores-track img:hover {
-    opacity: 1;
-}
-
-@keyframes scrollPatrocinadores {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-.noticia-categoria {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 8px 18px;
-    background: var(--vermelho-primario);
-    color: white;
-    font-size: 0.85em;
-    font-weight: 600;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    z-index: 2;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.noticia-data {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 8px 15px;
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--azul-secundario);
-    font-size: 0.85em;
-    font-weight: 600;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    z-index: 2;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.noticia-data i {
-    color: var(--vermelho-primario);
-}
-
 .noticia-conteudo {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 20px;
 }
 
 .noticia-conteudo h3 {
-    font-size: 1.5rem;
-    color: var(--azul-secundario);
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 16px;
+    font-size: var(--fs-medium);
+    color: var(--vermelho-primario); /* Corrigido para usar a variável de cor primária */
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    will-change: transform;
+    aspect-ratio: 3/4;
 }
 
-.noticia-resumo {
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 20px;
+@media (max-width: 768px) {
+    .jogador-card {
+        flex: 0 0 clamp(240px, 45vw, 280px);
+        min-width: 240px;
+        max-width: 280px;
+    }
 }
 
-.btn-noticia {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 28px;
+@media (max-width: 480px) {
+    .jogador-card {
+        flex: 0 0 100%;
+        min-width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+.jogador-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--vermelho-primario);
+    box-shadow: 0 12px 32px rgba(235, 56, 53, 0.3);
+}
+
+.jogador-card:hover .jogador-foto img {
+    transform: scale(1.08);
+}
+
+.jogador-foto {
+    position: relative;
+    width: 100%;
+    height: clamp(280px, 35vw, 320px);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--azul-secundario) 0%, #0a1234 100%);
+    cursor: pointer;
+    aspect-ratio: 4/5;
+}
+
+@media (max-width: 768px) {
+    .jogador-foto {
+        height: clamp(260px, 40vw, 300px);
+    }
+}
+
+@media (max-width: 480px) {
+    .jogador-foto {
+        height: 320px;
+    }
+}
+
+.jogador-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.jogador-numero {
+    position: absolute;
+    top: 12px;
+    right: 12px;
     background: var(--vermelho-primario);
     color: white;
-    text-decoration: none;
-    border-radius: 8px;
+    min-width: 45px;
+    height: 45px;
+    padding: 0 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+    font-weight: 900;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.jogador-info {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+
+.jogador-card h4 {
+    font-size: 1.1em;
+    margin: 0;
+    font-weight: 700;
+    color: white;
+}
+
+.jogador-posicao {
+    color: var(--vermelho-primario);
+    font-size: 0.85em;
     font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(235, 56, 53, 0.25);
-    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0;
 }
 
-.btn-noticia:hover {
-    background: #d32f2f;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(235, 56, 53, 0.35);
+.jogador-posicao i {
+    font-size: 1.1em;
 }
 
-.btn-noticia i {
-    transition: transform 0.3s ease;
-}
-
-.btn-noticia:hover i {
-    transform: translateX(4px);
-}
-
-/* Navegação do Carrossel */
-.carousel-nav {
+/* Botões do Carrossel */
+.carousel-btn {
     position: absolute;
-    top: 200px;
+    top: 50%;
+    transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.95);
     color: var(--azul-secundario);
     border: none;
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1.3em;
     cursor: pointer;
+    z-index: 10;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10;
 }
 
-.carousel-nav:hover {
+.carousel-btn:hover {
     background: var(--vermelho-primario);
     color: white;
-    transform: scale(1.05);
+    transform: translateY(-50%) scale(1.05);
     box-shadow: 0 6px 16px rgba(235, 56, 53, 0.3);
 }
 
-.prev-noticia {
+.prev-jogador {
     left: 0;
 }
 
-.next-noticia {
+.next-jogador {
     right: 0;
 }
 
-/* Indicadores de Slides */
-.carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 30px;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #d0d0d0;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
-.dot.active {
-    background: var(--vermelho-primario);
-    width: 32px;
-    border-radius: 6px;
-}
-
-.dot:hover {
-    background: var(--azul-secundario);
-}
-
-.dot:focus {
-    outline: 2px solid var(--azul-secundario);
-    outline-offset: 2px;
-}
-
-/* Responsivo */
-@media (max-width: 968px) {
-    .noticia-card {
-        grid-template-columns: 1fr;
+/* Responsividade */
+@media (max-width: 768px) {
+    .time-profissional {
+        padding: 60px 5%;
     }
 
-    .noticia-imagem {
-        min-height: 350px;
+    .profissional-title {
+        margin-bottom: 40px;
     }
 
-    .noticias-carousel {
+    .profissional-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .profissional-icon i {
+        font-size: 2em;
+    }
+
+    .jogadores-carousel {
         padding: 0 50px;
     }
 
-    .carousel-nav {
-        width: 40px;
+    .filtro-btn {
+        padding: 10px 18px;
+        font-size: 0.85em;
+    }
+
+    .jogador-card {
+        flex: 0 0 260px;
+        min-width: 260px;
+        max-width: 260px;
+    }
+
+    .jogador-foto {
+        height: 280px;
+    }
+
+    .jogador-info {
+        padding: 14px;
+    }
+
+    .jogador-numero {
+        min-width: 40px;
         height: 40px;
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .noticias {
-        padding: 40px 5%;
+        font-size: 1.2em;
     }
 
-    .noticias-header {
-        margin-bottom: 35px;
-    }
-
-    .noticias-carousel {
-        padding: 0;
-    }
-
-    .noticia-imagem {
-        min-height: 280px;
-    }
-
-    .noticia-conteudo {
-        padding: 30px 25px;
-    }
-
-    .noticia-conteudo h3 {
-        font-size: 1.4rem;
-    }
-
-    .noticia-resumo {
-        font-size: 0.95rem;
-    }
-
-    .carousel-nav {
-        display: none;
-    }
-
-    .patrocinadores-track img {
-        height: 32px;
+    .carousel-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1em;
     }
 }
 
 @media (max-width: 480px) {
-    .noticia-conteudo {
-        padding: 25px 20px;
+    .jogadores-carousel {
+        padding: 0 40px;
     }
 
-    .noticia-conteudo h3 {
-        font-size: 1.2rem;
+    .posicao-filtros {
+        gap: 6px;
+        margin-bottom: 25px;
     }
 
-    .btn-noticia {
-        padding: 12px 24px;
-        font-size: 0.95rem;
+    .filtro-btn {
+        padding: 7px 12px;
+        font-size: 0.75em;
+        flex: 1 1 auto;
+        min-width: calc(50% - 3px);
     }
 
-    .patrocinadores-faixa {
-        bottom: 20px;
-        padding: 10px 0;
+    .jogador-card {
+        flex: 0 0 240px;
+        min-width: 240px;
+        max-width: 240px;
     }
 
-    .patrocinadores-track {
-        gap: 30px;
+    .jogador-foto {
+        height: 260px;
     }
 
-    .patrocinadores-track img {
-        height: 28px;
-    }
-}
-
-/* Patrocinadores */
-.patrocinadores {
-    padding: clamp(30px, 6vh, 80px) 5%;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    text-align: center;
-}
-
-@media (max-width: 432px) {
-    .patrocinadores {
-        padding: 20px 4%;
-    }
-}
-
-.patrocinadores h2 {
-    font-size: var(--fs-h2);
-    font-weight: 900;
-    color: var(--azul-secundario);
-    margin-bottom: clamp(25px, 4vh, 50px);
-    position: relative;
-    display: inline-block;
-}
-
-.patrocinadores h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: clamp(60px, 15vw, 80px);
-    height: 4px;
-    background: linear-gradient(90deg, var(--vermelho-primario), var(--azul-secundario));
-    border-radius: 2px;
-}
-
-.sponsors-logos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: clamp(25px, 4vw, 40px);
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: center;
-}
-
-.sponsors-logos img {
-    width: 100%;
-    max-width: 280px;
-    height: clamp(140px, 20vw, 180px);
-    object-fit: contain;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin: 0 auto;
-    padding: clamp(24px, 3vw, 32px);
-    background: white;
-    border-radius: clamp(10px, 2vw, 12px);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    touch-action: manipulation;
-}
-
-.sponsors-logos img:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    border-color: rgba(235, 56, 53, 0.2);
-}
-
-.sponsors-logos .logo-brisa {
-    max-width: 350px;
-    height: clamp(160px, 22vw, 200px);
-}
-
-/* Responsividade Patrocinadores */
-@media (max-width: 768px) {
-    .sponsors-logos {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
-    }
-
-    .sponsors-logos img {
-        padding: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .sponsors-logos {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    .sponsors-logos img {
-        max-width: 200px;
-        height: 120px;
-        padding: 15px;
-    }
-
-    .sponsors-logos .logo-brisa {
-        max-width: 220px;
-        height: 140px;
-    }
-}
-
-@media (max-width: 432px) {
-    .sponsors-logos {
-        gap: 15px;
-    }
-
-    .sponsors-logos img {
-        height: 100px;
+    .jogador-info {
         padding: 12px;
     }
 
-    .sponsors-logos .logo-brisa {
-        height: 120px;
+    .jogador-card h4 {
+        font-size: 1em;
+    }
+
+    .jogador-posicao {
+        font-size: 0.8em;
+    }
+
+    .jogador-numero {
+        min-width: 36px;
+        height: 36px;
+        font-size: 1.1em;
+        top: 10px;
+        right: 10px;
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
     }
 }
 
-/* Footer */
-footer {
-    background: linear-gradient(135deg, var(--azul-secundario) 0%, #0a1440 100%);
-    color: var(--branco-padrao);
-    padding: clamp(30px, 6vh, 60px) 5% 0;
-}
-
-@media (max-width: 768px) {
-    footer {
-        padding: 2rem 5% 0;
-    }
-}
-
-@media (max-width: 480px) {
-    footer {
-        padding: 1.5rem 4% 0;
-    }
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: clamp(20px, 3vw, 40px);
+/* Seção Campeonatos */
+.campeonatos-section {
+    margin-top: 40px;
     max-width: 1200px;
-    margin: 0 auto;
-    padding-bottom: clamp(20px, 3vh, 40px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-left: auto;
+    margin-right: auto;
 }
 
-@media (max-width: 768px) {
-    .footer-content {
-        gap: 1.5rem;
-        padding-bottom: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-content {
-        gap: 1rem;
-        padding-bottom: 1rem;
-        grid-template-columns: 1fr;
-    }
-}
-
-.footer-section h4 {
-    font-size: clamp(18px, 2.5vw, 20px);
+.campeonatos-section h3 {
+    text-align: center;
+    font-size: 1.75em;
+    margin-bottom: 30px;
     font-weight: 700;
-    color: var(--branco-padrao);
-    margin-bottom: clamp(15px, 2vh, 20px);
-    position: relative;
-    padding-bottom: 10px;
 }
 
-.footer-section h4::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--vermelho-primario);
-    border-radius: 2px;
+.campeonatos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
 }
 
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
+.campeonato-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.footer-logo img {
-    width: clamp(50px, 8vw, 60px);
-    height: clamp(50px, 8vw, 60px);
-    object-fit: contain;
+.campeonato-card:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--vermelho-primario);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.footer-logo h3 {
-    font-size: clamp(18px, 3vw, 22px);
-    font-weight: 700;
-    color: var(--branco-padrao);
-}
-
-.footer-section p {
-    font-size: clamp(13px, 2vw, 14px);
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 20px;
-}
-
-.social-media {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.social-media a {
-    width: 44px;
-    height: 44px;
-    background-color: rgba(255, 255, 255, 0.1);
+.campeonato-icon {
+    width: 90px;
+    height: 90px;
+    background: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--branco-padrao);
-    font-size: 18px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    touch-action: manipulation;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    overflow: hidden;
 }
 
-.social-media a:hover {
-    background-color: var(--vermelho-primario);
-    transform: translateY(-3px);
+.campeonato-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
-.footer-section ul {
-    list-style: none;
+.campeonato-icon i {
+    font-size: 2em;
+    color: white;
 }
 
-.footer-section ul li {
-    margin-bottom: clamp(10px, 1.5vh, 12px);
+.campeonato-card h4 {
+    font-size: 1.4em;
+    margin-bottom: 12px;
+    font-weight: 700;
+    color: white;
 }
 
-.footer-section ul li a {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: clamp(13px, 2vw, 14px);
-    transition: all 0.3s ease;
-    display: inline-block;
-    padding: 5px 0;
-    touch-action: manipulation;
+.campeonato-card p {
+    font-size: 0.95em;
+    opacity: 0.9;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-.footer-section ul li a:hover {
-    color: var(--vermelho-primario);
-    padding-left: 5px;
-}
-
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(12px, 2vh, 15px);
-}
-
-.contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-}
-
-.contact-item i {
-    color: var(--vermelho-primario);
-    font-size: 18px;
-    margin-top: 3px;
-    min-width: 20px;
-}
-
-.contact-item p {
-    margin: 0;
-    font-size: clamp(13px, 2vw, 14px);
-    line-height: 1.6;
-}
-
-.schedule p {
-    margin-bottom: 15px;
-    font-size: clamp(13px, 2vw, 14px);
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.schedule strong {
-    color: var(--branco-padrao);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding: clamp(15px, 3vh, 30px) 0;
-}
-
-@media (max-width: 432px) {
-    .footer-bottom {
-        padding: 15px 0;
-    }
-
-    .footer-bottom p {
-        font-size: 0.75rem;
-        line-height: 1.4;
-    }
-}
-
-.footer-bottom p {
-    font-size: clamp(12px, 2vw, 14px);
-    color: rgba(255, 255, 255, 0.6);
-    margin: 5px 0;
-}
-
-.footer-bottom i.fa-heart {
-    color: var(--vermelho-primario);
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-    0%, 100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-}
-
-/* Responsividade Footer */
 @media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .campeonatos-section {
+        margin-top: 60px;
+    }
+
+    .campeonatos-section h3 {
+        font-size: 1.6em;
+        margin-bottom: 30px;
+    }
+
+    .campeonatos-grid {
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    .footer-section h4 {
-        font-size: 18px;
+    .campeonato-card {
+        padding: 25px 20px;
     }
 
-    .footer-logo h3 {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 600px) {
-    .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-        text-align: center;
-    }
-
-    .footer-section h4::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .footer-logo {
-        justify-content: center;
-    }
-
-    .social-media {
-        justify-content: center;
-    }
-
-    .contact-item {
-        text-align: left;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-section:nth-child(2),
-    .footer-section:nth-child(3) {
-        display: none;
-    }
-
-    .footer-section h4 {
-        font-size: 1.25rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .footer-section p,
-    .contact-item p {
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    .footer-section ul li a {
-        font-size: 0.95rem;
-        padding: 0.5rem 0;
-    }
-
-    .footer-logo {
-        flex-direction: row;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    .footer-logo img {
+    .campeonato-icon {
         width: 60px;
         height: 60px;
     }
 
-    .footer-logo h3 {
-        font-size: 1.35rem;
-    }
-
-    .footer-section:first-child p {
-        margin-bottom: 1rem;
-        font-size: 1rem;
-    }
-
-    .social-media {
-        gap: 1rem;
-    }
-
-    .social-media a {
-        width: 48px;
-        height: 48px;
-        font-size: 20px;
-    }
-
-    .contact-info {
-        gap: 12px;
-    }
-
-    .contact-item {
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        gap: 10px;
-    }
-
-    .contact-item i {
-        font-size: 16px;
-        min-width: 18px;
-    }
-
-    .contact-item p {
-        font-size: 0.8rem;
-        line-height: 1.4;
-    }
-
-    .schedule p {
-        font-size: 0.8rem;
-        margin-bottom: 10px;
-        line-height: 1.5;
-    }
-
-    .schedule p strong {
-        display: inline;
-    }
-
-    .schedule {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+    .campeonato-icon i {
+        font-size: 1.6em;
     }
 }
 
-@media (max-width: 480px) {
-    .social-media a {
-        width: 48px;
-        height: 48px;
-        font-size: 20px;
+/* Seção de Planos */
+.planos {
+    padding: 50px 5%;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaf6 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.planos::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(235, 56, 53, 0.03) 0%, transparent 70%);
+    animation: none;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 }
 
-/* Otimizações Avançadas Mobile */
-
-/* Prevent horizontal scroll */
-html, body {
-    max-width: 100vw;
-    overflow-x: hidden;
+.planos-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Smooth scroll offset for fixed header */
-section {
-    scroll-margin-top: 80px;
+.planos-header h2 {
+    font-size: var(--fs-h2);
+    color: var(--azul-secundario);
+    margin-bottom: 15px;
+    font-weight: 700;
 }
 
-@media (max-width: 768px) {
-    section {
-        scroll-margin-top: 70px;
+.planos-header p {
+    font-size: var(--fs-large);
+    color: #666;
+    font-weight: 300;
+}
+
+.planos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+    container-type: inline-size;
+}
+
+@supports (grid-template-columns: subgrid) {
+    .planos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     }
 }
 
-/* Improve tap targets for mobile (minimum 44x44px) */
-a, button, .btn, .hamburger {
-    display: inline-flex;
+/* Layout otimizado para diferentes larguras */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .planos-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .planos-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+.plano-card {
+    background: white;
+    border-radius: clamp(12px, 1.5vw, 20px);
+    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 2vw, 1.75rem);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    min-height: 100%;
+    height: auto;
+    will-change: transform;
+    isolation: isolate;
+}
+
+/* Garantir que todos os cards tenham a mesma altura */
+@supports (display: grid) {
+    .planos-container {
+        align-items: stretch;
+    }
+    
+    .plano-card {
+        display: grid;
+        grid-template-rows: auto auto auto 1fr auto;
+        gap: 0.75rem;
+    }
+}
+
+.plano-card::before {
+    border: 2px solid var(--vermelho-primario);
+    box-shadow: 0 8px 32px rgba(235, 56, 53, 0.15);
+}
+
+@media (min-width: 1200px) {
+    .plano-destaque {
+        transform: scale(1.02);
+    }
+    
+    .plano-destaque:hover {
+        transform: scale(1.02) translateY(-6px);
+    }
+}
+
+.plano-destaque::before {
+    height: clamp(4px, 0.6vw, 8px);
+}
+
+.plano-destaque:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    border-color: rgba(235, 56, 53, 0.2);
+}
+
+/* Plano em Destaque */
+.plano-destaque {
+    transform: scale(1.02);
+    border: 2px solid rgba(235, 56, 53, 0.15);
+    box-shadow: 0 8px 32px rgba(235, 56, 53, 0.15);
+}
+
+.plano-destaque::before {
+    height: 8px;
+}
+
+.plano-diamante {
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+    border: clamp(2px, 0.3vw, 3px) solid rgba(235, 56, 53, 0.2);
+    box-shadow: 0 12px 40px rgba(235, 56, 53, 0.15);
+}
+
+@media (min-width: 1200px) {
+    .plano-diamante {
+        transform: scale(1.05);
+    }
+    
+    .plano-diamante:hover {
+        transform: scale(1.05) translateY(-8px);
+    }
+}
+
+.plano-diamante::before {
+    height: clamp(4px, 0.6vw, 8px);
+    background: var(--vermelho-primario);
+}
+
+.plano-diamante:hover {
+    transform: scale(1.08) translateY(-8px);
+    box-shadow: 0 16px 48px rgba(235, 56, 53, 0.35);
+}
+
+.plano-diamante h3 {
+    color: var(--vermelho-primario);
+}
+
+.badge-diamante {
+    background: var(--vermelho-primario);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.btn-plano-diamante {
+    background: var(--vermelho-primario);
+    color: white;
+}
+
+.btn-plano-diamante:hover {
+    background: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(235, 56, 53, 0.4);
+}
+
+/* Badge do Plano */
+.plano-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--azul-secundario);
+    color: white;
+    font-size: 0.65em;
+    font-weight: 600;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    width: fit-content;
+}
+
+.badge-popular {
+    background: var(--vermelho-primario);
+}
+
+.plano-card h3 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    color: var(--azul-secundario);
+    margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Preços */
+.plano-preco {
+    margin: clamp(0.5rem, 1.2vw, 1rem) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.preco-de {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 300;
+}
+
+.preco-por {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--vermelho-primario);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.preco-mes {
+    font-size: 0.4em;
+    color: #666;
+    font-weight: 400;
+    vertical-align: super;
+}
+
+/* Parcelamento */
+.parcelamento {
+    text-align: center;
+    color: #666;
+    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+    margin-bottom: 0;
+    padding: clamp(0.5rem, 1vw, 0.75rem);
+    background: #f5f5f5;
+    border-radius: clamp(6px, 1vw, 10px);
+    line-height: 1.4;
+    word-break: break-word;
+    min-height: 2.75rem;
+    height: 2.75rem;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Prevent text selection on buttons */
-button, .btn, .hamburger {
+.parcelamento i {
+    color: var(--azul-secundario);
+    margin-right: 0.35rem;
+    font-size: 1.1em;
+}
+
+.parcelamento i {
+    color: var(--azul-secundario);
+    margin-right: 5px;
+}
+
+/* Tag de Economia */
+.economia-tag {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: var(--vermelho-primario);
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+    animation: none;
+    border: 1px solid rgba(235, 56, 53, 0.2);
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-2px);
+    }
+
+    20%, 40%, 60%, 80% {
+        transform: translateX(2px);
+    }
+}
+
+.plano-beneficios {
+    list-style: none;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.plano-beneficios li {
+    padding: clamp(0.5rem, 1vw, 0.75rem) 0;
+    font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+    border-bottom: 1px solid #f0f0f0;
+    line-height: 1.5;
+}
+
+.plano-beneficios li:last-child {
+    border-bottom: none;
+}
+
+.plano-beneficios i {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    min-width: clamp(18px, 2vw, 22px);
+    flex-shrink: 0;
+}
+
+.plano-beneficios .fa-check {
+    color: #4CAF50;
+}
+
+.plano-beneficios .fa-times {
+    color: #ccc;
+}
+
+/* Botões dos Planos */
+.btn-plano {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.875rem, 2vw, 1.125rem) clamp(1.5rem, 3vw, 2rem);
+    background: linear-gradient(135deg, var(--azul-secundario) 0%, #1a2980 100%);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: clamp(0.75rem, 1.5vw, 1rem);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 48px;
+    width: 100%;
+    border: none;
 }
 
-/* Disable animations for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* Focus styles for keyboard navigation */
-a:focus-visible,
-button:focus-visible,
-.btn:focus-visible {
-    outline: 3px solid var(--vermelho-primario);
-    outline-offset: 2px;
-}
-
-/* Prevent zoom on input focus (iOS) */
-input, select, textarea {
-    font-size: 16px;
-}
-
-/* Better line height for mobile reading */
 @media (max-width: 768px) {
-    body {
-        line-height: 1.7;
-    }
-
-    p {
-        line-height: 1.8;
+    .btn-plano {
+        padding: 1rem 2rem;
+        font-size: 1.0625rem;
+        min-height: 52px;
     }
 }
 
-/* Optimize images for mobile */
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Ensure videos are responsive */
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Improve button spacing on mobile */
 @media (max-width: 480px) {
-    .btn {
-        padding: 15px 30px;
-        font-size: 16px;
-        width: 100%;
-        max-width: 280px;
-    }
-
-    .hero-content .btn {
-        margin: 0 auto;
+    .btn-plano {
+        padding: 1.125rem 2.25rem;
+        font-size: 1.125rem;
+        min-height: 56px;
     }
 }
 
-/* Better mobile menu */
-@media (max-width: 768px) {
-    .menu.active {
-        overflow-y: auto;
-    }
+.btn-plano:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #1a2980 0%, #0d1440 100%);
 }
 
-/* Improve carousel touch experience */
-.carousel {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-}
-
-/* Better card hover on touch devices */
 @media (hover: none) {
-
-    .card:hover,
-    .testimonial-card:hover,
-    .sponsors-logos img:hover {
-        transform: none;
-    }
-
-    .card:active,
-    .testimonial-card:active {
+    .btn-plano:active {
         transform: scale(0.98);
     }
 }
 
-/* Optimize text contrast for readability */
+.btn-plano-destaque {
+    background: linear-gradient(135deg, var(--vermelho-primario) 0%, #c62828 100%);
+    font-size: clamp(1rem, 1.6vw, 1.1rem);
+    box-shadow: 0 4px 15px rgba(235, 56, 53, 0.4);
+    animation: none;
+}
+
+.btn-plano-destaque:hover {
+    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(235, 56, 53, 0.5);
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(235, 56, 53, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 30px rgba(235, 56, 53, 0.8);
+    }
+}
+
+/* Responsividade Avançada - Mobile First */
+
+/* Tablets pequenos e paisagem */
+@media (min-width: 600px) and (max-width: 767px) {
+    .planos-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Tablets */
 @media (max-width: 768px) {
-    .hero-content p {
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    .planos {
+        padding: clamp(3rem, 8vw, 5rem) 5%;
+    }
+
+    .planos-container {
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 3vw, 2rem);
+        padding: 0 1rem;
+    }
+
+    .plano-card {
+        padding: clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 2.5vw, 1.75rem);
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .plano-destaque,
+    .plano-diamante {
+        transform: scale(1);
+    }
+    
+    /* Melhorias para touch */
+    a, button {
+        min-height: 48px;
+        min-width: 48px;
+    }
+
+    .plano-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .preco-por {
+        font-size: 2.5rem;
     }
 }
 
-/* Safe area for notched devices (iPhone X and similar) */
-@supports (padding: max(0px)) {
-    header {
-        padding-left: max(5%, env(safe-area-inset-left));
-        padding-right: max(5%, env(safe-area-inset-right));
+@media (max-width: 480px) {
+    .planos {
+        padding: 2.5rem 4%;
     }
 
-    footer {
-        padding-left: max(5%, env(safe-area-inset-left));
-        padding-right: max(5%, env(safe-area-inset-right));
-        padding-bottom: env(safe-area-inset-bottom);
+    .plano-card {
+        padding: 1.75rem 1.5rem;
+    }
+
+    .plano-card h3 {
+        font-size: 1.625rem;
+    }
+
+    .preco-por {
+        font-size: 2.75rem;
+    }
+
+    .parcelamento {
+        font-size: 0.9375rem;
+        min-height: 3rem;
+        height: 3rem;
+        padding: 0.625rem;
+    }
+
+    .plano-beneficios li {
+        font-size: 1rem;
+        padding: 0.625rem 0;
     }
 }
 
-/* Loading optimization */
-@media (prefers-reduced-data: reduce) {
+/* Mobile grande */
+@media (max-width: 640px) {
+    .planos-header h2 {
+        font-size: clamp(1.75rem, 5vw, 2.25rem);
+    }
+    
+    .planos-header p {
+        font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .plano-card {
+        padding: 1rem 0.875rem;
+    }
+    
+    .plano-badge {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.875rem;
+    }
+    
+    .economia-tag {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+/* Mobile muito pequeno */
+@media (max-width: 360px) {
+    .planos-container {
+        padding: 0 0.75rem;
+    }
+    
+    .plano-card {
+        padding: 1rem 0.875rem;
+    }
+    
+    .plano-beneficios li {
+        font-size: 0.875rem;
+    }
+}
+
+/* Landscape optimization */
+@media (max-height: 600px) and (orientation: landscape) {
+    .planos {
+        padding: 2rem 5%;
+    }
+    
+    .plano-card {
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .plano-card {
+        border-width: 0.5px;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
     * {
-        animation-duration: 0s !important;
-        transition-duration: 0s !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .plano-card:hover {
+        transform: none;
     }
 }
 
-/* Estilos para detalhes das categorias */
-.card {
-    position: relative;
-}
-
-.card h3 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    cursor: pointer;
-}
-
-.card .arrow-icon {
-    font-size: 0.8em;
-    transition: transform 0.3s ease;
-    color: var(--vermelho-primario);
-    cursor: pointer;
-}
-
-.card.active .arrow-icon {
-    transform: rotate(180deg);
-}
-
-.categoria-detalhes {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
-    opacity: 0;
-    margin-top: 0;
-}
-
-.card.active .categoria-detalhes {
-    max-height: 500px;
-    opacity: 1;
-    margin-top: 15px;
-}
-
-.detalhes-content {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 15px;
-    border: 1px solid rgba(235, 56, 53, 0.2);
-}
-
-.detalhe-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.9em;
-}
-
-.detalhe-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.detalhe-item i {
-    color: var(--vermelho-primario);
-    font-size: 1.2em;
-    min-width: 20px;
-}
-
-.detalhe-item strong {
-    color: var(--vermelho-primario);
-    margin-right: 5px;
-}
-
-@media (max-width: 768px) {
-    .detalhe-item {
-        font-size: 0.85em;
-        padding: 8px 0;
+@media (max-width: 480px) {
+    .plano-card h3 {
+        font-size: 1.5em;
     }
 
-    .detalhes-content {
-        padding: 12px;
+    .preco-por {
+        font-size: 2.2em;
+    }
+
+    .btn-plano {
+        padding: 15px 30px;
+        font-size: 1em;
     }
 }
 
-/* Seção Time Profissional */
-.time-profissional {
-    padding: 50px 5%;
-    background: linear-gradient(135deg, var(--azul-secundario) 0%, #0d1440 100%);
-    color: white;
-}
-
-.profissional-title {
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.profissional-icon {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--vermelho-primario) 0%, #d32f2f 100%);
-    border-radius: 50%;
-    display: flex;
+/* Modal do Jogador */
+.modal-jogador {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
     align-items: center;
     justify-content: center;
-    margin: 0 auto 15px;
-    box-shadow: 0 4px 16px rgba(235, 56, 53, 0.3);
 }
 
-.profissional-icon i {
-    font-size: 1.8em;
-    color: white;
+.modal-jogador-content {
+    position: relative;
+    background: #111D69;
+    border-radius: 0;
+    max-width: 700px;
+    width: 85%;
+    max-height: 85vh;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideDown 0.3s ease-out;
+    overflow: hidden;
 }
 
-.time-profissional h2 {
-    font-size: var(--fs-h2);
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    font-weight: 300;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--vermelho-primario);
+}
+
+.modal-jogador-body {
+    display: flex;
+    gap: 25px;
+    padding: 30px;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.modal-jogador-foto {
+    position: relative;
+    flex: 0 0 280px;
+    height: 400px;
+    border-radius: 0;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.modal-jogador-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.modal-jogador-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.modal-titulo {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: #fff;
     font-weight: 700;
 }
 
-/* Seção Elenco */
-.elenco-section {
-    margin-top: 0;
+.modal-titulo span {
+    color: #fff;
 }
 
-.jogadores-carousel {
+.modal-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-stats p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #fff;
+    margin: 0;
+}
+
+.modal-stats p strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.modal-stats p span {
+    color: #fff;
+    font-weight: 400;
+}
+
+.modal-carreira {
+    margin-top: 10px;
+}
     position: relative;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0 60px;
+    overflow: hidden;
+    height: 200px;
 }
 
-.jogadores-container {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    -ms-overflow-style: none;
-    padding: 20px 10px;
+.noticia-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.jogadores-container::-webkit-scrollbar {
-    display: none;
+.noticia-conteudo {
+    padding: 20px;
 }
 
-/* Filtros de Posição */
-.posicao-filtros {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 30px;
-    padding: 0 20px;
-}
-
-.filtro-btn {
-    background: rgba(255, 255, 255, 0.08);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.15);
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 0.85em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.filtro-btn i {
-    font-size: 1.1em;
-}
-
-.filtro-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: var(--vermelho-primario);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(235, 56, 53, 0.3);
-}
-
-.filtro-btn.active {
-    background: var(--vermelho-primario);
-    border-color: var(--vermelho-primario);
-    box-shadow: 0 4px 16px rgba(235, 56, 53, 0.4);
-}
-
-.filtro-btn.active:hover {
-    background: #d42f2c;
-    transform: translateY(-2px);
-}
-
-.jogador-card {
-    flex: 0 0 clamp(260px, 25vw, 300px);
-    min-width: clamp(240px, 22vw, 280px);
-    max-width: clamp(280px, 28vw, 320px);
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: clamp(12px, 1.5vw, 18px);
+.noticia-conteudo h3 {
+    font-size: var(--fs-medium);
+    color: var(--azul-secundario);
     overflow: hidden;
     text-align: center;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);

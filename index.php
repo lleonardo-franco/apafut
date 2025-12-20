@@ -134,19 +134,6 @@ function getPosicaoIcon($posicao) {
         </nav>
     </header>
     <main>
-        <!-- Hero -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <h1>Bem-vindo à Apafut<br>Caxias do Sul</h1>
-                <p>Referência na formação de atletas na cidade de Caxias do Sul/RS.</p>
-                <a href="#sobre" class="btn-hero">Saiba Mais</a>
-            </div>
-            <div class="hero-image">
-                <img src="assets/hero.png" alt="Imagem Hero" loading="eager" width="600" height="400">
-            </div>
-        </section>
-    </main>
-    <section>
         <!-- Notícias -->
         <section id="noticias" class="noticias">
             <div class="noticias-header">
@@ -589,7 +576,7 @@ function getPosicaoIcon($posicao) {
                 </button>
                 <div class="video-indicator">
                     <span id="currentVideo">1</span> / <span id="totalVideos"><?= count($depoimentos) ?></span>
-                </div>
+                </button>
                 <button id="nextVideo" class="control-btn" title="Próximo">
                     <i class="fas fa-chevron-right"></i>
                 </button>
