@@ -134,6 +134,62 @@ function getPosicaoIcon($posicao) {
         </nav>
     </header>
     <main>
+        <!-- Notícias (reposicionada) -->
+        <section id="noticias" class="noticias">
+            <div class="noticias-header">
+                <h2>Últimas Notícias</h2>
+                <p>Fique por dentro de tudo que acontece na Apafut</p>
+            </div>
+            <div class="noticias-modern-grid">
+                <?php
+                try {
+                    require_once 'config/db.php';
+                    $conn = getConnection();
+                    $stmt = $conn->query("
+                        SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                        FROM noticias 
+                        WHERE ativo = 1 
+                        ORDER BY destaque DESC, data_publicacao DESC 
+                        LIMIT 6
+                    ");
+                    $noticias = $stmt->fetchAll();
+                    if (empty($noticias)) {
+                        echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
+                    } else {
+                        foreach ($noticias as $noticia):
+                            $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+                            $mesesPt = [
+                                'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
+                                'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
+                                'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
+                            ];
+                            $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
+                            $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
+                ?>
+                <article class="noticia-modern-card">
+                    <div class="noticia-modern-img-wrap">
+                        <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy" width="400" height="250">
+                        <span class="noticia-modern-categoria"><?= htmlspecialchars($noticia['categoria']) ?></span>
+                        <span class="noticia-modern-data"><i class="far fa-calendar"></i> <?= $dataFormatada ?></span>
+                    </div>
+                    <div class="noticia-modern-content">
+                        <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
+                        <p><?= htmlspecialchars($noticia['resumo']) ?></p>
+                        <a href="noticia.php?id=<?= $noticia['id'] ?>" class="noticia-modern-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                <?php endforeach; }
+                } catch (Exception $e) {
+                    logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
+                    echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
+                }
+                ?>
+            </div>
+        </section>
+    </main>
+    <section>
         <!-- Notícias -->
         <section id="noticias" class="noticias">
             <div class="noticias-header">
