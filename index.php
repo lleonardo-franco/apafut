@@ -56,7 +56,6 @@ function getPosicaoIcon($posicao) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <?php 
     SEO::renderMetaTags('home', [
@@ -69,50 +68,43 @@ function getPosicaoIcon($posicao) {
     <!-- favicon -->
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">
-
+    
     <!-- Preconnect para recursos externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://kit.fontawesome.com">
-
+    
     <!-- Lato Font com font-display swap -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    
     <!-- FontAwesome async -->
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous" async></script>
-
+    
     <!-- css com preload -->
     <link rel="preload" href="assets/css/style.min.css" as="style">
     <link rel="stylesheet" href="assets/css/style.min.css">
-    <!-- css adicional para notícias -->
-    <link rel="preload" href="assets/css/noticia.min.css" as="style">
-    <link rel="stylesheet" href="assets/css/noticia.min.css">
     <style>
-    .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: var(--vermelho-primario);
-        color: white;
-        padding: 8px 16px;
-        text-decoration: none;
-        z-index: 10000;
-        font-weight: bold;
-        border-radius: 0 0 4px 0;
-    }
-
-    .skip-link:focus {
-        top: 0;
-    }
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--vermelho-primario);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 10000;
+            font-weight: bold;
+            border-radius: 0 0 4px 0;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
     </style>
     <?php SEO::renderOrganizationSchema(); ?>
 </head>
-
 <body>
     <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
-
+    
     <header role="banner">
         <!-- NAVBAR -->
         <nav role="navigation" aria-label="Menu principal">
@@ -129,9 +121,7 @@ function getPosicaoIcon($posicao) {
                 </ul>
                 <div class="nav-buttons">
                     <a href="#planos" class="btn-agendar" aria-label="Ver planos de sócio">Seja Sócio</a>
-                    <a href="https://wa.me/5554991592954?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20a%20inscrição%20para%20aluno%20da%20APAFUT"
-                        target="_blank" rel="noopener" class="btn-agendar btn-aluno"
-                        aria-label="Entre em contato via WhatsApp">
+                    <a href="https://wa.me/5554991592954?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20a%20inscrição%20para%20aluno%20da%20APAFUT" target="_blank" rel="noopener" class="btn-agendar btn-aluno" aria-label="Entre em contato via WhatsApp">
                         <i class="fab fa-whatsapp" aria-hidden="true"></i> Seja Aluno
                     </a>
                 </div>
@@ -144,64 +134,113 @@ function getPosicaoIcon($posicao) {
         </nav>
     </header>
     <main>
-        <!-- Notícias (reposicionada) -->
-        <!-- Mantido apenas uma seção de notícias moderna abaixo -->
+        <!-- Hero -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Bem-vindo à Apafut<br>Caxias do Sul</h1>
+                <p>Referência na formação de atletas na cidade de Caxias do Sul/RS.</p>
+                <a href="#sobre" class="btn-hero">Saiba Mais</a>
+            </div>
+            <div class="hero-image">
+                <img src="assets/hero.png" alt="Imagem Hero" loading="eager" width="600" height="400">
+            </div>
+        </section>
     </main>
     <section>
         <!-- Notícias -->
-        <section id="noticias" class="noticias-section">
+        <section id="noticias" class="noticias">
             <div class="noticias-header">
                 <h2>Últimas Notícias</h2>
-                <p style="text-align:center; color:#6a6a6a; font-size:1.15rem; margin-bottom:2.5rem;">Fique por dentro
-                    de tudo que acontece na Apafut</p>
+                <p>Fique por dentro de tudo que acontece na Apafut</p>
             </div>
-            <div class="noticias-list">
-                <?php
-                try {
-                    require_once 'config/db.php';
-                    $conn = getConnection();
-                    $stmt = $conn->query("
-                        SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
-                        FROM noticias 
-                        WHERE ativo = 1 
-                        ORDER BY destaque DESC, data_publicacao DESC 
-                        LIMIT 6
-                    ");
-                    $noticias = $stmt->fetchAll();
-                    if (empty($noticias)) {
-                        echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
-                    } else {
-                        foreach ($noticias as $noticia):
-                            $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
-                            $mesesPt = [
-                                'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
-                                'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
-                                'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
-                            ];
-                            $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
-                            $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
-                ?>
-                <div class="noticia-card-clean">
-                    <img class="noticia-img" src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>"
-                        loading="lazy" width="400" height="250">
-                    <div class="noticia-info">
-                        <span class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></span>
-                        <span class="noticia-data"><i class="far fa-calendar"></i> <?= $dataFormatada ?></span>
-                        <div class="noticia-titulo"><?= htmlspecialchars($noticia['titulo']) ?></div>
-                        <div class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></div>
-                        <a href="noticia.php?id=<?= $noticia['id'] ?>" class="noticia-link">
-                            Ler mais <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <?php endforeach;
+            
+            <div class="noticias-carousel">
+                <button class="carousel-nav prev-noticia" aria-label="Notícia anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="noticias-container">
+                    <?php
+                    // Buscar notícias ativas do banco de dados
+                    try {
+                        require_once 'config/db.php';
+                        $conn = getConnection();
+                        
+                        $stmt = $conn->query("
+                            SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                            FROM noticias 
+                            WHERE ativo = 1 
+                            ORDER BY destaque DESC, data_publicacao DESC 
+                            LIMIT 6
+                        ");
+                        $noticias = $stmt->fetchAll();
+                        
+                        if (empty($noticias)) {
+                            echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
+                        } else {
+                            $first = true;
+                            foreach ($noticias as $noticia):
+                                $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+                                
+                                // Formatar data em português
+                                $mesesPt = [
+                                    'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
+                                    'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
+                                    'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
+                                ];
+                                $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
+                                $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
+                    ?>
+                        <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
+                            <div class="noticia-imagem">
+                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy" width="400" height="250">
+                                <div class="patrocinadores-faixa">
+                                    <div class="patrocinadores-track">
+                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
+                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
+                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
+                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
+                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
+                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
+                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
+                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
+                                    </div>
+                                </div>
+                                <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
+                                <div class="noticia-data">
+                                    <i class="far fa-calendar"></i> <?= $dataFormatada ?>
+                                </div>
+                            </div>
+                            <div class="noticia-conteudo">
+                                <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
+                                <p class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
+                                <a href="noticia.php?id=<?= $noticia['id'] ?>" class="btn-noticia">
+                                    Ler mais <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    <?php
+                                $first = false;
+                            endforeach;
+                        }
+                    } catch (Exception $e) {
+                        logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
+                        echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
                     }
-                }
-                catch (Exception $e) {
-                    logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
-                    echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
-                }
-                ?>
+                    ?>
+                </div>
+                
+                <button class="carousel-nav next-noticia" aria-label="Ver próxima notícia" tabindex="0">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="carousel-dots" id="noticias-dots" role="tablist" aria-label="Navegação entre notícias">
+                <?php if (!empty($noticias)): ?>
+                    <?php for ($i = 0; $i < count($noticias); $i++): ?>
+                        <button class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>" role="tab" aria-label="Ir para notícia <?= $i + 1 ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>" tabindex="<?= $i === 0 ? '0' : '-1' ?>"></button>
+                    <?php endfor; ?>
+                <?php endif; ?>
             </div>
         </section>
 
@@ -211,10 +250,7 @@ function getPosicaoIcon($posicao) {
             <div class="sobre-content-centralizado">
                 <div class="sobre-texto">
                     <h2 id="sobre-titulo">Sobre a Apafut</h2>
-                    <p>A Apafut é uma academia de futebol dedicada a formar atletas de alta performance, promovendo o
-                        desenvolvimento técnico, tático e físico dos jogadores. Com uma equipe de treinadores
-                        experientes e uma infraestrutura moderna, oferecemos um ambiente ideal para o crescimento
-                        esportivo.</p>
+                    <p>A Apafut é uma academia de futebol dedicada a formar atletas de alta performance, promovendo o desenvolvimento técnico, tático e físico dos jogadores. Com uma equipe de treinadores experientes e uma infraestrutura moderna, oferecemos um ambiente ideal para o crescimento esportivo.</p>
                     <a href="historia.html" class="btn-sobre">Saiba mais</a>
                 </div>
                 <div class="sobre-logo">
@@ -394,13 +430,9 @@ function getPosicaoIcon($posicao) {
         <!-- Time Profissional -->
         <section id="profissional" class="time-profissional">
             <div class="profissional-title">
-                <h2
-                    style="font-family: 'Brush Script MT', cursive; font-style: italic; font-size: 4rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px;">
-                    PROFISSIONAL</h2>
-                <div class="profissional-categorias"
-                    style="display: flex; gap: 40px; justify-content: center; margin-bottom: 40px;">
-                    <span
-                        style="font-size: 1.5rem; color: #fff; font-weight: 400; letter-spacing: 2px;">MASCULINO</span>
+                <h2 style="font-family: 'Brush Script MT', cursive; font-style: italic; font-size: 4rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px;">PROFISSIONAL</h2>
+                <div class="profissional-categorias" style="display: flex; gap: 40px; justify-content: center; margin-bottom: 40px;">
+                    <span style="font-size: 1.5rem; color: #fff; font-weight: 400; letter-spacing: 2px;">MASCULINO</span>
                 </div>
             </div>
 
@@ -433,7 +465,7 @@ function getPosicaoIcon($posicao) {
                         <i class="fas fa-bullseye"></i> Atacantes
                     </button>
                 </div>
-
+                
                 <div class="jogadores-carousel">
                     <button class="carousel-btn prev-jogador">❮</button>
                     <div class="jogadores-container">
@@ -450,8 +482,9 @@ function getPosicaoIcon($posicao) {
                             }
                             $contador++;
                         ?>
-                        <div class="jogador-card" data-posicao="<?= htmlspecialchars($jogador['posicao']) ?>"
-                            data-jogador='<?= json_encode([
+                            <div class="jogador-card" 
+                                 data-posicao="<?= htmlspecialchars($jogador['posicao']) ?>"
+                                 data-jogador='<?= json_encode([
                                     'nome' => $jogador['nome'],
                                     'numero' => $jogador['numero'],
                                     'nomeCompleto' => $jogador['nome_completo'] ?? $jogador['nome'],
@@ -461,28 +494,25 @@ function getPosicaoIcon($posicao) {
                                     'dataNascimento' => $jogador['data_nascimento'] ?? '-',
                                     'posicao' => $jogador['posicao'],
                                     'foto' => $fotoExibir
-                                 ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>' onclick="abrirModalJogador(this)">
-                            <div class="jogador-foto">
-                                <?php if (!empty($fotoExibir)): ?>
-                                <img src="<?= htmlspecialchars($fotoExibir) ?>"
-                                    alt="<?= htmlspecialchars($jogador['nome']) ?>" loading="lazy" width="280"
-                                    height="350">
-                                <?php else: ?>
-                                <div
-                                    style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-user" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                                 ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
+                                 onclick="abrirModalJogador(this)">
+                                <div class="jogador-foto">
+                                    <?php if (!empty($fotoExibir)): ?>
+                                        <img src="<?= htmlspecialchars($fotoExibir) ?>" alt="<?= htmlspecialchars($jogador['nome']) ?>" loading="lazy" width="280" height="350">
+                                    <?php else: ?>
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="jogador-numero"><?= $jogador['numero'] ?></div>
                                 </div>
-                                <?php endif; ?>
-                                <div class="jogador-numero"><?= $jogador['numero'] ?></div>
+                                <div class="jogador-info" style="background: #e8e8e8; padding: 15px; text-align: left;">
+                                    <h4 style="color: #2d3436; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;"><?= $jogador['numero'] ?>. <?= htmlspecialchars($jogador['nome']) ?></h4>
+                                    <p class="jogador-posicao" style="color: #636e72; font-size: 0.95rem; margin: 0;">
+                                        <?= htmlspecialchars($jogador['posicao']) ?>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="jogador-info" style="background: #e8e8e8; padding: 15px; text-align: left;">
-                                <h4 style="color: #2d3436; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">
-                                    <?= $jogador['numero'] ?>. <?= htmlspecialchars($jogador['nome']) ?></h4>
-                                <p class="jogador-posicao" style="color: #636e72; font-size: 0.95rem; margin: 0;">
-                                    <?= htmlspecialchars($jogador['posicao']) ?>
-                                </p>
-                            </div>
-                        </div>
                         <?php endforeach; ?>
                     </div>
                     <button class="carousel-btn next-jogador">❯</button>
@@ -495,8 +525,7 @@ function getPosicaoIcon($posicao) {
                 <div class="campeonatos-grid">
                     <div class="campeonato-card">
                         <div class="campeonato-icon">
-                            <img src="assets/gauchao.png" alt="Campeonato Gaúcho" loading="lazy" width="200"
-                                height="200">
+                            <img src="assets/gauchao.png" alt="Campeonato Gaúcho" loading="lazy" width="200" height="200">
                         </div>
                         <h4>Campeonato Gaúcho</h4>
                         <p>Principal competição estadual do Rio Grande do Sul</p>
@@ -530,31 +559,29 @@ function getPosicaoIcon($posicao) {
         // Silencioso no front-end
     }
     ?>
-
+    
     <?php if (!empty($depoimentos)): ?>
     <section id="depoimentos" class="depoimentos">
         <div class="depoimentos-header">
             <h2>O que Dizem sobre a Apafut</h2>
             <p>Conheça a experiência de quem faz parte da nossa família</p>
         </div>
-
+        
         <div class="depoimentos-player">
             <!-- Player de Vídeo -->
             <div class="video-container">
                 <video id="videoPlayer" controls>
-                    <source id="videoSource"
-                        src="<?= htmlspecialchars(str_replace('../', '', $depoimentos[0]['video'])) ?>"
-                        type="video/mp4">
+                    <source id="videoSource" src="<?= htmlspecialchars(str_replace('../', '', $depoimentos[0]['video'])) ?>" type="video/mp4">
                     Seu navegador não suporta a tag de vídeo.
                 </video>
             </div>
-
+            
             <!-- Informações do Depoimento -->
             <div class="depoimento-info">
                 <h3 id="depoimento-nome"><?= htmlspecialchars($depoimentos[0]['nome']) ?></h3>
                 <p id="depoimento-descricao"><?= htmlspecialchars($depoimentos[0]['descricao'] ?? '') ?></p>
             </div>
-
+            
             <!-- Controles de Navegação -->
             <div class="video-controls">
                 <button id="prevVideo" class="control-btn" title="Anterior">
@@ -562,65 +589,65 @@ function getPosicaoIcon($posicao) {
                 </button>
                 <div class="video-indicator">
                     <span id="currentVideo">1</span> / <span id="totalVideos"><?= count($depoimentos) ?></span>
-                    </button>
-                    <button id="nextVideo" class="control-btn" title="Próximo">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
                 </div>
+                <button id="nextVideo" class="control-btn" title="Próximo">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
+        </div>
     </section>
-
+    
     <script>
-    // Dados dos depoimentos
-    const depoimentos = <?= json_encode($depoimentos) ?>;
-    let currentIndex = 0;
-    const videoPlayer = document.getElementById('videoPlayer');
-    const videoSource = document.getElementById('videoSource');
-
-    // Atualizar informações do depoimento
-    function updateDepoimentoInfo(index) {
-        const depoimento = depoimentos[index];
-        document.getElementById('depoimento-nome').textContent = depoimento.nome;
-        document.getElementById('depoimento-descricao').textContent = depoimento.descricao || '';
-        document.getElementById('currentVideo').textContent = index + 1;
-    }
-
-    // Carregar vídeo
-    function loadVideo(index) {
-        if (index >= 0 && index < depoimentos.length) {
-            currentIndex = index;
+        // Dados dos depoimentos
+        const depoimentos = <?= json_encode($depoimentos) ?>;
+        let currentIndex = 0;
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoSource = document.getElementById('videoSource');
+        
+        // Atualizar informações do depoimento
+        function updateDepoimentoInfo(index) {
             const depoimento = depoimentos[index];
-
-            // Remover ../ do caminho
-            const videoPath = depoimento.video.replace('../', '');
-            videoSource.src = videoPath;
-            videoPlayer.load();
-            videoPlayer.play();
-
-            updateDepoimentoInfo(index);
+            document.getElementById('depoimento-nome').textContent = depoimento.nome;
+            document.getElementById('depoimento-descricao').textContent = depoimento.descricao || '';
+            document.getElementById('currentVideo').textContent = index + 1;
         }
-    }
-
-    // Ir para próximo vídeo
-    function nextVideo() {
-        const next = (currentIndex + 1) % depoimentos.length;
-        loadVideo(next);
-    }
-
-    // Ir para vídeo anterior
-    function prevVideo() {
-        const prev = (currentIndex - 1 + depoimentos.length) % depoimentos.length;
-        loadVideo(prev);
-    }
-
-    // Auto-play: ir para próximo quando terminar
-    videoPlayer.addEventListener('ended', function() {
-        setTimeout(nextVideo, 1000);
-    });
-
-    // Event Listeners para os botões
-    document.getElementById('prevVideo')?.addEventListener('click', prevVideo);
-    document.getElementById('nextVideo')?.addEventListener('click', nextVideo);
+        
+        // Carregar vídeo
+        function loadVideo(index) {
+            if (index >= 0 && index < depoimentos.length) {
+                currentIndex = index;
+                const depoimento = depoimentos[index];
+                
+                // Remover ../ do caminho
+                const videoPath = depoimento.video.replace('../', '');
+                videoSource.src = videoPath;
+                videoPlayer.load();
+                videoPlayer.play();
+                
+                updateDepoimentoInfo(index);
+            }
+        }
+        
+        // Ir para próximo vídeo
+        function nextVideo() {
+            const next = (currentIndex + 1) % depoimentos.length;
+            loadVideo(next);
+        }
+        
+        // Ir para vídeo anterior
+        function prevVideo() {
+            const prev = (currentIndex - 1 + depoimentos.length) % depoimentos.length;
+            loadVideo(prev);
+        }
+        
+        // Auto-play: ir para próximo quando terminar
+        videoPlayer.addEventListener('ended', function() {
+            setTimeout(nextVideo, 1000);
+        });
+        
+        // Event Listeners para os botões
+        document.getElementById('prevVideo')?.addEventListener('click', prevVideo);
+        document.getElementById('nextVideo')?.addEventListener('click', nextVideo);
     </script>
     <?php endif; ?>
 
@@ -667,7 +694,7 @@ function getPosicaoIcon($posicao) {
                 </ul>
                 <a href="#contato" class="btn-plano btn-plano-destaque">Garantir Vaga</a>
             </div>
-
+            
             <!-- Plano Diamante -->
             <div class="plano-card plano-diamante">
                 <div class="plano-badge badge-diamante">Diamante</div>
@@ -703,14 +730,10 @@ function getPosicaoIcon($posicao) {
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
                 <div class="social-media" role="navigation" aria-label="Redes sociais">
-                    <a href="#" aria-label="Visite nosso Facebook" target="_blank" rel="noopener"><i
-                            class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Visite nosso Instagram" target="_blank" rel="noopener"><i
-                            class="fab fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Fale conosco no WhatsApp" target="_blank" rel="noopener"><i
-                            class="fab fa-whatsapp" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Visite nosso YouTube" target="_blank" rel="noopener"><i
-                            class="fab fa-youtube" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Visite nosso Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Visite nosso Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Fale conosco no WhatsApp" target="_blank" rel="noopener"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Visite nosso YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -782,19 +805,19 @@ function getPosicaoIcon($posicao) {
             </div>
         </div>
     </div>
-
+    
     <script>
     // Funções do Modal do Jogador
     function abrirModalJogador(element) {
         try {
             const jogadorDataStr = element.getAttribute('data-jogador');
             console.log('Data string:', jogadorDataStr); // Debug
-
+            
             const jogadorData = JSON.parse(jogadorDataStr);
             console.log('Parsed data:', jogadorData); // Debug
-
+            
             const modal = document.getElementById('modalJogador');
-
+            
             document.getElementById('modalFoto').src = jogadorData.foto || '';
             document.getElementById('modalNumero').textContent = jogadorData.numero || '';
             document.getElementById('modalNome').textContent = jogadorData.nome || '';
@@ -804,7 +827,7 @@ function getPosicaoIcon($posicao) {
             document.getElementById('modalPeso').textContent = jogadorData.peso || '-';
             document.getElementById('modalDataNascimento').textContent = jogadorData.dataNascimento || '-';
             document.getElementById('modalPosicao').textContent = jogadorData.posicao || '';
-
+            
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         } catch (error) {
@@ -812,20 +835,20 @@ function getPosicaoIcon($posicao) {
             alert('Erro ao carregar informações do jogador');
         }
     }
-
+    
     function fecharModalJogador() {
         const modal = document.getElementById('modalJogador');
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-
+    
     // Fechar modal ao clicar fora
     document.getElementById('modalJogador')?.addEventListener('click', function(e) {
         if (e.target === this) {
             fecharModalJogador();
         }
     });
-
+    
     // Fechar modal com tecla ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -833,9 +856,8 @@ function getPosicaoIcon($posicao) {
         }
     });
     </script>
-
+    
     <script src="assets/js/script.min.js" defer></script>
     <script src="assets/js/lazy-loader.min.js" defer></script>
 </body>
-
 </html>

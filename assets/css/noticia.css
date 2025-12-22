@@ -275,8 +275,13 @@
 
 .mini-data i {
     color: var(--vermelho-primario);
-}
+}s-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .noticia
 
+/* Responsivo */
 @media (max-width: 768px) {
     .noticia-completa {
         padding: 40px 5% 30px;
@@ -311,10 +316,6 @@
         width: 40px;
         height: 40px;
         font-size: 1.1rem;
-    }
-
-    .noticias-grid {
-        grid-template-columns: 1fr;
     }
 }
 
