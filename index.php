@@ -139,34 +139,6 @@ function getPosicaoIcon($posicao) {
             object-position: center;
         }
         
-        /* Navegação */
-        .banner-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            color: white;
-            font-size: 2rem;
-            padding: 20px;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        
-        .banner-nav:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-        
-        .banner-prev {
-            left: 20px;
-        }
-        
-        .banner-next {
-            right: 20px;
-        }
-        
         /* Indicadores */
         .banner-indicators {
             position: absolute;
@@ -204,19 +176,6 @@ function getPosicaoIcon($posicao) {
             .banner-carousel {
                 height: 50vh;
                 min-height: 350px;
-            }
-            
-            .banner-nav {
-                font-size: 1.5rem;
-                padding: 15px;
-            }
-            
-            .banner-prev {
-                left: 10px;
-            }
-            
-            .banner-next {
-                right: 10px;
             }
             
             .banner-indicators {
@@ -280,14 +239,6 @@ function getPosicaoIcon($posicao) {
                 <img src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
             </div>
         </div>
-        
-        <!-- Navegação do Carrossel -->
-        <button class="banner-nav banner-prev" aria-label="Banner anterior">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="banner-nav banner-next" aria-label="Próximo banner">
-            <i class="fas fa-chevron-right"></i>
-        </button>
         
         <!-- Indicadores -->
         <div class="banner-indicators">
@@ -1010,11 +961,16 @@ function getPosicaoIcon($posicao) {
     
     <!-- Script do Carrossel de Banners -->
     <script>
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const slides = document.querySelectorAll('.banner-slide');
         const indicators = document.querySelectorAll('.indicator');
-        const prevBtn = document.querySelector('.banner-prev');
-        const nextBtn = document.querySelector('.banner-next');
+        const carousel = document.querySelector('.banner-carousel');
+        
+        if (!slides.length || !indicators.length) {
+            console.error('Elementos do carrossel não encontrados');
+            return;
+        }
+        
         let currentSlide = 0;
         let autoPlayInterval;
         
@@ -1041,56 +997,45 @@ function getPosicaoIcon($posicao) {
         
         // Auto-play
         function startAutoPlay() {
+            stopAutoPlay();
             autoPlayInterval = setInterval(nextSlide, 5000);
         }
         
         function stopAutoPlay() {
-            clearInterval(autoPlayInterval);
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
         }
-        
-        // Event listeners
-        prevBtn.addEventListener('click', function() {
-            prevSlide();
-            stopAutoPlay();
-            startAutoPlay();
-        });
-        
-        nextBtn.addEventListener('click', function() {
-            nextSlide();
-            stopAutoPlay();
-            startAutoPlay();
-        });
         
         // Indicadores
         indicators.forEach(function(indicator, index) {
             indicator.addEventListener('click', function() {
                 goToSlide(index);
-                stopAutoPlay();
                 startAutoPlay();
             });
         });
         
         // Pausar auto-play ao passar o mouse
-        const carousel = document.querySelector('.banner-carousel');
-        carousel.addEventListener('mouseenter', stopAutoPlay);
-        carousel.addEventListener('mouseleave', startAutoPlay);
+        if (carousel) {
+            carousel.addEventListener('mouseenter', stopAutoPlay);
+            carousel.addEventListener('mouseleave', startAutoPlay);
+        }
         
         // Controle por teclado
         document.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowLeft') {
                 prevSlide();
-                stopAutoPlay();
                 startAutoPlay();
             } else if (e.key === 'ArrowRight') {
                 nextSlide();
-                stopAutoPlay();
                 startAutoPlay();
             }
         });
         
         // Iniciar auto-play
+        console.log('Carrossel iniciado com auto-play');
         startAutoPlay();
-    })();
+    });
     </script>
     
     <script src="assets/js/script.min.js" defer></script>
