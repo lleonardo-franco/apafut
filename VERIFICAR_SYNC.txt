@@ -1,0 +1,69 @@
+DIAGNÓSTICO: LOCAL vs HOSTINGER DESSINCRONIZADOS
+================================================
+
+STATUS ATUAL:
+✅ Git local sincronizado com GitHub (origin/main)
+✅ Último commit: 6e52010 - Otimização do carrossel de banners
+❌ Hostinger desatualizada (não está fazendo pull)
+
+POSSÍVEIS CAUSAS:
+-----------------
+1. Deploy automático não está ativado
+2. Webhook não configurado corretamente
+3. Erro no último deploy que travou o sistema
+4. Branch errada configurada na Hostinger
+
+SOLUÇÃO IMEDIATA:
+-----------------
+Na tela que você mostrou (Gerenciar repositórios), faça o seguinte:
+
+1. Clique em "Visualizar resultado da última compilação"
+   - Verifique se há erros
+   - Anote qual é o último commit que foi feito deploy
+
+2. Verifique o RAMO (branch):
+   - Confirme que está em "main"
+   - Se estiver em outra branch, isso explica o problema
+
+3. Clique em "Implantar" AGORA
+   - Isso força um git pull
+   - Aguarde finalizar
+
+4. Depois de implantar, clique novamente em:
+   "Visualizar resultado da última compilação"
+   - Confirme que o commit 6e52010 aparece nos logs
+
+5. Para evitar isso no futuro:
+   - Ative a "Implantação automática"
+   - Isso fará deploy a cada push no GitHub
+
+COMO VERIFICAR SE SINCRONIZOU:
+------------------------------
+Após clicar em "Implantar", acesse o site e:
+
+1. Abra: https://apafutoficial.com.br
+2. Aperte F12 (DevTools)
+3. Vá na aba "Console"
+4. Recarregue a página (F5)
+5. Procure pela mensagem: "Carrossel iniciado com auto-play"
+   - Se aparecer = SINCRONIZADO ✅
+   - Se não aparecer = AINDA DESATUALIZADO ❌
+
+COMMITS QUE DEVEM ESTAR NA HOSTINGER:
+--------------------------------------
+✓ 6e52010 - Otimização do carrossel (ÚLTIMO)
+✓ c7bed71 - ajuste banner
+✓ 17a05fd - Banners inicio da página
+✓ 2d5fc6b - voltando site
+
+Se a Hostinger estiver em um commit mais antigo que esses,
+significa que o deploy automático realmente não está funcionando.
+
+ALTERNATIVA: VERIFICAR COMMIT ATUAL NA HOSTINGER
+-------------------------------------------------
+No painel Git da Hostinger, deve mostrar qual é o commit atual.
+Compare com o último local: 6e52010
+
+Se forem diferentes:
+→ Clique em "Implantar"
+→ Ative "Implantação automática"

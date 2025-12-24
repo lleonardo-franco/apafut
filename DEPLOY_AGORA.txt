@@ -1,0 +1,55 @@
+DEPLOY MANUAL - APAFUT
+========================
+
+ARQUIVO ALTERADO:
+✓ index.php (otimização do carrossel de banners)
+
+COMO FAZER O DEPLOY:
+
+MÉTODO 1 - VIA PAINEL HOSTINGER (MAIS FÁCIL)
+---------------------------------------------
+1. Acesse: https://hpanel.hostinger.com/
+2. Faça login
+3. Vá em "File Manager" (Gerenciador de Arquivos)
+4. Navegue até: /domains/apafutoficial.com.br/public_html/
+5. Localize o arquivo "index.php"
+6. Clique em "Upload" e selecione o arquivo local:
+   C:\xampp\htdocs\apafut\index.php
+7. Confirme a substituição
+
+MÉTODO 2 - VIA FILEZILLA
+-------------------------
+1. Abra o FileZilla
+2. Conecte com suas credenciais SFTP:
+   - Host: sftp://ftp.apafutoficial.com.br
+   - Porta: 22
+   - Usuário: [seu usuário FTP]
+   - Senha: [sua senha FTP]
+3. Navegue até: /domains/apafutoficial.com.br/public_html/
+4. Arraste o arquivo "index.php" de:
+   C:\xampp\htdocs\apafut\index.php
+5. Confirme a substituição
+
+MÉTODO 3 - VIA GIT NA HOSTINGER
+--------------------------------
+1. Acesse o painel Hostinger
+2. Vá em "Avançado" → "Git"
+3. Se já tiver configurado, clique em "Pull"
+4. Se não tiver, configure:
+   - Repository URL: https://github.com/lleonardo-franco/apafut.git
+   - Branch: main
+   - Deploy path: /domains/apafutoficial.com.br/public_html
+
+ALTERAÇÕES FEITAS:
+------------------
+- Removidos botões de navegação do carrossel (setas laterais)
+- Melhorias no código JavaScript do carrossel
+- Correção de erros e otimização de performance
+- Navegação agora funciona apenas por indicadores e auto-play
+
+TESTE APÓS O DEPLOY:
+--------------------
+1. Acesse: https://apafutoficial.com.br
+2. Verifique se o carrossel de banners está funcionando
+3. Teste se os indicadores (bolinhas) estão funcionando
+4. Confirme se o auto-play está ativo (muda a cada 5 segundos)

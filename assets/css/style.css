@@ -2930,34 +2930,26 @@ video {
 
 .planos-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: clamp(1.25rem, 2.5vw, 2rem);
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
     padding: 0 clamp(1rem, 3vw, 2rem);
-    container-type: inline-size;
-}
-
-@supports (grid-template-columns: subgrid) {
-    .planos-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-    }
 }
 
 /* Layout otimizado para diferentes larguras */
-@media (min-width: 768px) and (max-width: 1199px) {
+@media (max-width: 1024px) {
     .planos-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 640px) {
     .planos-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 }
 
