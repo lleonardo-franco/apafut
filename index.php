@@ -81,8 +81,8 @@ function getPosicaoIcon($posicao) {
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous" async></script>
     
     <!-- css com preload -->
-    <link rel="preload" href="assets/css/style.min.css" as="style">
-    <link rel="stylesheet" href="assets/css/style.min.css">
+    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .skip-link {
             position: absolute;
@@ -249,19 +249,12 @@ function getPosicaoIcon($posicao) {
     </section>
     
     <section>
-        <!-- Notícias -->
-        <section id="noticias" class="noticias">
-            <div class="noticias-header">
-                <h2>Últimas Notícias</h2>
-                <p>Fique por dentro de tudo que acontece na Apafut</p>
-            </div>
-            
-            <div class="noticias-carousel">
-                <button class="carousel-nav prev-noticia" aria-label="Notícia anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="noticias-container">
+        <!-- Destaques -->
+        <section id="noticias" class="destaques-section">
+            <div class="destaques-container">
+                <div class="destaques-wrapper">
+                    <h2 class="destaques-titulo">DESTAQUES</h2>
+                    
                     <?php
                     // Buscar notícias ativas do banco de dados
                     try {
@@ -269,7 +262,7 @@ function getPosicaoIcon($posicao) {
                         $conn = getConnection();
                         
                         $stmt = $conn->query("
-                            SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                            SELECT id, titulo, imagem, data_publicacao 
                             FROM noticias 
                             WHERE ativo = 1 
                             ORDER BY destaque DESC, data_publicacao DESC 
@@ -277,72 +270,100 @@ function getPosicaoIcon($posicao) {
                         ");
                         $noticias = $stmt->fetchAll();
                         
-                        if (empty($noticias)) {
-                            echo '<p style="text-align: center; padding: 40px;">Nenhuma notícia disponível no momento.</p>';
-                        } else {
-                            $first = true;
-                            foreach ($noticias as $noticia):
-                                $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
-                                
-                                // Formatar data em português
-                                $mesesPt = [
-                                    'Jan' => 'Jan', 'Feb' => 'Fev', 'Mar' => 'Mar', 'Apr' => 'Abr',
-                                    'May' => 'Mai', 'Jun' => 'Jun', 'Jul' => 'Jul', 'Aug' => 'Ago',
-                                    'Sep' => 'Set', 'Oct' => 'Out', 'Nov' => 'Nov', 'Dec' => 'Dez'
-                                ];
-                                $dataEn = date('d M Y', strtotime($noticia['data_publicacao']));
-                                $dataFormatada = str_replace(array_keys($mesesPt), array_values($mesesPt), $dataEn);
-                    ?>
-                        <div class="noticia-card <?= $first ? 'active' : '' ?>" data-noticia="<?= $noticia['id'] ?>">
-                            <div class="noticia-imagem">
-                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" loading="lazy" width="400" height="250">
-                                <div class="patrocinadores-faixa">
-                                    <div class="patrocinadores-track">
-                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
-                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
-                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
-                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
-                                        <img src="assets/ucs.png" alt="UCS" loading="lazy" width="150" height="80">
-                                        <img src="assets/brisa.png" alt="Brisa" loading="lazy" width="150" height="80">
-                                        <img src="assets/saltur.png" alt="Saltur" loading="lazy" width="150" height="80">
-                                        <img src="assets/chiesa.png" alt="Chiesa" loading="lazy" width="150" height="80">
-                                    </div>
-                                </div>
-                                <div class="noticia-categoria"><?= htmlspecialchars($noticia['categoria']) ?></div>
-                                <div class="noticia-data">
-                                    <i class="far fa-calendar"></i> <?= $dataFormatada ?>
-                                </div>
-                            </div>
-                            <div class="noticia-conteudo">
-                                <h3><?= htmlspecialchars($noticia['titulo']) ?></h3>
-                                <p class="noticia-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
-                                <a href="noticia.php?id=<?= $noticia['id'] ?>" class="btn-noticia">
-                                    Ler mais <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    <?php
-                                $first = false;
-                            endforeach;
+                        // Preencher com dados padrão se não houver notícias suficientes
+                        while (count($noticias) < 6) {
+                            $noticias[] = [
+                                'id' => 0,
+                                'titulo' => 'Notícia em breve',
+                                'imagem' => 'assets/hero.png',
+                                'data_publicacao' => date('Y-m-d')
+                            ];
                         }
+                        
+                        // Notícia principal
+                        $principal = $noticias[0];
+                        $imagemPrincipal = !empty($principal['imagem']) ? htmlspecialchars($principal['imagem']) : 'assets/img2.png';
+                        $dataPrincipal = date('d/m/Y', strtotime($principal['data_publicacao']));
+                    ?>
+                    
+                    <div class="destaque-card destaque-card-principal">
+                        <a href="noticia.php?id=<?= $principal['id'] ?>" class="destaque-link">
+                            <img src="assets/princiapl.png" alt="<?= htmlspecialchars($principal['titulo']) ?>" class="destaque-imagem">
+                            <div class="destaque-chamada">
+                                <span class="destaque-data"><?= $dataPrincipal ?></span>
+                                <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="destaques-grid-secundario">
+                        <?php 
+                        // Primeiro card secundário (esquerda)
+                        $noticia = $noticias[1];
+                        $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
+                        $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
+                        ?>
+                        <div class="destaque-card destaque-card-secundario">
+                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
+                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem">
+                                <div class="destaque-chamada">
+                                    <span class="destaque-data"><?= $dataNoticia ?></span>
+                                    <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                </div>
+                            </a>
+                        </div>
+
+                        <?php 
+                        // Segundo card secundário (direita) - foto manual
+                        $noticia = $noticias[2];
+                        $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
+                        ?>
+                        <div class="destaque-card destaque-card-secundario">
+                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
+                                <img src="assets/goleiros.jpg" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem">
+                                <div class="destaque-chamada">
+                                    <span class="destaque-data"><?= $dataNoticia ?></span>
+                                    <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="destaques-grid-terciario">
+                        <?php 
+                        // Cards terciários com fotos manuais diferentes
+                        $imagensTerciarias = ['assets/img3.jpg', 'assets/doacaosangue2.jpg', 'assets/Criancabeneficiente.jpg'];
+                        
+                        for ($i = 3; $i <= 5; $i++):
+                            $noticia = $noticias[$i];
+                            $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
+                            $imagemManual = $imagensTerciarias[$i - 3];
+                        ?>
+                        <div class="destaque-card destaque-card-terciario">
+                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
+                                <img src="<?= $imagemManual ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem">
+                                <div class="destaque-chamada">
+                                    <span class="destaque-data"><?= $dataNoticia ?></span>
+                                    <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                </div>
+                            </a>
+                        </div>
+                        <?php endfor; ?>
+                    </div>
+                    
+                    <div class="destaques-botao-container">
+                        <a href="noticias.php" class="btn-ver-todas-noticias">
+                            Ver todas as notícias <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    
+                    <?php
                     } catch (Exception $e) {
-                        logError('Erro ao carregar notícias no index', ['error' => $e->getMessage()]);
-                        echo '<p style="text-align: center; padding: 40px;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
+                        error_log('Erro ao carregar notícias: ' . $e->getMessage());
+                        echo '<p style="padding: 40px; text-align: center;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
                     }
                     ?>
                 </div>
-                
-                <button class="carousel-nav next-noticia" aria-label="Ver próxima notícia" tabindex="0">
-                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                </button>
-            </div>
-
-            <div class="carousel-dots" id="noticias-dots" role="tablist" aria-label="Navegação entre notícias">
-                <?php if (!empty($noticias)): ?>
-                    <?php for ($i = 0; $i < count($noticias); $i++): ?>
-                        <button class="dot <?= $i === 0 ? 'active' : '' ?>" data-slide="<?= $i ?>" role="tab" aria-label="Ir para notícia <?= $i + 1 ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>" tabindex="<?= $i === 0 ? '0' : '-1' ?>"></button>
-                    <?php endfor; ?>
-                <?php endif; ?>
             </div>
         </section>
 
