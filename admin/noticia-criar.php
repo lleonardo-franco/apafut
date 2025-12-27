@@ -288,32 +288,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <script>
-        // Debug: verificar se o formulário está sendo submetido
-        document.querySelector('form').addEventListener('submit', function(e) {
-            console.log('Form submit triggered!');
-            console.log('Título:', document.getElementById('titulo').value);
-            console.log('Categoria:', document.getElementById('categoria').value);
-            console.log('Resumo:', document.getElementById('resumo').value);
+        console.log('Script carregado!');
+        
+        // Aguardar o DOM estar pronto
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM ready!');
             
-            if (typeof tinymce !== 'undefined' && tinymce.get('conteudo')) {
-                tinymce.get('conteudo').save();
-                console.log('TinyMCE content:', tinymce.get('conteudo').getContent());
+            const form = document.querySelector('form');
+            console.log('Form encontrado:', form);
+            
+            if (!form) {
+                console.error('ERRO: Formulário não encontrado!');
+                return;
             }
             
-            // Verificar se todos os campos obrigatórios estão preenchidos
-            const titulo = document.getElementById('titulo').value;
-            const categoria = document.getElementById('categoria').value;
-            const resumo = document.getElementById('resumo').value;
-            const conteudo = document.getElementById('conteudo').value;
-            
-            if (!titulo || !categoria || !resumo || !conteudo) {
-                console.error('Campos obrigatórios vazios!');
-                alert('Por favor, preencha todos os campos obrigatórios');
-                e.preventDefault();
-                return false;
-            }
-            
-            console.log('Form validation passed, submitting...');
+            // Debug: verificar se o formulário está sendo submetido
+            form.addEventListener('submit', function(e) {
+                console.log('=== FORM SUBMIT TRIGGERED ===');
+                console.log('Título:', document.getElementById('titulo').value);
+                console.log('Categoria:', document.getElementById('categoria').value);
+                console.log('Resumo:', document.getElementById('resumo').value);
+                
+                // Sincronizar TinyMCE
+                if (typeof tinymce !== 'undefined' && tinymce.get('conteudo')) {
+                    tinymce.get('conteudo').save();
+                    console.log('TinyMCE synced. Content length:', document.getElementById('conteudo').value.length);
+                } else {
+                    console.warn('TinyMCE não inicializado ainda');
+                }
+            });
         });
         
         // Inicializar TinyMCE
