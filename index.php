@@ -555,7 +555,7 @@ function getPosicaoIcon($posicao) {
         <!-- Time Profissional -->
         <section id="profissional" class="time-profissional">
             <div class="profissional-title">
-                <h2 style="font-family: 'Brush Script MT', cursive; font-style: italic; font-size: 4rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px;">PROFISSIONAL</h2>
+                <h2>PROFISSIONAL</h2>
                 <div class="profissional-categorias" style="display: flex; gap: 40px; justify-content: center; margin-bottom: 40px;">
                     <span style="font-size: 1.5rem; color: #fff; font-weight: 400; letter-spacing: 2px;">MASCULINO</span>
                 </div>

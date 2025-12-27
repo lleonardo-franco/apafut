@@ -163,39 +163,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Toggle detalhes das categorias - NOVA ABORDAGEM COM DELEGAÇÃO
+    // Toggle detalhes das categorias - Clique no card inteiro ou no h3
     const categoriasSection = document.querySelector('#categorias');
     
     if (categoriasSection) {
-        categoriasSection.addEventListener('click', function(e) {
-            // Verificar se o clique foi em um h3 dentro de um card com data-categoria
-            const clickedTitle = e.target.closest('.card[data-categoria] h3');
+        // Adicionar evento de clique em cada card
+        const categoriaCards = categoriasSection.querySelectorAll('.card[data-categoria]');
+        
+        categoriaCards.forEach(card => {
+            const title = card.querySelector('h3');
             
-            if (clickedTitle) {
-                e.stopPropagation();
-                e.preventDefault();
+            if (title) {
+                // Adicionar cursor pointer no h3
+                title.style.cursor = 'pointer';
                 
-                // Encontrar o card pai
-                const parentCard = clickedTitle.closest('.card[data-categoria]');
-                
-                if (parentCard) {
-                    // Pegar o valor único do data-categoria
-                    const categoria = parentCard.getAttribute('data-categoria');
-                    
+                // Adicionar evento no card inteiro
+                card.addEventListener('click', function(e) {
                     // Verificar se este card está ativo
-                    const isActive = parentCard.classList.contains('active');
+                    const isActive = this.classList.contains('active');
                     
                     // Remover active de TODOS os cards
-                    const allCards = categoriasSection.querySelectorAll('.card[data-categoria]');
-                    allCards.forEach(card => card.classList.remove('active'));
+                    categoriaCards.forEach(c => c.classList.remove('active'));
                     
                     // Se não estava ativo, ativar apenas este
                     if (!isActive) {
-                        parentCard.classList.add('active');
+                        this.classList.add('active');
                     }
-                }
+                });
             }
-        }, false);
+        });
     }
 
     // Carrossel de Jogadores
