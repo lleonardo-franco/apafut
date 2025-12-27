@@ -8,6 +8,13 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // Log dos dados recebidos
+        logError('POST recebido em noticia-criar.php', [
+            'post_keys' => array_keys($_POST),
+            'files_keys' => array_keys($_FILES),
+            'titulo' => $_POST['titulo'] ?? 'vazio'
+        ]);
+        
         $conn = getConnection();
         
         // Validar dados
@@ -63,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Inserir notícia
         $stmt = $conn->prepare("
-            INSERT INTO noticias (titulo, categoria, resumo, conteudo, imagem, autor, tempo_leitura, data_publicacao, ativo, destaque, status, data_agendamento)
-            VALUES (:titulo, :categoria, :resumo, :conteudo, :imagem, :autor, :tempo_leitura, :data_publicacao, :ativo, :destaque, :status, :data_agendamento)
+            INSERT INTO noticias (titulo, categoria, resumo, conteudo, imagem, autor, tempo_leitura, data_publicacao, ativo, destaque, ordem, status, data_agendamento)
+            VALUES (:titulo, :categoria, :resumo, :conteudo, :imagem, :autor, :tempo_leitura, :data_publicacao, :ativo, :destaque, 0, :status, :data_agendamento)
         ");
         
         $stmt->bindParam(':titulo', $titulo);
@@ -80,7 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':data_agendamento', $data_agendamento);
         
-        $stmt->execute();
+        $result = $stmt->execute();
+        
+        logError('Resultado do INSERT', [
+            'success' => $result,
+            'rowCount' => $stmt->rowCount(),
+            'errorInfo' => $stmt->errorInfo()
+        ]);
         
         $noticiaId = $conn->lastInsertId();
         
