@@ -5,17 +5,7 @@
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-}
 
-.noticia-hero {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.noticia-categoria-tag {
-    display: inline-block;
-    padding: 6px 16px;
-    background: var(--vermelho-primario);
     color: white;
     font-size: 0.85em;
     font-weight: 600;
@@ -113,6 +103,57 @@
     font-style: normal;
 }
 
+/* Bloco de Depoimento - Fundo branco sem gradiente */
+.noticia-depoimento {
+    margin: 32px 0;
+    padding: 28px 32px;
+    background: #fff;
+    border-radius: 10px;
+    border-left: 3px solid #eb3835;
+    box-shadow: none;
+    position: relative;
+}
+
+/* Remover qualquer bloco extra de fundo se existir */
+.noticia-depoimento-bg, .depoimento-bg {
+    display: none !important;
+}
+
+.depoimento-icon {
+    display: none;
+}
+
+.depoimento-texto {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.depoimento-texto p {
+    font-size: 1.13rem;
+    line-height: 1.7;
+    color: #003366;
+    font-style: italic;
+    margin-bottom: 18px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.depoimento-autor {
+    margin-top: 0;
+    font-style: normal;
+    color: #222;
+    font-size: 1rem;
+    border: none;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    display: block;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
 .noticia-compartilhar {
     margin-top: 40px;
     padding-top: 30px;
@@ -184,13 +225,8 @@
     transform: translateX(-3px);
 }
 
-/* Notícias Relacionadas */
-.noticias-relacionadas {
     padding: 60px 5%;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-}
 
-.noticias-relacionadas .container {
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -242,12 +278,7 @@
     gap: 8px;
 }
 
-.mini-categoria {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--vermelho-primario);
-    color: white;
-    font-size: 0.75em;
+
     border-radius: 12px;
     margin-bottom: 4px;
     text-transform: uppercase;

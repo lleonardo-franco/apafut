@@ -26,9 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tempo_leitura = Security::validateInt($_POST['tempo_leitura'] ?? 5, 1);
         $ativo = isset($_POST['ativo']) ? 1 : 0;
         $destaque = isset($_POST['destaque']) ? 1 : 0;
+        $ordem = Security::validateInt($_POST['ordem'] ?? 0, 0);
         $data_publicacao = $_POST['data_publicacao'] ?? date('Y-m-d');
         $status = Security::sanitizeString($_POST['status'] ?? 'publicado');
         $data_agendamento = !empty($_POST['data_agendamento']) ? $_POST['data_agendamento'] : null;
+        
+        // Campos específicos de depoimentos
+        $depoimento_texto = Security::sanitizeString($_POST['depoimento_texto'] ?? '');
+        $depoimento_autor = Security::sanitizeString($_POST['depoimento_autor'] ?? '');
         
         if (empty($titulo) || empty($categoria) || empty($resumo) || empty($conteudo)) {
             throw new Exception('Por favor, preencha todos os campos obrigatórios');
@@ -70,26 +75,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Inserir notícia
         $stmt = $conn->prepare("
-            INSERT INTO noticias (titulo, categoria, resumo, conteudo, imagem, autor, tempo_leitura, data_publicacao, ativo, destaque, ordem, status, data_agendamento)
-            VALUES (:titulo, :categoria, :resumo, :conteudo, :imagem, :autor, :tempo_leitura, :data_publicacao, :ativo, :destaque, 0, :status, :data_agendamento)
+            INSERT INTO noticias (titulo, categoria, resumo, conteudo, depoimento_texto, depoimento_autor, imagem, autor, tempo_leitura, data_publicacao, ativo, destaque, ordem, status, data_agendamento)
+            VALUES (:titulo, :categoria, :resumo, :conteudo, :depoimento_texto, :depoimento_autor, :imagem, :autor, :tempo_leitura, :data_publicacao, :ativo, :destaque, :ordem, :status, :data_agendamento)
         ");
         
         $stmt->bindParam(':titulo', $titulo);
         $stmt->bindParam(':categoria', $categoria);
         $stmt->bindParam(':resumo', $resumo);
         $stmt->bindParam(':conteudo', $conteudo);
+        $stmt->bindParam(':depoimento_texto', $depoimento_texto);
+        $stmt->bindParam(':depoimento_autor', $depoimento_autor);
         $stmt->bindParam(':imagem', $imagem);
         $stmt->bindParam(':autor', $autor);
         $stmt->bindParam(':tempo_leitura', $tempo_leitura);
         $stmt->bindParam(':data_publicacao', $data_publicacao);
         $stmt->bindParam(':ativo', $ativo);
         $stmt->bindParam(':destaque', $destaque);
+        $stmt->bindParam(':ordem', $ordem);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':data_agendamento', $data_agendamento);
         
         $result = $stmt->execute();
         
-        logError('Resultado do INSERT', [
+        logError('Resultado do INSERT notícia', [
             'success' => $result,
             'rowCount' => $stmt->rowCount(),
             'errorInfo' => $stmt->errorInfo()
@@ -168,8 +176,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="Categorias de Base" <?= ($_POST['categoria'] ?? '') === 'Categorias de Base' ? 'selected' : '' ?>>Categorias de Base</option>
                                 <option value="Infraestrutura" <?= ($_POST['categoria'] ?? '') === 'Infraestrutura' ? 'selected' : '' ?>>Infraestrutura</option>
                                 <option value="Eventos" <?= ($_POST['categoria'] ?? '') === 'Eventos' ? 'selected' : '' ?>>Eventos</option>
+                                <option value="Depoimentos" <?= ($_POST['categoria'] ?? '') === 'Depoimentos' ? 'selected' : '' ?>>Depoimentos</option>
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="posicao_card">
+                                <i class="fas fa-sort-numeric-down"></i> Posição do Card na Home
+                            </label>
+                            <select id="posicao_card" name="ordem">
+                                <option value="0" <?= ($_POST['ordem'] ?? '0') === '0' ? 'selected' : '' ?>>Automático</option>
+                                <option value="1" <?= ($_POST['ordem'] ?? '') === '1' ? 'selected' : '' ?>>Card Principal (1º - Grande)</option>
+                                <option value="2" <?= ($_POST['ordem'] ?? '') === '2' ? 'selected' : '' ?>>Card Secundário Esquerda (2º)</option>
+                                <option value="3" <?= ($_POST['ordem'] ?? '') === '3' ? 'selected' : '' ?>>Card Secundário Direita (3º)</option>
+                                <option value="4" <?= ($_POST['ordem'] ?? '') === '4' ? 'selected' : '' ?>>Card Terciário 1 (4º)</option>
+                                <option value="5" <?= ($_POST['ordem'] ?? '') === '5' ? 'selected' : '' ?>>Card Terciário 2 (5º)</option>
+                                <option value="6" <?= ($_POST['ordem'] ?? '') === '6' ? 'selected' : '' ?>>Card Terciário 3 (6º)</option>
+                            </select>
+                            <small class="form-help">
+                                <i class="fas fa-info-circle"></i> Define a posição desta notícia nos destaques da página inicial
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
 
                         <div class="form-group">
                             <label for="data_publicacao">Data de Publicação *</label>
@@ -181,6 +211,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="number" id="tempo_leitura" name="tempo_leitura" min="1" value="<?= $_POST['tempo_leitura'] ?? 5 ?>">
                         </div>
                     </div>
+                    
+                    <!-- Campos específicos para Depoimentos -->
+                    <div id="campos-depoimento" style="display: none;">
+                        <div class="form-row" style="background: #f8f9fa; padding: 20px; border-radius: 12px; border-left: 4px solid var(--vermelho-primario); margin-bottom: 20px;">
+                            <div class="form-group" style="flex: 2;">
+                                <label for="depoimento_texto">
+                                    <i class="fas fa-quote-left"></i> Texto do Depoimento (Opcional)
+                                </label>
+                                <textarea id="depoimento_texto" name="depoimento_texto" rows="4" placeholder="Digite o depoimento de quem a notícia está falando..."><?= htmlspecialchars($_POST['depoimento_texto'] ?? '') ?></textarea>
+                                <small class="form-help">
+                                    <i class="fas fa-info-circle"></i> Use este campo quando a notícia incluir uma citação ou depoimento de alguém
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="depoimento_autor">
+                                    <i class="fas fa-user"></i> Nome da Pessoa (Opcional)
+                                </label>
+                                <input type="text" id="depoimento_autor" name="depoimento_autor" placeholder="Ex: João Silva" value="<?= htmlspecialchars($_POST['depoimento_autor'] ?? '') ?>">
+                                <small class="form-help">
+                                    <i class="fas fa-info-circle"></i> Nome de quem deu o depoimento
+                                </small>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="resumo">Resumo *</label>
@@ -190,6 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-group">
                         <label for="conteudo">Conteúdo *</label>
                         <textarea id="conteudo" name="conteudo" rows="15" required><?= htmlspecialchars($_POST['conteudo'] ?? '') ?></textarea>
+                        <small style="color: #999;">MODO DEBUG: Editor de texto simples (TinyMCE temporariamente desabilitado)</small>
                     </div>
 
                     <div class="form-row">
@@ -275,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" onclick="console.log('BOTÃO CLICADO!'); return true;">
                             <i class="fas fa-save"></i> Criar Notícia
                         </button>
                         <a href="noticias.php" class="btn btn-light">
@@ -319,6 +375,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
         
+        // TEMPORARIAMENTE DESABILITADO PARA DEBUG
+        /*
         // Inicializar TinyMCE
         tinymce.init({
             selector: '#conteudo',
@@ -337,8 +395,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_picker_types: 'image',
             paste_data_images: true,
             branding: false,
-            promotion: false
+            promotion: false,
+            setup: function(editor) {
+                console.log('TinyMCE setup callback');
+                editor.on('init', function() {
+                    console.log('TinyMCE inicializado com sucesso!');
+                });
+            }
         });
+        */
+        
+        // Controlar exibição dos campos de depoimento
+        const categoriaSelect = document.getElementById('categoria');
+        const camposDepoimento = document.getElementById('campos-depoimento');
+        const depoimentoTexto = document.getElementById('depoimento_texto');
+        const depoimentoAutor = document.getElementById('depoimento_autor');
+        
+        function toggleCamposDepoimento() {
+            if (categoriaSelect.value === 'Depoimentos') {
+                camposDepoimento.style.display = 'block';
+                // Campos opcionais, não obrigatórios
+                depoimentoTexto.required = false;
+                depoimentoAutor.required = false;
+            } else {
+                camposDepoimento.style.display = 'none';
+                depoimentoTexto.required = false;
+                depoimentoAutor.required = false;
+            }
+        }
+        
+        categoriaSelect.addEventListener('change', toggleCamposDepoimento);
+        toggleCamposDepoimento(); // Verificar estado inicial
         
         // Preview de imagem
         const imagemInput = document.getElementById('imagem');

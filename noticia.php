@@ -189,6 +189,15 @@ try {
 
                     <p>Na disputa de pênaltis, o goleiro Thiago Costa foi o grande herói, defendendo duas cobranças e garantindo o título para a academia.</p>
                 <?php endif; ?>
+                
+                <?php if (!empty($noticia['depoimento_texto']) && !empty($noticia['depoimento_autor'])): ?>
+                    <blockquote class="noticia-depoimento">
+                        <p><?= nl2br(htmlspecialchars($noticia['depoimento_texto'])) ?></p>
+                        <footer class="depoimento-autor">
+                            <?= htmlspecialchars($noticia['depoimento_autor']) ?>
+                        </footer>
+                    </blockquote>
+                <?php endif; ?>
             </div>
 
             <div class="noticia-compartilhar">
@@ -267,3 +276,5 @@ try {
     </footer>
 
     <script src="assets/js/script.min.js" defer></script>
+</body>
+</html>
