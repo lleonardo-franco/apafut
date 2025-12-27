@@ -288,6 +288,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <script>
+        // Debug: verificar se o formulário está sendo submetido
+        document.querySelector('form').addEventListener('submit', function(e) {
+            console.log('Form submit triggered!');
+            console.log('Título:', document.getElementById('titulo').value);
+            console.log('Categoria:', document.getElementById('categoria').value);
+            console.log('Resumo:', document.getElementById('resumo').value);
+            
+            if (typeof tinymce !== 'undefined' && tinymce.get('conteudo')) {
+                tinymce.get('conteudo').save();
+                console.log('TinyMCE content:', tinymce.get('conteudo').getContent());
+            }
+            
+            // Verificar se todos os campos obrigatórios estão preenchidos
+            const titulo = document.getElementById('titulo').value;
+            const categoria = document.getElementById('categoria').value;
+            const resumo = document.getElementById('resumo').value;
+            const conteudo = document.getElementById('conteudo').value;
+            
+            if (!titulo || !categoria || !resumo || !conteudo) {
+                console.error('Campos obrigatórios vazios!');
+                alert('Por favor, preencha todos os campos obrigatórios');
+                e.preventDefault();
+                return false;
+            }
+            
+            console.log('Form validation passed, submitting...');
+        });
+        
         // Inicializar TinyMCE
         tinymce.init({
             selector: '#conteudo',
