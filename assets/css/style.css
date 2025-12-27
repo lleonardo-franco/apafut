@@ -1390,6 +1390,7 @@ section#categorias h2 {
     position: relative;
     overflow: hidden;
     width: 100%;
+    height: 100%;
 }
 
 .destaque-imagem {
@@ -1398,23 +1399,20 @@ section#categorias h2 {
     display: block;
     object-fit: cover;
     object-position: center;
-    position: relative;
-    z-index: 1;
 }
 
 /* Card Principal - Mobile */
 .destaque-card-principal {
     margin-bottom: 15px;
+    height: 300px;
 }
 
 .destaque-card-principal .destaque-link {
-    display: block;
-    height: 300px;
-    position: relative;
+    height: 100%;
 }
 
 .destaque-card-principal .destaque-imagem {
-    height: 300px;
+    height: 100%;
 }
 
 /* Grid Secundário - Mobile */
@@ -1425,14 +1423,16 @@ section#categorias h2 {
     margin-bottom: 15px;
 }
 
-.destaque-card-secundario .destaque-link {
-    display: block;
+.destaque-card-secundario {
     height: 280px;
-    position: relative;
+}
+
+.destaque-card-secundario .destaque-link {
+    height: 100%;
 }
 
 .destaque-card-secundario .destaque-imagem {
-    height: 280px;
+    height: 100%;
 }
 
 /* Grid Terciário - Mobile */
@@ -1442,14 +1442,16 @@ section#categorias h2 {
     gap: 15px;
 }
 
-.destaque-card-terciario .destaque-link {
-    display: block;
+.destaque-card-terciario {
     height: 250px;
-    position: relative;
+}
+
+.destaque-card-terciario .destaque-link {
+    height: 100%;
 }
 
 .destaque-card-terciario .destaque-imagem {
-    height: 250px;
+    height: 100%;
 }
 
 /* Chamada (legenda) do card */
