@@ -290,10 +290,10 @@ function getPosicaoIcon($posicao) {
                     
                     <div class="destaque-card destaque-card-principal">
                         <a href="noticia.php?id=<?= $principal['id'] ?>" class="destaque-link">
-                            <img src="assets/princiapl.png" alt="<?= htmlspecialchars($principal['titulo']) ?>" class="destaque-imagem">
+                            <img src="<?= $imagemPrincipal ?>" alt="<?= htmlspecialchars($principal['titulo']) ?>" class="destaque-imagem" loading="lazy">
                             <div class="destaque-chamada">
                                 <span class="destaque-data"><?= $dataPrincipal ?></span>
-                                <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                <h3 class="destaque-titulo-noticia"><?= htmlspecialchars($principal['titulo']) ?></h3>
                             </div>
                         </a>
                     </div>
@@ -307,25 +307,26 @@ function getPosicaoIcon($posicao) {
                         ?>
                         <div class="destaque-card destaque-card-secundario">
                             <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
-                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem">
+                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem" loading="lazy">
                                 <div class="destaque-chamada">
                                     <span class="destaque-data"><?= $dataNoticia ?></span>
-                                    <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                    <h3 class="destaque-titulo-noticia"><?= htmlspecialchars($noticia['titulo']) ?></h3>
                                 </div>
                             </a>
                         </div>
 
                         <?php 
-                        // Segundo card secundário (direita) - foto manual
+                        // Segundo card secundário (direita)
                         $noticia = $noticias[2];
+                        $imagemUrl2 = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
                         $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
                         ?>
                         <div class="destaque-card destaque-card-secundario">
                             <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
-                                <img src="assets/goleiros.jpg" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem">
+                                <img src="<?= $imagemUrl2 ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem" loading="lazy">
                                 <div class="destaque-chamada">
                                     <span class="destaque-data"><?= $dataNoticia ?></span>
-                                    <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                    <h3 class="destaque-titulo-noticia"><?= htmlspecialchars($noticia['titulo']) ?></h3>
                                 </div>
                             </a>
                         </div>
@@ -333,20 +334,18 @@ function getPosicaoIcon($posicao) {
 
                     <div class="destaques-grid-terciario">
                         <?php 
-                        // Cards terciários com fotos manuais diferentes
-                        $imagensTerciarias = ['assets/img3.jpg', 'assets/doacaosangue2.jpg', 'assets/Criancabeneficiente.jpg'];
-                        
+                        // Cards terciários
                         for ($i = 3; $i <= 5; $i++):
                             $noticia = $noticias[$i];
                             $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
-                            $imagemManual = $imagensTerciarias[$i - 3];
+                            $imagemTerciaria = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/hero.png';
                         ?>
                         <div class="destaque-card destaque-card-terciario">
                             <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
-                                <img src="<?= $imagemManual ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem">
+                                <img src="<?= $imagemTerciaria ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem" loading="lazy">
                                 <div class="destaque-chamada">
                                     <span class="destaque-data"><?= $dataNoticia ?></span>
-                                    <h3 class="destaque-titulo-noticia">Notícia em breve</h3>
+                                    <h3 class="destaque-titulo-noticia"><?= htmlspecialchars($noticia['titulo']) ?></h3>
                                 </div>
                             </a>
                         </div>
