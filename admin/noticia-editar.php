@@ -29,6 +29,13 @@ try {
     
     // Processar atualização
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Log dos dados recebidos
+        logError('POST recebido em noticia-editar.php', [
+            'id_url' => $noticiaId,
+            'post_keys' => array_keys($_POST),
+            'files_keys' => array_keys($_FILES)
+        ]);
+        
         $titulo = Security::sanitizeString($_POST['titulo'] ?? '');
         $categoria = Security::sanitizeString($_POST['categoria'] ?? '');
         $resumo = Security::sanitizeString($_POST['resumo'] ?? '');
@@ -116,15 +123,17 @@ try {
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':data_agendamento', $data_agendamento);
         
-        $stmt->execute();
+        $rowCount = $stmt->execute();
         
-        logError('Notícia atualizada', [
+        logError('Notícia UPDATE executado', [
             'id' => $noticiaId,
             'titulo' => $titulo,
-            'user' => $user['email']
+            'user' => $user['email'],
+            'rows_affected' => $stmt->rowCount(),
+            'post_data' => $_POST
         ]);
         
-        $success = 'Notícia atualizada com sucesso!';
+        $success = 'Notícia #' . $noticiaId . ' atualizada com sucesso! (' . $stmt->rowCount() . ' registro alterado)';
         
         // Recarregar notícia
         $stmt = $conn->prepare("SELECT * FROM noticias WHERE id = :id");
@@ -170,6 +179,31 @@ try {
                     <a href="noticias.php" class="btn btn-light">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
+                </div>
+
+                <!-- Card Identificador -->
+                <div class="card-identificador">
+                    <div class="info-badge">
+                        <i class="fas fa-newspaper"></i>
+                        <div>
+                            <strong>Editando:</strong>
+                            <span><?= htmlspecialchars($noticia['titulo']) ?></span>
+                        </div>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-tag"></i>
+                        <div>
+                            <strong>Categoria:</strong>
+                            <span><?= htmlspecialchars($noticia['categoria']) ?></span>
+                        </div>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <strong>Data:</strong>
+                            <span><?= date('d/m/Y', strtotime($noticia['data_publicacao'])) ?></span>
+                        </div>
+                    </div>
                 </div>
 
                 <?php if ($success): ?>

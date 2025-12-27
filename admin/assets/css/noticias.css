@@ -3,7 +3,58 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Card Identificador */
+.card-identificador {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border: 2px solid var(--vermelho-primario);
+    border-radius: 12px;
+    padding: 20px;
     margin-bottom: 30px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 12px rgba(235, 56, 53, 0.1);
+}
+
+.card-identificador .info-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    min-width: 200px;
+}
+
+.card-identificador .info-badge i {
+    font-size: 24px;
+    color: var(--vermelho-primario);
+}
+
+.card-identificador .info-badge div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-identificador .info-badge strong {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.card-identificador .info-badge span {
+    font-size: 15px;
+    color: var(--text-dark);
+    font-weight: 600;
 }
 
 .page-header h1 {
