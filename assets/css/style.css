@@ -1389,6 +1389,7 @@ section#categorias h2 {
     color: inherit;
     position: relative;
     overflow: hidden;
+    width: 100%;
 }
 
 .destaque-imagem {
@@ -1397,6 +1398,8 @@ section#categorias h2 {
     display: block;
     object-fit: cover;
     object-position: center;
+    position: relative;
+    z-index: 1;
 }
 
 /* Card Principal - Mobile */
@@ -1461,6 +1464,7 @@ section#categorias h2 {
     border-top: 3px solid #003366;
     border-radius: 0 0 16px 16px;
     backdrop-filter: blur(10px);
+    z-index: 2;
 }
 
 .destaque-data {
