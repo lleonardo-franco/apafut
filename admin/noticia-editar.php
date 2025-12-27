@@ -227,20 +227,46 @@ try {
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="imagem">Imagem da Notícia</label>
-                            <?php if (!empty($noticia['imagem'])): ?>
-                                <div style="margin-bottom: 10px;">
-                                    <img src="../<?= htmlspecialchars($noticia['imagem']) ?>" alt="Imagem atual" style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 2px solid var(--border-color);">
-                                    <p style="font-size: 12px; color: var(--text-light); margin-top: 4px;">Imagem atual</p>
+                            <label for="imagem">
+                                <i class="fas fa-image"></i> Imagem da Notícia
+                            </label>
+                            
+                            <div class="image-upload-container">
+                                <?php if (!empty($noticia['imagem'])): ?>
+                                    <div class="current-image">
+                                        <img id="previewImagem" src="../<?= htmlspecialchars($noticia['imagem']) ?>" alt="Imagem atual">
+                                        <div class="image-overlay">
+                                            <p>Imagem atual</p>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="no-image" id="noImagePlaceholder">
+                                        <i class="fas fa-image"></i>
+                                        <p>Nenhuma imagem</p>
+                                    </div>
+                                    <img id="previewImagem" style="display: none; max-width: 100%; max-height: 300px; border-radius: 8px; margin-bottom: 10px;">
+                                <?php endif; ?>
+                                
+                                <div class="image-upload-actions">
+                                    <label for="imagem" class="btn btn-secondary">
+                                        <i class="fas fa-upload"></i> Escolher nova imagem
+                                    </label>
+                                    <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
+                                    <button type="button" id="removeImageBtn" class="btn btn-danger" style="display: none;">
+                                        <i class="fas fa-times"></i> Remover
+                                    </button>
                                 </div>
-                            <?php endif; ?>
-                            <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp">
-                            <small style="color: var(--text-light); font-size: 12px; margin-top: 4px; display: block;">Formatos: JPG, PNG, GIF, WEBP | Máximo: 5MB | Deixe em branco para manter a imagem atual</small>
+                                <small class="form-help">
+                                    <i class="fas fa-info-circle"></i> Formatos: JPG, PNG, GIF, WEBP | Máximo: 5MB
+                                </small>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="autor">Autor</label>
-                            <input type="text" id="autor" name="autor" value="<?= htmlspecialchars($noticia['autor']) ?>">
+                            <label for="autor">
+                                <i class="fas fa-user-edit"></i> Autor
+                            </label>
+                            <input type="text" id="autor" name="autor" value="<?= htmlspecialchars($noticia['autor']) ?>" placeholder="Nome do autor">
                         </div>
                     </div>
 
@@ -308,6 +334,7 @@ try {
     </div>
     
     <script>
+        // Inicializar TinyMCE
         tinymce.init({
             selector: '#conteudo',
             language: 'pt_BR',
@@ -319,14 +346,84 @@ try {
                 'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
             ],
             toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image link | code',
-            content_style: 'body { font-family: Lato, Arial, sans-serif; font-size: 14px; }',
+            content_style: 'body { font-family: Lato, Arial, sans-serif; font-size: 14px; line-height: 1.6; }',
             images_upload_url: 'upload-imagem.php',
             automatic_uploads: true,
             file_picker_types: 'image',
             paste_data_images: true,
             branding: false,
-            promotion: false
+            promotion: false,
+            image_title: true,
+            image_caption: true,
+            file_picker_callback: function(callback, value, meta) {
+                if (meta.filetype === 'image') {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.onchange = function() {
+                        var file = this.files[0];
+                        var reader = new FileReader();
+                        reader.onload = function() {
+                            callback(reader.result, { title: file.name });
+                        };
+                        reader.readAsDataURL(file);
+                    };
+                    input.click();
+                }
+            }
         });
+        
+        // Preview de imagem
+        const imagemInput = document.getElementById('imagem');
+        const previewImagem = document.getElementById('previewImagem');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+        const noImagePlaceholder = document.getElementById('noImagePlaceholder');
+        
+        imagemInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (file) {
+                // Validar tamanho
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Arquivo muito grande! Tamanho máximo: 5MB');
+                    this.value = '';
+                    return;
+                }
+                
+                // Validar tipo
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Formato inválido! Use apenas JPG, PNG, GIF ou WEBP');
+                    this.value = '';
+                    return;
+                }
+                
+                // Mostrar preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImagem.src = e.target.result;
+                    previewImagem.style.display = 'block';
+                    if (noImagePlaceholder) noImagePlaceholder.style.display = 'none';
+                    removeImageBtn.style.display = 'inline-flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Remover imagem selecionada
+        if (removeImageBtn) {
+            removeImageBtn.addEventListener('click', function() {
+                imagemInput.value = '';
+                if (noImagePlaceholder) {
+                    previewImagem.style.display = 'none';
+                    noImagePlaceholder.style.display = 'flex';
+                } else {
+                    // Voltar para imagem original
+                    location.reload();
+                }
+                this.style.display = 'none';
+            });
+        }
         
         // Controle de visibilidade do campo de agendamento
         const statusSelect = document.getElementById('status');
