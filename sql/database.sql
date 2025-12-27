@@ -28,7 +28,11 @@ CREATE TABLE IF NOT EXISTS noticias (
     ativo TINYINT(1) DEFAULT 1,
     destaque TINYINT(1) DEFAULT 0,
     ordem INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    status VARCHAR(20) DEFAULT 'publicado',
+    data_agendamento DATETIME NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_status (status),
+    INDEX idx_data_agendamento (data_agendamento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabela de categorias de base
