@@ -1404,7 +1404,7 @@ section#categorias h2 {
 /* Card Principal - Mobile */
 .destaque-card-principal {
     margin-bottom: 15px;
-    height: 450px;
+    height: 550px;
 }
 
 .destaque-card-principal .destaque-link {
@@ -1413,6 +1413,54 @@ section#categorias h2 {
 
 .destaque-card-principal .destaque-imagem {
     height: 100%;
+}
+
+/* Borda branca do card principal - DENTRO do card */
+.destaque-card-principal .destaque-borda {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60%;
+    height: 20%;
+    background: white;
+    border-radius: 16px 0 16px 0;
+    border-top: 2px solid #003366;
+    border-left: 2px solid #003366;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 16px;
+}
+
+.destaque-card-principal .destaque-borda-conteudo {
+    text-align: left;
+    pointer-events: auto;
+    width: 100%;
+}
+
+.destaque-card-principal .destaque-data {
+    display: block;
+    font-size: 16px;
+    color: #003366;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    padding: 0;
+}
+
+.destaque-card-principal .destaque-resumo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 /* Grid Secundário - Mobile */
@@ -1424,7 +1472,7 @@ section#categorias h2 {
 }
 
 .destaque-card-secundario {
-    height: 280px;
+    height: 350px;
 }
 
 .destaque-card-secundario .destaque-link {
@@ -1435,6 +1483,53 @@ section#categorias h2 {
     height: 100%;
 }
 
+/* Borda branca dos cards secundários */
+.destaque-card-secundario .destaque-borda {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 20%;
+    background: white;
+    border-radius: 0;
+    border-top: 2px solid #003366;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 16px;
+}
+
+.destaque-card-secundario .destaque-borda-conteudo {
+    text-align: left;
+    pointer-events: auto;
+    width: 100%;
+}
+
+.destaque-card-secundario .destaque-data {
+    display: block;
+    font-size: 16px;
+    color: #003366;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    padding: 0;
+}
+
+.destaque-card-secundario .destaque-resumo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 /* Grid Terciário - Mobile */
 .destaques-grid-terciario {
     display: flex;
@@ -1443,7 +1538,7 @@ section#categorias h2 {
 }
 
 .destaque-card-terciario {
-    height: 250px;
+    height: 320px;
 }
 
 .destaque-card-terciario .destaque-link {
@@ -1452,6 +1547,53 @@ section#categorias h2 {
 
 .destaque-card-terciario .destaque-imagem {
     height: 100%;
+}
+
+/* Borda branca dos cards terciários */
+.destaque-card-terciario .destaque-borda {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 20%;
+    background: white;
+    border-radius: 0;
+    border-top: 2px solid #003366;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 16px;
+}
+
+.destaque-card-terciario .destaque-borda-conteudo {
+    text-align: left;
+    pointer-events: auto;
+    width: 100%;
+}
+
+.destaque-card-terciario .destaque-data {
+    display: block;
+    font-size: 16px;
+    color: #003366;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    padding: 0;
+}
+
+.destaque-card-terciario .destaque-resumo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 /* Chamada (legenda) do card */
@@ -1477,10 +1619,6 @@ section#categorias h2 {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 4px 8px;
-    background: rgba(235, 56, 53, 0.08);
-    border-radius: 6px;
-    border-left: 2px solid #EB3835;
 }
 
 .destaque-titulo-noticia {
