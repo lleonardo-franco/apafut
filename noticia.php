@@ -42,30 +42,18 @@ try {
     // Conteúdo permite HTML básico
     $noticia['conteudo'] = Security::sanitizeHtml($noticia['conteudo'], '<p><br><strong><em><ul><ol><li><h2><h3><h4>');
     
-    // Buscar notícias relacionadas (sempre buscar outras notícias exceto a atual)
-    $relacionadas = Cache::remember('relacionadas_' . $noticiaId, function() use ($conn, $noticia, $noticiaId) {
-        // Primeiro tenta buscar da mesma categoria
-        $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
-        $stmt->bindParam(':categoria', $noticia['categoria'], PDO::PARAM_STR);
+    // Buscar as 2 notícias mais recentes cadastradas (exceto a atual)
+    $relacionadas = Cache::remember('relacionadas_' . $noticiaId, function() use ($conn, $noticiaId) {
+        $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY created_at DESC LIMIT 2");
         $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
         $stmt->execute();
-        $relacionadas = $stmt->fetchAll();
-        
-        // Se não houver notícias suficientes, buscar outras independente da categoria
-        if (count($relacionadas) < 6) {
-            $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
-            $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
-            $stmt->execute();
-            $relacionadas = $stmt->fetchAll();
-        }
-        
-        return $relacionadas;
-    }, 1800); // 30 minutos
+        return $stmt->fetchAll();
+    }, 1800);
     
     // Sanitiza notícias relacionadas
-    foreach ($relacionadas as &$rel) {
-        $rel['titulo'] = Security::sanitizeString($rel['titulo']);
-        $rel['categoria'] = Security::sanitizeString($rel['categoria']);
+    for ($i = 0; $i < count($relacionadas); $i++) {
+        $relacionadas[$i]['titulo'] = Security::sanitizeString($relacionadas[$i]['titulo']);
+        $relacionadas[$i]['categoria'] = Security::sanitizeString($relacionadas[$i]['categoria']);
     }
     
 } catch(PDOException $e) {
@@ -231,19 +219,22 @@ try {
         <div class="container">
             <h2 id="relacionadas-titulo">Outras Notícias</h2>
             <?php if (count($relacionadas) > 0): ?>
-            <div class="noticias-grid">
+            <div class="sugestoes-grid">
                 <?php foreach($relacionadas as $rel): ?>
-                <a href="noticia.php?id=<?= $rel['id'] ?>" class="mini-noticia-card">
-                    <?php 
-                    $relImagemUrl = !empty($rel['imagem']) ? htmlspecialchars($rel['imagem']) : 'assets/hero.png';
-                    ?>
-                    <img src="<?= $relImagemUrl ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" onerror="this.src='assets/hero.png'">
-                    <div class="mini-noticia-conteudo">
-                        <span class="mini-categoria"><?= htmlspecialchars($rel['categoria']) ?></span>
-                        <h3><?= htmlspecialchars($rel['titulo']) ?></h3>
-                        <p class="mini-data"><i class="far fa-calendar"></i> <?= formatarData($rel['data_publicacao']) ?></p>
-                    </div>
-                </a>
+                <div class="sugestao-card">
+                    <a href="noticia.php?id=<?= $rel['id'] ?>" class="sugestao-link">
+                        <?php 
+                        $relImagemUrl = !empty($rel['imagem']) ? htmlspecialchars($rel['imagem']) : 'assets/images/fundo.jpg';
+                        ?>
+                        <img class="sugestao-imagem" src="<?= $relImagemUrl ?>" alt="<?= htmlspecialchars($rel['titulo']) ?>" onerror="this.src='assets/images/fundo.jpg'">
+                        <div class="sugestao-borda">
+                            <div class="sugestao-borda-conteudo">
+                                <span class="sugestao-data"><?= formatarData($rel['data_publicacao']) ?></span>
+                                <p class="sugestao-resumo"><?= htmlspecialchars($rel['resumo']) ?></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
                 <?php endforeach; ?>
             </div>
             <?php else: ?>
