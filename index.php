@@ -199,45 +199,43 @@ function getPosicaoIcon($posicao) {
         @media (max-width: 768px) {
             .banner-carousel {
                 height: auto;
-                min-height: 600px;
-                max-height: none;
+                min-height: auto;
                 background: #f8f9fa;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                position: relative;
             }
             
             .banner-slides {
                 position: relative;
                 width: 100%;
                 height: auto;
-                min-height: 600px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
             }
             
             .banner-slide {
-                position: absolute;
+                position: relative;
                 width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px 0;
+                height: auto;
+                opacity: 0;
+                display: none;
+            }
+            
+            .banner-slide.active {
+                opacity: 1;
+                display: block;
+                position: relative;
             }
             
             /* Trocar para imagem mobile */
             .banner-desktop {
-                display: none;
+                display: none !important;
             }
             
             .banner-mobile {
                 display: block;
-                max-width: 100%;
                 width: 100%;
                 height: auto;
+                max-width: 100%;
                 object-fit: contain;
+                vertical-align: middle;
             }
             
             .banner-indicators {
