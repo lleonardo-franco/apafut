@@ -150,9 +150,8 @@ function getPosicaoIcon($posicao) {
         .banner-slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             object-position: center;
-            background: #f8f9fa;
         }
         
         /* Indicadores */
@@ -190,12 +189,20 @@ function getPosicaoIcon($posicao) {
         /* Responsivo */
         @media (max-width: 768px) {
             .banner-carousel {
-                height: 50vh;
-                min-height: 400px;
+                height: auto;
+                min-height: 300px;
+            }
+            
+            .banner-slide {
+                height: auto;
+                min-height: 300px;
             }
             
             .banner-slide img {
+                width: 100%;
+                height: auto;
                 object-fit: contain;
+                max-height: 400px;
             }
             
             .banner-indicators {
