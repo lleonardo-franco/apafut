@@ -1608,6 +1608,7 @@ section#categorias h2 {
     border-top: 3px solid #003366;
     border-radius: 0 0 16px 16px;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 2;
 }
 

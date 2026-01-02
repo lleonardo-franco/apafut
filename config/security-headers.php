@@ -18,7 +18,7 @@ $csp = [
     "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://kit.fontawesome.com https://ka-f.fontawesome.com",
     "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com https://kit.fontawesome.com https://ka-f.fontawesome.com",
     "img-src 'self' data: https:",
-    "connect-src 'self' https://ka-f.fontawesome.com",
+    "connect-src 'self' https://ka-f.fontawesome.com https://viacep.com.br",
     "frame-ancestors 'self'"
 ];
 header("Content-Security-Policy: " . implode("; ", $csp));

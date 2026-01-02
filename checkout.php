@@ -47,622 +47,8 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --vermelho-primario: #eb3835;
-            --azul-secundario: #111D69;
-            --branco-padrao: #FFFFFF;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, var(--azul-secundario) 0%, #1a2b8f 50%, var(--vermelho-primario) 100%);
-            min-height: 100vh;
-            padding: 20px 20px 40px 20px;
-        }
-
-        .back-to-site {
-            max-width: 1200px;
-            margin: 0 auto 20px auto;
-        }
-
-        .back-to-site a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 10px 18px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .back-to-site a:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateX(-4px);
-        }
-
-        .checkout-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 30px;
-            align-items: start;
-        }
-
-        .checkout-main {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-        }
-
-        .checkout-header {
-            background: linear-gradient(135deg, var(--azul-secundario) 0%, #1a2b8f 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .checkout-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: var(--vermelho-primario);
-            border-radius: 50%;
-            opacity: 0.1;
-        }
-
-        .checkout-header::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -5%;
-            width: 200px;
-            height: 200px;
-            background: var(--vermelho-primario);
-            border-radius: 50%;
-            opacity: 0.15;
-        }
-
-        .checkout-header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .checkout-header p {
-            opacity: 0.95;
-            font-size: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Progress Steps */
-        .progress-steps {
-            display: flex;
-            justify-content: space-between;
-            padding: 45px 60px;
-            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
-            position: relative;
-        }
-
-        .progress-steps::before {
-            content: '';
-            position: absolute;
-            top: 65px;
-            left: 60px;
-            right: 60px;
-            height: 4px;
-            background: linear-gradient(to right, #e8e8e8, #f0f0f0);
-            z-index: 0;
-            border-radius: 2px;
-        }
-
-        .progress-line {
-            position: absolute;
-            top: 65px;
-            left: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--azul-secundario), var(--vermelho-primario));
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1;
-            border-radius: 2px;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step-circle {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: white;
-            border: 4px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: #999;
-            margin-bottom: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .step.active .step-circle {
-            background: linear-gradient(135deg, var(--azul-secundario), #1a2b8f);
-            border-color: var(--azul-secundario);
-            color: white;
-            transform: scale(1.15);
-            box-shadow: 0 4px 16px rgba(17, 29, 105, 0.4);
-        }
-
-        .step.completed .step-circle {
-            background: linear-gradient(135deg, var(--vermelho-primario), #d32f2c);
-            border-color: var(--vermelho-primario);
-            color: white;
-            box-shadow: 0 4px 12px rgba(235, 56, 53, 0.3);
-        }
-
-        .step-label {
-            font-size: 14px;
-            color: #666;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .step.active .step-label {
-            color: var(--azul-secundario);
-            font-weight: 700;
-        }
-
-        .step.completed .step-label {
-            color: var(--vermelho-primario);
-            font-weight: 600;
-        }
-
-        /* Form Content */
-        .form-content {
-            padding: 40px 60px;
-        }
-
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .form-step h2 {
-            font-size: 26px;
-            color: var(--azul-secundario);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .form-step p {
-            color: #666;
-            margin-bottom: 35px;
-            font-size: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: var(--azul-secundario);
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            background: white;
-        }
-
-        .form-group input:hover,
-        .form-group select:hover {
-            border-color: #ccc;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--azul-secundario);
-            box-shadow: 0 0 0 4px rgba(17, 29, 105, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .form-group input.error {
-            border-color: var(--vermelho-primario);
-            animation: shake 0.4s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        .error-message {
-            color: var(--vermelho-primario);
-            font-size: 13px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        /* Payment Methods */
-        .payment-methods {
-            display: grid;
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .payment-method {
-            border: 3px solid #e8e8e8;
-            border-radius: 14px;
-            padding: 22px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            background: white;
-        }
-
-        .payment-method:hover {
-            border-color: var(--azul-secundario);
-            background: linear-gradient(to right, rgba(17, 29, 105, 0.02), rgba(235, 56, 53, 0.02));
-            transform: translateX(4px);
-        }
-
-        .payment-method.selected {
-            border-color: var(--vermelho-primario);
-            background: linear-gradient(to right, rgba(17, 29, 105, 0.05), rgba(235, 56, 53, 0.05));
-            box-shadow: 0 4px 20px rgba(235, 56, 53, 0.15);
-        }
-
-        .payment-method input[type="radio"] {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--vermelho-primario);
-        }
-
-        .payment-icon {
-            width: 54px;
-            height: 54px;
-            background: linear-gradient(135deg, var(--azul-secundario), #1a2b8f);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 26px;
-            box-shadow: 0 4px 12px rgba(17, 29, 105, 0.25);
-        }
-
-        .payment-method.selected .payment-icon {
-            background: linear-gradient(135deg, var(--vermelho-primario), #d32f2c);
-            box-shadow: 0 4px 12px rgba(235, 56, 53, 0.35);
-        }
-
-        .payment-info h3 {
-            font-size: 17px;
-            color: var(--azul-secundario);
-            margin-bottom: 5px;
-            font-weight: 700;
-        }
-
-        .payment-info p {
-            font-size: 13px;
-            color: #666;
-            margin: 0;
-        }
-
-        /* Navigation Buttons */
-        .form-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #f0f0f0;
-        }
-
-        .btn {
-            padding: 16px 36px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-back {
-            background: #f5f5f5;
-            color: #666;
-            border: 2px solid #e0e0e0;
-        }
-
-        .btn-back:hover {
-            background: #e8e8e8;
-            border-color: #ccc;
-        }
-
-        .btn-next {
-            background: linear-gradient(135deg, var(--vermelho-primario), #d32f2c);
-            color: white;
-            margin-left: auto;
-            box-shadow: 0 4px 16px rgba(235, 56, 53, 0.3);
-        }
-
-        .btn-next:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(235, 56, 53, 0.45);
-        }
-
-        .btn-next:active {
-            transform: translateY(-1px);
-        }
-
-        /* Order Summary */
-        .order-summary {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
-            position: sticky;
-            top: 20px;
-            border: 2px solid rgba(17, 29, 105, 0.1);
-        }
-
-        .order-summary h3 {
-            font-size: 22px;
-            color: var(--azul-secundario);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-        }
-
-        .plan-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 24px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .plan-badge.prata {
-            background: linear-gradient(135deg, #8e9eab 0%, #c8d0d8 100%);
-            color: #333;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .plan-badge.ouro {
-            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
-            color: #fff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 2px 8px rgba(247, 151, 30, 0.35);
-        }
-
-        .plan-badge.diamante {
-            background: linear-gradient(135deg, var(--azul-secundario), #1a2b8f);
-            color: #fff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 2px 8px rgba(17, 29, 105, 0.35);
-        }
-
-        .plan-name {
-            font-size: 26px;
-            color: var(--azul-secundario);
-            margin: 18px 0;
-            font-weight: 700;
-        }
-
-        .plan-price {
-            font-size: 40px;
-            color: var(--vermelho-primario);
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-
-        .plan-period {
-            color: #777;
-            font-size: 15px;
-            margin-bottom: 26px;
-            display: block;
-            font-weight: 500;
-        }
-
-        .benefits-list {
-            list-style: none;
-            margin-bottom: 28px;
-            padding: 20px;
-            background: linear-gradient(to bottom, rgba(17, 29, 105, 0.02), rgba(235, 56, 53, 0.02));
-            border-radius: 12px;
-        }
-
-        .benefits-list li {
-            padding: 12px 0;
-            color: #555;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .benefits-list li:last-child {
-            border-bottom: none;
-        }
-
-        .benefits-list li i {
-            color: var(--vermelho-primario);
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .summary-divider {
-            height: 2px;
-            background: linear-gradient(to right, var(--azul-secundario), var(--vermelho-primario));
-            margin: 28px 0;
-            opacity: 0.2;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            color: #666;
-            font-size: 15px;
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--azul-secundario);
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(17, 29, 105, 0.05), rgba(235, 56, 53, 0.05));
-            border-radius: 12px;
-        }
-
-        .summary-total span:last-child {
-            color: var(--vermelho-primario);
-        }
-
-        .security-badge {
-            background: linear-gradient(135deg, var(--azul-secundario), #1a2b8f);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 24px;
-            box-shadow: 0 4px 12px rgba(17, 29, 105, 0.2);
-        }
-
-        .security-badge i {
-            color: var(--branco-padrao);
-            font-size: 28px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .security-badge p {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0;
-            font-weight: 600;
-        }
-
-        @media (max-width: 1024px) {
-            .checkout-container {
-                grid-template-columns: 1fr;
-            }
-
-            .order-summary {
-                position: static;
-            }
-
-            .progress-steps {
-                padding: 30px 20px;
-            }
-
-            .progress-steps::before {
-                left: 20px;
-                right: 20px;
-            }
-
-            .progress-line {
-                left: 20px;
-            }
-
-            .form-content {
-                padding: 30px 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .step-label {
-                font-size: 12px;
-            }
-
-            .step-circle {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/checkout.css">
 </head>
 <body>
     <div class="back-to-site">
@@ -682,7 +68,7 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
 
             <!-- Progress Steps -->
             <div class="progress-steps">
-                <div class="progress-line" id="progressLine" style="width: 0%"></div>
+                <div class="progress-line" id="progressLine"></div>
                 
                 <div class="step active" data-step="1">
                     <div class="step-circle">
@@ -724,17 +110,17 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                 <!-- Step 1: Personal Information -->
                 <div class="form-step active" data-step="1">
                     <h2>Dados Pessoais</h2>
-                    <p>Informe seus dados para prosseguir com a assinatura</p>
+                    <p class="form-step-subtitle">Informe seus dados para prosseguir com a assinatura</p>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nome">Nome Completo *</label>
+                            <label for="nome">Nome Completo <span class="required">*</span></label>
                             <input type="text" id="nome" name="nome" required>
                             <span class="error-message">Por favor, informe seu nome completo</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="cpf">CPF *</label>
+                            <label for="cpf">CPF <span class="required">*</span></label>
                             <input type="text" id="cpf" name="cpf" maxlength="14" required>
                             <span class="error-message">CPF inválido</span>
                         </div>
@@ -742,28 +128,15 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="email">E-mail *</label>
+                            <label for="email">E-mail <span class="required">*</span></label>
                             <input type="email" id="email" name="email" required>
                             <span class="error-message">E-mail inválido</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="telefone">Telefone *</label>
+                            <label for="telefone">Telefone <span class="required">*</span></label>
                             <input type="tel" id="telefone" name="telefone" maxlength="15" required>
                             <span class="error-message">Telefone inválido</span>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="data_nascimento">Data de Nascimento *</label>
-                            <input type="date" id="data_nascimento" name="data_nascimento" required>
-                            <span class="error-message">Data inválida</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="rg">RG</label>
-                            <input type="text" id="rg" name="rg">
                         </div>
                     </div>
 
@@ -778,7 +151,7 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                 <!-- Step 2: Address -->
                 <div class="form-step" data-step="2">
                     <h2>Endereço</h2>
-                    <p>Onde você mora? Precisamos dessas informações para enviar correspondências</p>
+                    <p class="form-step-subtitle">Onde você mora? Precisamos dessas informações para enviar correspondências</p>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -848,7 +221,7 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                 <!-- Step 3: Payment -->
                 <div class="form-step" data-step="3">
                     <h2>Forma de Pagamento</h2>
-                    <p>Escolha como deseja realizar o pagamento</p>
+                    <p class="form-step-subtitle">Escolha como deseja realizar o pagamento</p>
 
                     <div class="payment-methods">
                         <label class="payment-method" onclick="selectPayment('pix')">
@@ -885,32 +258,91 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                         </label>
                     </div>
 
-                    <div id="cardFields" style="display: none;">
-                        <div class="form-group">
-                            <label for="card_number">Número do Cartão *</label>
-                            <input type="text" id="card_number" name="card_number" maxlength="19" placeholder="0000 0000 0000 0000">
+                    <div id="cardFields" class="card-fields">
+                        <!-- Credit Card Preview -->
+                        <div class="card-preview-container">
+                            <div class="credit-card" id="creditCard">
+                                <div class="card-front">
+                                    <div class="card-bg"></div>
+                                    <div class="card-top-row">
+                                        <div class="card-chip">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 40">
+                                                <rect x="2" y="2" width="46" height="36" rx="4" fill="url(#chipGradient)" stroke="#000" stroke-width="0.5"/>
+                                                <rect x="8" y="10" width="12" height="10" rx="1" fill="rgba(0,0,0,0.2)"/>
+                                                <rect x="22" y="10" width="12" height="10" rx="1" fill="rgba(0,0,0,0.2)"/>
+                                                <rect x="36" y="10" width="6" height="10" rx="1" fill="rgba(0,0,0,0.2)"/>
+                                                <rect x="8" y="22" width="18" height="8" rx="1" fill="rgba(0,0,0,0.2)"/>
+                                                <rect x="28" y="22" width="14" height="8" rx="1" fill="rgba(0,0,0,0.2)"/>
+                                                <defs>
+                                                    <linearGradient id="chipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                        <stop offset="0%" style="stop-color:#f9d423"/>
+                                                        <stop offset="100%" style="stop-color:#e8b710"/>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="card-brand" id="cardBrand">
+                                            <i class="fab fa-cc-visa"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-number" id="cardNumberDisplay">
+                                        <span>####</span>
+                                        <span>####</span>
+                                        <span>####</span>
+                                        <span>####</span>
+                                    </div>
+                                    <div class="card-bottom-row">
+                                        <div class="card-holder">
+                                            <label>NOME DO TITULAR</label>
+                                            <div id="cardHolderDisplay"></div>
+                                        </div>
+                                        <div class="card-expiry-front">
+                                            <label>VALIDADE</label>
+                                            <div id="cardExpiryDisplay"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-back">
+                                    <div class="card-stripe"></div>
+                                    <div class="card-signature">
+                                        <div class="card-cvv-container">
+                                            <label>CVV</label>
+                                            <div id="cardCvvDisplay">***</div>
+                                        </div>
+                                    </div>
+                                    <div class="card-back-brand" id="cardBrandBack">
+                                        <i class="fab fa-cc-visa"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-row">
+                        <!-- Card Form -->
+                        <div class="card-form">
                             <div class="form-group">
-                                <label for="card_name">Nome no Cartão *</label>
-                                <input type="text" id="card_name" name="card_name" placeholder="Como está no cartão">
+                                <label for="card_number">Número do Cartão <span class="required">*</span></label>
+                                <input type="text" id="card_number" name="card_number" maxlength="19" placeholder="0000 0000 0000 0000">
                             </div>
 
                             <div class="form-group">
-                                <label for="card_expiry">Validade *</label>
-                                <input type="text" id="card_expiry" name="card_expiry" maxlength="5" placeholder="MM/AA">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="card_cvv">CVV *</label>
-                                <input type="text" id="card_cvv" name="card_cvv" maxlength="4" placeholder="000">
+                                <label for="card_name">Nome no Cartão <span class="required">*</span></label>
+                                <input type="text" id="card_name" name="card_name" placeholder="COMO ESTÁ NO CARTÃO">
                             </div>
 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="card_expiry">Validade <span class="required">*</span></label>
+                                    <input type="text" id="card_expiry" name="card_expiry" maxlength="5" placeholder="MM/AA">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="card_cvv">CVV <span class="required">*</span></label>
+                                    <input type="text" id="card_cvv" name="card_cvv" maxlength="4" placeholder="000">
+                                </div>
+                            </div>
+
                             <div class="form-group">
-                                <label for="card_installments">Parcelas *</label>
+                                <label for="card_installments">Parcelas <span class="required">*</span></label>
                                 <select id="card_installments" name="card_installments">
                                     <option value="1">1x de <?= $preco_formatado ?></option>
                                     <?php 
@@ -940,16 +372,16 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                 <!-- Step 4: Confirmation -->
                 <div class="form-step" data-step="4">
                     <h2>Confirme seus Dados</h2>
-                    <p>Revise as informações antes de finalizar</p>
+                    <p class="form-step-subtitle">Revise as informações antes de finalizar</p>
 
-                    <div id="reviewData" style="background: #f8f9fa; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+                    <div id="reviewData" class="review-data">
                         <!-- Data will be populated by JavaScript -->
                     </div>
 
-                    <div class="form-group" style="background: linear-gradient(135deg, rgba(17, 29, 105, 0.05), rgba(235, 56, 53, 0.05)); padding: 20px; border-radius: 12px; border: 2px solid rgba(235, 56, 53, 0.2);">
-                        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; color: #333;">
-                            <input type="checkbox" id="terms" name="terms" required style="width: 22px; height: 22px; accent-color: var(--vermelho-primario); cursor: pointer;">
-                            <span>Li e aceito os <a href="#" style="color: var(--vermelho-primario); text-decoration: none; font-weight: 700;">termos de uso</a> e a <a href="#" style="color: var(--vermelho-primario); text-decoration: none; font-weight: 700;">política de privacidade</a></span>
+                    <div class="form-group terms-group">
+                        <label class="terms-label">
+                            <input type="checkbox" id="terms" name="terms" required class="terms-checkbox">
+                            <span>Li e aceito os <a href="#" class="terms-link">termos de uso</a> e a <a href="#" class="terms-link">política de privacidade</a></span>
                         </label>
                     </div>
 
@@ -985,7 +417,7 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
 
             <div class="summary-divider"></div>
 
-            <h4 style="font-size: 16px; color: #333; margin-bottom: 12px;">Benefícios Inclusos:</h4>
+            <h4 class="benefits-title">Benefícios Inclusos:</h4>
             <ul class="benefits-list">
                 <?php foreach ($beneficios as $beneficio): ?>
                     <li>
@@ -1023,13 +455,25 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
         let currentStep = 1;
         const totalSteps = 4;
 
-        // Máscaras de input
+        // Máscaras de input com validações
         document.getElementById('cpf').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
             value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             e.target.value = value;
+            
+            // Validação básica de CPF
+            const cpfLimpo = value.replace(/\D/g, '');
+            if (cpfLimpo.length === 11) {
+                if (validarCPF(cpfLimpo)) {
+                    e.target.classList.add('valid');
+                    e.target.classList.remove('error');
+                } else {
+                    e.target.classList.add('error');
+                    e.target.classList.remove('valid');
+                }
+            }
         });
 
         document.getElementById('telefone').addEventListener('input', function(e) {
@@ -1043,20 +487,99 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
             let value = e.target.value.replace(/\D/g, '');
             value = value.replace(/(\d{5})(\d)/, '$1-$2');
             e.target.value = value;
+            
+            // Buscar CEP automaticamente
+            if (value.replace(/\D/g, '').length === 8) {
+                buscarCEP(value.replace(/\D/g, ''));
+            }
         });
 
-        document.getElementById('card_number').addEventListener('input', function(e) {
+        document.getElementById('email').addEventListener('blur', function(e) {
+            const email = e.target.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (emailRegex.test(email)) {
+                e.target.classList.add('valid');
+                e.target.classList.remove('error');
+            } else if (email) {
+                e.target.classList.add('error');
+                e.target.classList.remove('valid');
+            }
+        });
+
+        document.getElementById('card_number')?.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
             e.target.value = value;
         });
 
-        document.getElementById('card_expiry').addEventListener('input', function(e) {
+        document.getElementById('card_expiry')?.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             value = value.replace(/(\d{2})(\d)/, '$1/$2');
             e.target.value = value;
         });
 
+        document.getElementById('card_cvv')?.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Validação de CPF
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/\D/g, '');
+            
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+                return false;
+            }
+            
+            let soma = 0;
+            let resto;
+            
+            for (let i = 1; i <= 9; i++) {
+                soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            }
+            
+            resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.substring(9, 10))) return false;
+            
+            soma = 0;
+            for (let i = 1; i <= 10; i++) {
+                soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            }
+            
+            resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.substring(10, 11))) return false;
+            
+            return true;
+        }
+
+        // Buscar CEP via API
+        async function buscarCEP(cep) {
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+                
+                if (!data.erro) {
+                    document.getElementById('endereco').value = data.logradouro || '';
+                    document.getElementById('bairro').value = data.bairro || '';
+                    document.getElementById('cidade').value = data.localidade || '';
+                    document.getElementById('estado').value = data.uf || '';
+                    
+                    // Adicionar animação de sucesso
+                    document.getElementById('cep').classList.add('valid');
+                    
+                    // Focar no próximo campo vazio
+                    if (!document.getElementById('numero').value) {
+                        document.getElementById('numero').focus();
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao buscar CEP:', error);
+            }
+        }
+
+        // Selecionar método de pagamento
         function selectPayment(method) {
             document.querySelectorAll('.payment-method').forEach(el => {
                 el.classList.remove('selected');
@@ -1065,12 +588,172 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
 
             const cardFields = document.getElementById('cardFields');
             if (method === 'card') {
-                cardFields.style.display = 'block';
+                cardFields.classList.add('active');
+                // Tornar campos do cartão obrigatórios
+                document.getElementById('card_number').required = true;
+                document.getElementById('card_name').required = true;
+                document.getElementById('card_expiry').required = true;
+                document.getElementById('card_cvv').required = true;
             } else {
-                cardFields.style.display = 'none';
+                cardFields.classList.remove('active');
+                // Remover obrigatoriedade dos campos do cartão
+                document.getElementById('card_number').required = false;
+                document.getElementById('card_name').required = false;
+                document.getElementById('card_expiry').required = false;
+                document.getElementById('card_cvv').required = false;
             }
         }
 
+        // Credit Card Animation
+        function setupCardAnimation() {
+            const cardNumberInput = document.getElementById('card_number');
+            const cardNameInput = document.getElementById('card_name');
+            const cardExpiryInput = document.getElementById('card_expiry');
+            const cardCvvInput = document.getElementById('card_cvv');
+            const creditCard = document.getElementById('creditCard');
+
+            // Detect card brand based on number
+            function detectCardBrand(number) {
+                const cleanNumber = number.replace(/\s/g, '');
+                const cardBrand = document.getElementById('cardBrand');
+                const cardBrandBack = document.getElementById('cardBrandBack');
+                
+                let brand = 'default';
+                let iconClass = 'fab fa-credit-card';
+
+                // Visa: starts with 4
+                if (/^4/.test(cleanNumber)) {
+                    brand = 'visa';
+                    iconClass = 'fab fa-cc-visa';
+                }
+                // Mastercard: starts with 51-55 or 2221-2720
+                else if (/^5[1-5]/.test(cleanNumber) || /^2(22[1-9]|2[3-9][0-9]|[3-6][0-9]{2}|7[0-1][0-9]|720)/.test(cleanNumber)) {
+                    brand = 'mastercard';
+                    iconClass = 'fab fa-cc-mastercard';
+                }
+                // American Express: starts with 34 or 37
+                else if (/^3[47]/.test(cleanNumber)) {
+                    brand = 'amex';
+                    iconClass = 'fab fa-cc-amex';
+                }
+                // Discover: starts with 6011, 622126-622925, 644-649, or 65
+                else if (/^6011|^64[4-9]|^65/.test(cleanNumber)) {
+                    brand = 'discover';
+                    iconClass = 'fab fa-cc-discover';
+                }
+                // Diners Club: starts with 36, 38, or 300-305
+                else if (/^3(?:0[0-5]|[68])/.test(cleanNumber)) {
+                    brand = 'diners';
+                    iconClass = 'fab fa-cc-diners-club';
+                }
+                // JCB: starts with 2131, 1800, or 35
+                else if (/^(?:2131|1800|35)/.test(cleanNumber)) {
+                    brand = 'jcb';
+                    iconClass = 'fab fa-cc-jcb';
+                }
+                // Elo: Brazilian card
+                else if (/^(4011|4312|4389|4514|4576|5041|5066|5090|6277|6362|6363|6504|6505|6516)/.test(cleanNumber)) {
+                    brand = 'elo';
+                    iconClass = 'fas fa-credit-card';
+                }
+
+                if (cardBrand) {
+                    cardBrand.innerHTML = `<i class="${iconClass}"></i>`;
+                    cardBrand.className = `card-brand ${brand}`;
+                }
+                if (cardBrandBack) {
+                    cardBrandBack.innerHTML = `<i class="${iconClass}"></i>`;
+                    cardBrandBack.className = `card-back-brand ${brand}`;
+                }
+            }
+
+            // Update card number
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s/g, '');
+                    
+                    // Detect brand
+                    detectCardBrand(value);
+                    
+                    // Format number
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formattedValue;
+
+                    const display = document.getElementById('cardNumberDisplay');
+                    const groups = formattedValue.split(' ');
+                    const spans = display.querySelectorAll('span');
+                    
+                    spans.forEach((span, index) => {
+                        if (groups[index]) {
+                            span.textContent = groups[index].padEnd(4, '#');
+                            span.classList.add('filled');
+                        } else {
+                            span.textContent = '####';
+                            span.classList.remove('filled');
+                        }
+                    });
+                });
+            }
+
+            // Update card holder name
+            if (cardNameInput) {
+                cardNameInput.addEventListener('input', function(e) {
+                    const value = e.target.value.toUpperCase();
+                    document.getElementById('cardHolderDisplay').textContent = value || 'LEONARDO LIMA';
+                });
+            }
+
+            // Update expiry date
+            if (cardExpiryInput) {
+                cardExpiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                    }
+                    e.target.value = value;
+                    document.getElementById('cardExpiryDisplay').textContent = value || '12/34';
+                });
+            }
+
+            // Update CVV and flip card
+            if (cardCvvInput) {
+                cardCvvInput.addEventListener('focus', function() {
+                    creditCard.classList.add('flipped');
+                });
+
+                cardCvvInput.addEventListener('blur', function() {
+                    creditCard.classList.remove('flipped');
+                });
+
+                cardCvvInput.addEventListener('input', function(e) {
+                    const value = e.target.value.replace(/\D/g, '');
+                    e.target.value = value;
+                    document.getElementById('cardCvvDisplay').textContent = value.padEnd(3, '*');
+                });
+            }
+
+            // Only numbers for card number and CVV
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('keypress', function(e) {
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            if (cardCvvInput) {
+                cardCvvInput.addEventListener('keypress', function(e) {
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        }
+
+        // Initialize card animation
+        setupCardAnimation();
+
+        // Atualizar barra de progresso
         function updateProgress() {
             const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
             document.getElementById('progressLine').style.width = progress + '%';
@@ -1097,25 +780,63 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
             });
         }
 
+        // Validar campos do step atual
         function validateStep(step) {
             const currentStepEl = document.querySelector(`.form-step[data-step="${step}"]`);
             const inputs = currentStepEl.querySelectorAll('input[required], select[required]');
             let isValid = true;
 
             inputs.forEach(input => {
-                if (!input.value || (input.type === 'email' && !input.value.includes('@'))) {
+                const errorMsg = input.nextElementSibling;
+                
+                // Validar se está vazio
+                if (!input.value.trim()) {
                     input.classList.add('error');
-                    input.nextElementSibling?.classList.add('show');
+                    if (errorMsg && errorMsg.classList.contains('error-message')) {
+                        errorMsg.classList.add('show');
+                    }
                     isValid = false;
-                } else {
-                    input.classList.remove('error');
-                    input.nextElementSibling?.classList.remove('show');
+                    return;
+                }
+                
+                // Validações específicas
+                if (input.type === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(input.value)) {
+                        input.classList.add('error');
+                        if (errorMsg && errorMsg.classList.contains('error-message')) {
+                            errorMsg.classList.add('show');
+                        }
+                        isValid = false;
+                        return;
+                    }
+                }
+                
+                if (input.id === 'cpf') {
+                    const cpfLimpo = input.value.replace(/\D/g, '');
+                    if (!validarCPF(cpfLimpo)) {
+                        input.classList.add('error');
+                        if (errorMsg && errorMsg.classList.contains('error-message')) {
+                            errorMsg.textContent = 'CPF inválido';
+                            errorMsg.classList.add('show');
+                        }
+                        isValid = false;
+                        return;
+                    }
+                }
+                
+                // Se passar nas validações, remover erro
+                input.classList.remove('error');
+                input.classList.add('valid');
+                if (errorMsg && errorMsg.classList.contains('error-message')) {
+                    errorMsg.classList.remove('show');
                 }
             });
 
             return isValid;
         }
 
+        // Próximo step
         function nextStep() {
             if (validateStep(currentStep)) {
                 if (currentStep === 3) {
@@ -1126,9 +847,17 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                     updateProgress();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
+            } else {
+                // Rolar para o primeiro campo com erro
+                const firstError = document.querySelector('.form-step.active input.error, .form-step.active select.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
             }
         }
 
+        // Step anterior
         function prevStep() {
             if (currentStep > 1) {
                 currentStep--;
@@ -1137,28 +866,42 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
             }
         }
 
+        // Popular dados da revisão
         function populateReview() {
             const reviewData = document.getElementById('reviewData');
             const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
             const paymentText = paymentMethod ? paymentMethod.parentElement.querySelector('h3').textContent : 'Não selecionado';
 
+            let enderecoCompleto = document.getElementById('endereco').value + ', ' + document.getElementById('numero').value;
+            if (document.getElementById('complemento').value) {
+                enderecoCompleto += ' - ' + document.getElementById('complemento').value;
+            }
+
             reviewData.innerHTML = `
-                <h4 style="margin-bottom: 16px; color: #333;"><i class="fas fa-user"></i> Dados Pessoais</h4>
-                <p style="margin-bottom: 8px;"><strong>Nome:</strong> ${document.getElementById('nome').value}</p>
-                <p style="margin-bottom: 8px;"><strong>CPF:</strong> ${document.getElementById('cpf').value}</p>
-                <p style="margin-bottom: 8px;"><strong>E-mail:</strong> ${document.getElementById('email').value}</p>
-                <p style="margin-bottom: 24px;"><strong>Telefone:</strong> ${document.getElementById('telefone').value}</p>
+                <div class="review-section">
+                    <h4><i class="fas fa-user"></i> Dados Pessoais</h4>
+                    <p><strong>Nome:</strong> ${document.getElementById('nome').value}</p>
+                    <p><strong>CPF:</strong> ${document.getElementById('cpf').value}</p>
+                    <p><strong>E-mail:</strong> ${document.getElementById('email').value}</p>
+                    <p><strong>Telefone:</strong> ${document.getElementById('telefone').value}</p>
+                </div>
 
-                <h4 style="margin-bottom: 16px; color: #333;"><i class="fas fa-map-marker-alt"></i> Endereço</h4>
-                <p style="margin-bottom: 8px;">${document.getElementById('endereco').value}, ${document.getElementById('numero').value}</p>
-                <p style="margin-bottom: 8px;">${document.getElementById('bairro').value} - ${document.getElementById('cidade').value}/${document.getElementById('estado').value}</p>
-                <p style="margin-bottom: 24px;"><strong>CEP:</strong> ${document.getElementById('cep').value}</p>
+                <div class="review-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Endereço</h4>
+                    <p>${enderecoCompleto}</p>
+                    <p>${document.getElementById('bairro').value} - ${document.getElementById('cidade').value}/${document.getElementById('estado').value}</p>
+                    <p><strong>CEP:</strong> ${document.getElementById('cep').value}</p>
+                </div>
 
-                <h4 style="margin-bottom: 16px; color: #333;"><i class="fas fa-credit-card"></i> Pagamento</h4>
-                <p><strong>Forma de Pagamento:</strong> ${paymentText}</p>
+                <div class="review-section">
+                    <h4><i class="fas fa-credit-card"></i> Pagamento</h4>
+                    <p><strong>Forma de Pagamento:</strong> ${paymentText}</p>
+                    ${paymentMethod && paymentMethod.value === 'card' && document.getElementById('card_installments') ? `<p><strong>Parcelas:</strong> ${document.getElementById('card_installments').options[document.getElementById('card_installments').selectedIndex].text}</p>` : ''}
+                </div>
             `;
         }
 
+        // Submit do formulário
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1167,13 +910,56 @@ $beneficios = array_filter(array_map('trim', explode('|', $plano['beneficios']))
                 return;
             }
 
-            // Aqui você enviaria os dados para o backend
-            alert('Assinatura realizada com sucesso! Em breve você receberá um e-mail de confirmação.');
-            // window.location.href = 'obrigado.php';
+            // Validar o step atual
+            if (!validateStep(currentStep)) {
+                return;
+            }
+
+            // Mostrar loading no botão
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span> Processando...';
+            submitBtn.disabled = true;
+
+            // Enviar formulário
+            setTimeout(() => {
+                this.submit();
+            }, 1000);
+        });
+
+        // Remover erro ao digitar
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('error');
+                const errorMsg = this.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains('error-message')) {
+                    errorMsg.classList.remove('show');
+                }
+            });
+        });
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            // Enter no input avança
+            if (e.target.tagName === 'INPUT' && e.key === 'Enter' && e.target.type !== 'submit') {
+                e.preventDefault();
+                const nextInput = e.target.closest('.form-group').nextElementSibling?.querySelector('input, select');
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
         });
 
         // Inicializar
         updateProgress();
+
+        // Animação de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelector('.checkout-main').style.opacity = '1';
+                document.querySelector('.order-summary').style.opacity = '1';
+            }, 100);
+        });
     </script>
 </body>
 </html>

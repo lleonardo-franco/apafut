@@ -911,64 +911,54 @@ function getPosicaoIcon($posicao) {
             <p>Invista no futuro do seu atleta com nossos planos completos</p>
         </div>
         <div class="planos-container">
-            <!-- Plano Prata -->
-            <div class="plano-card">
-                <div class="plano-badge">Prata</div>
-                <h3>Sócio APA Prata</h3>
-                <div class="plano-preco">
-                    <span class="preco-por">12x R$ 20<span class="preco-mes">,00</span></span>
+            <?php if (!empty($planos)): ?>
+                <?php foreach ($planos as $plano): 
+                    $preco_mensal = $plano['preco_anual'] / ($plano['parcelas'] ?: 12);
+                    $beneficios_lista = array_filter(array_map('trim', explode('|', $plano['beneficios'])));
+                    
+                    // Determinar classes baseadas no tipo
+                    $card_class = 'plano-card';
+                    $badge_class = 'plano-badge';
+                    $btn_class = 'btn-plano';
+                    $badge_text = ucfirst($plano['tipo']);
+                    
+                    if ($plano['destaque']) {
+                        $card_class .= ' plano-destaque';
+                        $badge_class .= ' badge-popular';
+                        $btn_class .= ' btn-plano-destaque';
+                    } elseif (strtolower($plano['tipo']) === 'diamante') {
+                        $card_class .= ' plano-diamante';
+                        $badge_class .= ' badge-diamante';
+                        $btn_class .= ' btn-plano-diamante';
+                    }
+                ?>
+                <div class="<?= $card_class ?>">
+                    <div class="<?= $badge_class ?>"><?= htmlspecialchars($badge_text) ?></div>
+                    <h3><?= htmlspecialchars($plano['nome']) ?></h3>
+                    <div class="plano-preco">
+                        <span class="preco-por"><?= $plano['parcelas'] ?>x R$ <?= number_format($preco_mensal, 0, ',', '.') ?><span class="preco-mes">,<?= str_pad((int)(($preco_mensal - floor($preco_mensal)) * 100), 2, '0', STR_PAD_LEFT) ?></span></span>
+                    </div>
+                    <div class="parcelamento">
+                        <i class="fas fa-credit-card"></i> Cartão de crédito, Pix ou Boleto
+                    </div>
+                    <?php if (strtolower($plano['tipo']) === 'diamante'): ?>
+                    <div class="economia-tag">
+                        <i class="fas fa-gem"></i> Premium
+                    </div>
+                    <?php endif; ?>
+                    <ul class="plano-beneficios">
+                        <?php foreach ($beneficios_lista as $beneficio): ?>
+                        <li><i class="fas fa-check"></i> <?= htmlspecialchars($beneficio) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <a href="checkout.php?plano=<?= $plano['id'] ?>" class="<?= $btn_class ?>">
+                        <?= $plano['destaque'] ? 'Garantir Vaga' : 'Assinar Agora' ?>
+                    </a>
                 </div>
-                <div class="parcelamento">
-                    <i class="fas fa-credit-card"></i> Cartão de crédito, Pix ou Boleto
-                </div>
-                <ul class="plano-beneficios">
-                    <li><i class="fas fa-check"></i> Jantar Sócios</li>
-                    <li><i class="fas fa-check"></i> Descontos Parceiros APA</li>
-                    <li><i class="fas fa-check"></i> Ingressos Jogos Oficiais</li>
-                </ul>
-                <a href="#contato" class="btn-plano">Assinar Agora</a>
-            </div>
-
-            <!-- Plano Ouro (Destaque) -->
-            <div class="plano-card plano-destaque">
-                <div class="plano-badge badge-popular">Ouro</div>
-                <h3>Sócio APA Ouro</h3>
-                <div class="plano-preco">
-                    <span class="preco-por">12x R$ 30<span class="preco-mes">,00</span></span>
-                </div>
-                <div class="parcelamento">
-                    <i class="fas fa-credit-card"></i> Cartão de crédito ou Pix
-                </div>
-                <ul class="plano-beneficios">
-                    <li><i class="fas fa-check"></i> Camiseta Oficial Temporada 2026</li>
-                    <li><i class="fas fa-check"></i> Jantar Sócios</li>
-                    <li><i class="fas fa-check"></i> Descontos Parceiros APA</li>
-                    <li><i class="fas fa-check"></i> Ingressos Jogos Oficiais</li>
-                </ul>
-                <a href="#contato" class="btn-plano btn-plano-destaque">Garantir Vaga</a>
-            </div>
-            
-            <!-- Plano Diamante -->
-            <div class="plano-card plano-diamante">
-                <div class="plano-badge badge-diamante">Diamante</div>
-                <h3>Sócio APA Diamante</h3>
-                <div class="plano-preco">
-                    <span class="preco-por">12x R$ 60<span class="preco-mes">,00</span></span>
-                </div>
-                <div class="economia-tag">
-                    <i class="fas fa-gem"></i> Premium
-                </div>
-                <div class="parcelamento">
-                    <i class="fas fa-credit-card"></i> Cartão de crédito ou Pix
-                </div>
-                <ul class="plano-beneficios">
-                    <li><i class="fas fa-check"></i> Kit Diamante</li>
-                    <li><i class="fas fa-check"></i> Jantar Sócios</li>
-                    <li><i class="fas fa-check"></i> Descontos Parceiros APA</li>
-                    <li><i class="fas fa-check"></i> Ingressos Jogos Oficiais</li>
-                </ul>
-                <a href="#contato" class="btn-plano btn-plano-diamante">Assinar Agora</a>
-            </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Nenhum plano disponível no momento.</p>
+            <?php endif; ?>
         </div>
     </section>
     </main>
