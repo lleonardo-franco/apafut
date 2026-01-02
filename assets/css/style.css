@@ -1847,8 +1847,8 @@ section#categorias h2 {
     
     .destaque-card-principal .destaque-data {
         font-size: 0.75rem;
-        padding: 4px 10px;
-        margin-bottom: 8px;
+        padding: 0;
+        margin: 0;
     }
     
     .destaque-card-principal .destaque-titulo-noticia {
@@ -1931,8 +1931,8 @@ section#categorias h2 {
     
     .destaque-card-principal .destaque-data {
         font-size: 0.7rem;
-        padding: 4px 8px;
-        margin-bottom: 6px;
+        padding: 0;
+        margin: 0;
     }
     
     .destaque-card-principal .destaque-titulo-noticia {
