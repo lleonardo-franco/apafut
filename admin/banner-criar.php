@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Título é obrigatório');
         }
         
-        // Upload de imagem
+        // Upload de imagem desktop
         $imagemPath = '';
         if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = '../assets/images/';
@@ -38,22 +38,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             $extension = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
-            $fileName = 'banner-' . preg_replace('/[^a-z0-9]/i', '-', strtolower($titulo)) . '-' . time() . '.' . $extension;
+            $fileName = 'banner-desktop-' . preg_replace('/[^a-z0-9]/i', '-', strtolower($titulo)) . '-' . time() . '.' . $extension;
             $imagemPath = 'assets/images/' . $fileName;
             
             if (!move_uploaded_file($_FILES['imagem']['tmp_name'], $uploadDir . $fileName)) {
-                throw new Exception('Erro ao fazer upload da imagem');
+                throw new Exception('Erro ao fazer upload da imagem desktop');
             }
         } else {
-            throw new Exception('Imagem é obrigatória');
+            throw new Exception('Imagem desktop é obrigatória');
+        }
+        
+        // Upload de imagem mobile
+        $imagemMobilePath = '';
+        if (isset($_FILES['imagem_mobile']) && $_FILES['imagem_mobile']['error'] === UPLOAD_ERR_OK) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $fileType = $_FILES['imagem_mobile']['type'];
+            
+            if (!in_array($fileType, $allowedTypes)) {
+                throw new Exception('Formato de imagem mobile inválido. Use JPG, PNG, GIF ou WEBP');
+            }
+            
+            if ($_FILES['imagem_mobile']['size'] > 10 * 1024 * 1024) {
+                throw new Exception('Imagem mobile muito grande. Máximo 10MB');
+            }
+            
+            $extension = pathinfo($_FILES['imagem_mobile']['name'], PATHINFO_EXTENSION);
+            $fileName = 'banner-mobile-' . preg_replace('/[^a-z0-9]/i', '-', strtolower($titulo)) . '-' . time() . '.' . $extension;
+            $imagemMobilePath = 'assets/images/' . $fileName;
+            
+            if (!move_uploaded_file($_FILES['imagem_mobile']['tmp_name'], $uploadDir . $fileName)) {
+                throw new Exception('Erro ao fazer upload da imagem mobile');
+            }
         }
         
         // Inserir no banco
         $conn = getConnection();
-        $stmt = $conn->prepare("INSERT INTO banners (titulo, imagem, ordem, ativo) VALUES (:titulo, :imagem, :ordem, :ativo)");
+        $stmt = $conn->prepare("INSERT INTO banners (titulo, imagem, imagem_mobile, ordem, ativo) VALUES (:titulo, :imagem, :imagem_mobile, :ordem, :ativo)");
         
         $stmt->bindParam(':titulo', $titulo);
         $stmt->bindParam(':imagem', $imagemPath);
+        $stmt->bindParam(':imagem_mobile', $imagemMobilePath);
         $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
         $stmt->bindParam(':ativo', $ativo, PDO::PARAM_INT);
         
@@ -126,11 +150,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
 
                         <div class="form-group col-span-2">
-                            <label for="imagem"><i class="fas fa-image"></i> Imagem do Banner *</label>
-                            <input type="file" id="imagem" name="imagem" accept="image/*" required onchange="previewImage(this)">
+                            <label for="imagem"><i class="fas fa-desktop"></i> Imagem Desktop (1920x600px) *</label>
+                            <input type="file" id="imagem" name="imagem" accept="image/*" required onchange="previewImage(this, 'preview')">
                             <small>Recomendado: 1920x600px (formato paisagem). Máximo 10MB</small>
                             <div id="imagePreview" style="margin-top: 15px; display: none;">
                                 <img id="preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label for="imagem_mobile"><i class="fas fa-mobile-alt"></i> Imagem Mobile (1200x800px)</label>
+                            <input type="file" id="imagem_mobile" name="imagem_mobile" accept="image/*" onchange="previewImage(this, 'previewMobile')">
+                            <small>Opcional. Recomendado: 1200x800px ou 800x1200px (retrato). Se não enviar, usa a imagem desktop</small>
+                            <div id="imagePreviewMobile" style="margin-top: 15px; display: none;">
+                                <img id="previewMobile" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
                             </div>
                         </div>
 
@@ -163,21 +196,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        function previewImage(input) {
-            const preview = document.getElementById('imagePreview');
-            const previewImg = document.getElementById('preview');
+        function previewImage(input, previewId) {
+            const previewContainer = previewId === 'preview' ? document.getElementById('imagePreview') : document.getElementById('imagePreviewMobile');
+            const previewImg = document.getElementById(previewId);
             
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
-                    preview.style.display = 'block';
+                    previewContainer.style.display = 'block';
                 };
                 
                 reader.readAsDataURL(input.files[0]);
             } else {
-                preview.style.display = 'none';
+                previewContainer.style.display = 'none';
             }
         }
     </script>

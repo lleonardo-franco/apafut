@@ -154,6 +154,15 @@ function getPosicaoIcon($posicao) {
             object-position: center;
         }
         
+        /* Mostrar apenas imagem desktop por padrão */
+        .banner-mobile {
+            display: none;
+        }
+        
+        .banner-desktop {
+            display: block;
+        }
+        
         /* Indicadores */
         .banner-indicators {
             position: absolute;
@@ -190,19 +199,23 @@ function getPosicaoIcon($posicao) {
         @media (max-width: 768px) {
             .banner-carousel {
                 height: auto;
-                min-height: 300px;
+                min-height: 400px;
             }
             
             .banner-slide {
                 height: auto;
-                min-height: 300px;
             }
             
-            .banner-slide img {
+            /* Trocar para imagem mobile */
+            .banner-desktop {
+                display: none;
+            }
+            
+            .banner-mobile {
+                display: block;
                 width: 100%;
                 height: auto;
                 object-fit: contain;
-                max-height: 400px;
             }
             
             .banner-indicators {
@@ -279,7 +292,16 @@ function getPosicaoIcon($posicao) {
             <?php if (count($banners) > 0): ?>
                 <?php foreach($banners as $index => $banner): ?>
                     <div class="banner-slide <?= $index === 0 ? 'active' : '' ?>">
-                        <img src="<?= htmlspecialchars($banner['imagem']) ?>" 
+                        <!-- Imagem Desktop -->
+                        <img class="banner-desktop" 
+                             src="<?= htmlspecialchars($banner['imagem']) ?>" 
+                             alt="<?= htmlspecialchars($banner['titulo']) ?>" 
+                             loading="<?= $index === 0 ? 'eager' : 'lazy' ?>"
+                             onerror="this.src='assets/hero.png'">
+                        <!-- Imagem Mobile -->
+                        <?php $imagemMobile = !empty($banner['imagem_mobile']) ? $banner['imagem_mobile'] : $banner['imagem']; ?>
+                        <img class="banner-mobile" 
+                             src="<?= htmlspecialchars($imagemMobile) ?>" 
                              alt="<?= htmlspecialchars($banner['titulo']) ?>" 
                              loading="<?= $index === 0 ? 'eager' : 'lazy' ?>"
                              onerror="this.src='assets/hero.png'">
@@ -287,13 +309,16 @@ function getPosicaoIcon($posicao) {
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="banner-slide active">
-                    <img src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
+                    <img class="banner-desktop" src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
+                    <img class="banner-mobile" src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
                 </div>
                 <div class="banner-slide">
-                    <img src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
+                    <img class="banner-desktop" src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
+                    <img class="banner-mobile" src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
                 </div>
                 <div class="banner-slide">
-                    <img src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
+                    <img class="banner-desktop" src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
+                    <img class="banner-mobile" src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
                 </div>
             <?php endif; ?>
         </div>
