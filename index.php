@@ -24,6 +24,19 @@ $jogadores = Cache::remember('jogadores_ativos', function() {
     }
 }, 3600);
 
+// Buscar banners ativos
+$banners = Cache::remember('banners_ativos', function() {
+    try {
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT * FROM banners WHERE ativo = 1 ORDER BY ordem ASC");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Erro ao buscar banners: " . $e->getMessage());
+        return [];
+    }
+}, 1800);
+
 // Buscar planos ativos
 $planos = Cache::remember('planos_ativos', function() {
     try {
@@ -231,23 +244,44 @@ function getPosicaoIcon($posicao) {
     <!-- Carrossel de Banners Fullscreen -->
     <section class="banner-carousel">
         <div class="banner-slides">
-            <div class="banner-slide active">
-                <img src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
-            </div>
-            <div class="banner-slide">
-                <img src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
-            </div>
-            <div class="banner-slide">
-                <img src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
-            </div>
+            <?php if (count($banners) > 0): ?>
+                <?php foreach($banners as $index => $banner): ?>
+                    <div class="banner-slide <?= $index === 0 ? 'active' : '' ?>">
+                        <img src="<?= htmlspecialchars($banner['imagem']) ?>" 
+                             alt="<?= htmlspecialchars($banner['titulo']) ?>" 
+                             loading="<?= $index === 0 ? 'eager' : 'lazy' ?>"
+                             onerror="this.src='assets/hero.png'">
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="banner-slide active">
+                    <img src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
+                </div>
+                <div class="banner-slide">
+                    <img src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
+                </div>
+                <div class="banner-slide">
+                    <img src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
+                </div>
+            <?php endif; ?>
         </div>
         
         <!-- Indicadores -->
+        <?php if (count($banners) > 1): ?>
+        <div class="banner-indicators">
+            <?php foreach($banners as $index => $banner): ?>
+                <button class="indicator <?= $index === 0 ? 'active' : '' ?>" 
+                        data-slide="<?= $index ?>" 
+                        aria-label="<?= htmlspecialchars($banner['titulo']) ?>"></button>
+            <?php endforeach; ?>
+        </div>
+        <?php elseif (count($banners) === 0): ?>
         <div class="banner-indicators">
             <button class="indicator active" data-slide="0" aria-label="Banner 1"></button>
             <button class="indicator" data-slide="1" aria-label="Banner 2"></button>
             <button class="indicator" data-slide="2" aria-label="Banner 3"></button>
         </div>
+        <?php endif; ?>
     </section>
     
     <section>

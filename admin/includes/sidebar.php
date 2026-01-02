@@ -18,6 +18,10 @@
             <i class="fas fa-newspaper"></i>
             <span>Notícias</span>
         </a>
+        <a href="banners.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'banners.php' || strpos(basename($_SERVER['PHP_SELF']), 'banner-') === 0 ? 'active' : '' ?>">
+            <i class="fas fa-images"></i>
+            <span>Banners</span>
+        </a>
         <a href="jogadores.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'jogadores.php' || strpos(basename($_SERVER['PHP_SELF']), 'jogador-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-users"></i>
             <span>Jogadores</span>
