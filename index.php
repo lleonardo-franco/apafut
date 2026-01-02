@@ -199,8 +199,8 @@ function getPosicaoIcon($posicao) {
         @media (max-width: 768px) {
             .banner-carousel {
                 height: auto;
-                min-height: 300px;
-                max-height: 500px;
+                min-height: 400px;
+                max-height: 600px;
                 background: #f8f9fa;
             }
             
@@ -225,7 +225,7 @@ function getPosicaoIcon($posicao) {
                 display: inline-block;
                 width: 100%;
                 height: auto;
-                max-height: 500px;
+                max-height: 600px;
                 object-fit: contain;
                 vertical-align: middle;
                 margin: 0 auto;
