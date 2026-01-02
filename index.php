@@ -198,30 +198,28 @@ function getPosicaoIcon($posicao) {
         /* Responsivo */
         @media (max-width: 768px) {
             .banner-carousel {
-                height: auto;
-                min-height: auto;
+                width: 100%;
+                height: 800px;
+                overflow: hidden;
                 background: #f8f9fa;
-                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .banner-slides {
                 position: relative;
                 width: 100%;
-                height: auto;
+                height: 100%;
             }
             
             .banner-slide {
-                position: relative;
+                position: absolute;
                 width: 100%;
-                height: auto;
-                opacity: 0;
-                display: none;
-            }
-            
-            .banner-slide.active {
-                opacity: 1;
-                display: block;
-                position: relative;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             /* Trocar para imagem mobile */
@@ -232,10 +230,9 @@ function getPosicaoIcon($posicao) {
             .banner-mobile {
                 display: block;
                 width: 100%;
-                height: auto;
-                max-width: 100%;
-                object-fit: contain;
-                vertical-align: middle;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
             }
             
             .banner-indicators {
