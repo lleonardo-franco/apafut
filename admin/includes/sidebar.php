@@ -14,6 +14,7 @@
         </a>
         
         <div class="menu-section-title">Conteúdo</div>
+        <!-- TESTE: ARQUIVO ATUALIZADO -->
         <a href="noticias.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'noticias.php' || strpos(basename($_SERVER['PHP_SELF']), 'noticia-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-newspaper"></i>
             <span>Notícias</span>
