@@ -200,10 +200,16 @@ function getPosicaoIcon($posicao) {
             .banner-carousel {
                 height: auto;
                 min-height: 400px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .banner-slide {
                 height: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             /* Trocar para imagem mobile */
@@ -216,6 +222,7 @@ function getPosicaoIcon($posicao) {
                 width: 100%;
                 height: auto;
                 object-fit: contain;
+                object-position: center center;
             }
             
             .banner-indicators {
