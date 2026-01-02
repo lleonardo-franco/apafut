@@ -119,10 +119,14 @@ function getPosicaoIcon($posicao) {
         .banner-carousel {
             position: relative;
             width: 100%;
-            height: 60vh;
-            min-height: 400px;
+            height: 70vh;
+            min-height: 500px;
+            max-height: 700px;
             overflow: hidden;
-            background: #000;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .banner-slides {
@@ -140,6 +144,9 @@ function getPosicaoIcon($posicao) {
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
             z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .banner-slide.active {
@@ -148,9 +155,11 @@ function getPosicaoIcon($posicao) {
         }
         
         .banner-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             object-position: center;
         }
         
