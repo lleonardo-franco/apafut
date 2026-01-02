@@ -227,10 +227,12 @@ function getPosicaoIcon($posicao) {
             }
             
             .banner-mobile {
-                display: block;
+                display: block !important;
                 width: 100%;
                 height: auto;
                 max-width: 100%;
+                object-fit: none !important;
+                object-position: unset !important;
             }
             
             .banner-indicators {
