@@ -199,29 +199,34 @@ function getPosicaoIcon($posicao) {
         @media (max-width: 768px) {
             .banner-carousel {
                 width: 100%;
-                height: auto;
-                min-height: unset;
+                height: 600px;
+                min-height: 600px;
                 background: #f8f9fa;
-                overflow: visible;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .banner-slides {
                 position: relative;
                 width: 100%;
-                height: auto;
+                height: 100%;
             }
             
             .banner-slide {
                 position: absolute;
                 width: 100%;
-                height: auto;
+                height: 100%;
                 top: 0;
                 left: 0;
                 opacity: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .banner-slide.active {
-                position: relative;
                 opacity: 1;
             }
             
@@ -232,11 +237,11 @@ function getPosicaoIcon($posicao) {
             
             .banner-mobile {
                 display: block !important;
-                width: 100%;
-                height: auto !important;
                 max-width: 100%;
-                object-fit: none !important;
-                object-position: unset !important;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+                object-fit: contain !important;
             }
             
             .banner-indicators {
@@ -255,7 +260,10 @@ function getPosicaoIcon($posicao) {
         }
         
         @media (max-width: 480px) {
-            /* Manter mesmo comportamento do 768px */
+            .banner-carousel {
+                height: 500px;
+                min-height: 500px;
+            }
         }
                 width: 10px;
                 height: 10px;
