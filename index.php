@@ -200,7 +200,9 @@ function getPosicaoIcon($posicao) {
             .banner-carousel {
                 width: 100%;
                 height: auto;
+                min-height: unset;
                 background: #f8f9fa;
+                overflow: visible;
             }
             
             .banner-slides {
@@ -215,10 +217,12 @@ function getPosicaoIcon($posicao) {
                 height: auto;
                 top: 0;
                 left: 0;
+                opacity: 0;
             }
             
             .banner-slide.active {
                 position: relative;
+                opacity: 1;
             }
             
             /* Trocar para imagem mobile */
@@ -229,7 +233,7 @@ function getPosicaoIcon($posicao) {
             .banner-mobile {
                 display: block !important;
                 width: 100%;
-                height: auto;
+                height: auto !important;
                 max-width: 100%;
                 object-fit: none !important;
                 object-position: unset !important;
@@ -251,14 +255,7 @@ function getPosicaoIcon($posicao) {
         }
         
         @media (max-width: 480px) {
-            .banner-carousel {
-                height: 45vh;
-                min-height: 350px;
-            }
-            
-            .banner-indicators {
-                bottom: 10px;
-            }
+            /* Manter mesmo comportamento do 768px */
         }
                 width: 10px;
                 height: 10px;
