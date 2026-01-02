@@ -42,17 +42,18 @@ try {
     // Conteúdo permite HTML básico
     $noticia['conteudo'] = Security::sanitizeHtml($noticia['conteudo'], '<p><br><strong><em><ul><ol><li><h2><h3><h4>');
     
-    // Buscar notícias relacionadas (mesma categoria ou mais recentes) com cache
+    // Buscar notícias relacionadas (sempre buscar outras notícias exceto a atual)
     $relacionadas = Cache::remember('relacionadas_' . $noticiaId, function() use ($conn, $noticia, $noticiaId) {
-        $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
+        // Primeiro tenta buscar da mesma categoria
+        $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE categoria = :categoria AND id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
         $stmt->bindParam(':categoria', $noticia['categoria'], PDO::PARAM_STR);
         $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
         $stmt->execute();
         $relacionadas = $stmt->fetchAll();
         
-        // Se não houver notícias suficientes da mesma categoria, buscar outras
-        if (count($relacionadas) < 3) {
-            $stmt = $conn->prepare("SELECT id, titulo, categoria, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
+        // Se não houver notícias suficientes, buscar outras independente da categoria
+        if (count($relacionadas) < 6) {
+            $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE id != :id AND ativo = 1 ORDER BY data_publicacao DESC LIMIT 6");
             $stmt->bindParam(':id', $noticiaId, PDO::PARAM_INT);
             $stmt->execute();
             $relacionadas = $stmt->fetchAll();
@@ -225,11 +226,11 @@ try {
     </article>
     </main>
 
-    <?php if (count($relacionadas) > 0): ?>
     <!-- Notícias Relacionadas -->
     <section class="noticias-relacionadas" aria-labelledby="relacionadas-titulo">
         <div class="container">
-            <h2 id="relacionadas-titulo">Notícias Relacionadas</h2>
+            <h2 id="relacionadas-titulo">Outras Notícias</h2>
+            <?php if (count($relacionadas) > 0): ?>
             <div class="noticias-grid">
                 <?php foreach($relacionadas as $rel): ?>
                 <a href="noticia.php?id=<?= $rel['id'] ?>" class="mini-noticia-card">
@@ -245,9 +246,11 @@ try {
                 </a>
                 <?php endforeach; ?>
             </div>
+            <?php else: ?>
+            <p style="text-align: center; padding: 20px;">Nenhuma notícia disponível no momento.</p>
+            <?php endif; ?>
         </div>
     </section>
-    <?php endif; ?>
 
     <!-- Footer -->
     <footer role="contentinfo" aria-label="Rodapé">
