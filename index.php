@@ -150,8 +150,9 @@ function getPosicaoIcon($posicao) {
         .banner-slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             object-position: center;
+            background: #f8f9fa;
         }
         
         /* Indicadores */
@@ -190,14 +191,38 @@ function getPosicaoIcon($posicao) {
         @media (max-width: 768px) {
             .banner-carousel {
                 height: 50vh;
+                min-height: 400px;
+            }
+            
+            .banner-slide img {
+                object-fit: contain;
+            }
+            
+            .banner-indicators {
+                bottom: 15px;
+                gap: 8px;
+            }
+            
+            .indicator {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .indicator.active {
+                width: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .banner-carousel {
+                height: 45vh;
                 min-height: 350px;
             }
             
             .banner-indicators {
-                bottom: 20px;
+                bottom: 10px;
             }
-            
-            .indicator {
+        }
                 width: 10px;
                 height: 10px;
             }
