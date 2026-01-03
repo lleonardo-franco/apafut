@@ -235,12 +235,13 @@ function getPosicaoIcon($posicao) {
                 align-items: center;
                 justify-content: center;
                 padding: 0;
+                margin-top: 60px !important;
             }
             
             .banner-slides {
                 position: relative;
-                width: 100%;
-                height: auto;
+                width: 100vw;
+                height: calc(100vw * 6 / 7);
                 aspect-ratio: 7 / 6;
             }
             
