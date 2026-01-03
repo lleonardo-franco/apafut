@@ -810,9 +810,31 @@ section#sobre .btn-sobre:hover {
 
 /* Carrossel de Patrocinadores */
 .patrocinadores-carousel {
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    padding: 50px 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+    padding: 60px 0;
     overflow: hidden;
+    position: relative;
+}
+
+.patrocinadores-carousel::before,
+.patrocinadores-carousel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 150px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.patrocinadores-carousel::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+}
+
+.patrocinadores-carousel::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 }
 
 .patrocinadores-container {
@@ -825,22 +847,33 @@ section#sobre .btn-sobre:hover {
     text-align: center;
     font-size: clamp(1.5rem, 3vw, 2rem);
     color: var(--azul-secundario);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.patrocinadores-container h3::before,
+.patrocinadores-container h3::after {
+    content: '';
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--vermelho-primario), transparent);
 }
 
 .patrocinadores-container h3 i {
     color: var(--vermelho-primario);
+    font-size: 1.8rem;
 }
 
 .patrocinadores-track {
     display: flex;
-    animation: scroll 30s linear infinite;
-    gap: 60px;
+    animation: scroll 40s linear infinite;
+    gap: 80px;
     align-items: center;
 }
 
@@ -859,53 +892,84 @@ section#sobre .btn-sobre:hover {
 
 .patrocinador-item {
     flex-shrink: 0;
-    width: 200px;
-    height: 100px;
+    width: 220px;
+    height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 25px;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(17, 29, 105, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.patrocinador-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--azul-secundario), var(--vermelho-primario));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.patrocinador-item:hover::before {
+    transform: scaleX(1);
 }
 
 .patrocinador-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(17, 29, 105, 0.15);
+    border-color: var(--azul-secundario);
 }
 
 .patrocinador-item img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .patrocinador-item:hover img {
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
     .patrocinadores-carousel {
-        padding: 30px 0;
+        padding: 40px 0;
+    }
+
+    .patrocinadores-carousel::before,
+    .patrocinadores-carousel::after {
+        width: 80px;
     }
 
     .patrocinadores-container h3 {
         font-size: 1.3rem;
-        margin-bottom: 25px;
+        margin-bottom: 35px;
+        letter-spacing: 1px;
+    }
+
+    .patrocinadores-container h3::before,
+    .patrocinadores-container h3::after {
+        width: 40px;
     }
 
     .patrocinador-item {
-        width: 150px;
-        height: 80px;
-        padding: 15px;
+        width: 160px;
+        height: 90px;
+        padding: 20px;
     }
 
     .patrocinadores-track {
-        gap: 30px;
-        animation-duration: 20s;
+        gap: 40px;
+        animation-duration: 25s;
     }
 }
 
