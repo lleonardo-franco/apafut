@@ -275,21 +275,6 @@ function getPosicaoIcon($posicao) {
                 bottom: 20px;
             }
         }
-        
-        @media (max-width: 480px) {
-            .banner-carousel {
-                height: 350px;
-                min-height: 350px;
-            }
-        }
-                width: 10px;
-                height: 10px;
-            }
-            
-            .indicator.active {
-                width: 30px;
-            }
-        }
     </style>
     <?php SEO::renderOrganizationSchema(); ?>
 </head>
