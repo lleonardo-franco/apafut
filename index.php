@@ -125,6 +125,7 @@ function getPosicaoIcon($posicao) {
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 0;
         }
         
         .banner-slides {
