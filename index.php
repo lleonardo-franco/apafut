@@ -212,7 +212,7 @@ function getPosicaoIcon($posicao) {
             background: white;
             width: 32px;
             height: 10px;
-            border-radius: 5px;
+            border-radius: 10px;
         }
         
         .indicator:hover {
