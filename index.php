@@ -130,7 +130,6 @@ function getPosicaoIcon($posicao) {
         .banner-slides {
             position: relative;
             width: 100%;
-            max-width: 1400px;
             margin: 0 auto;
             aspect-ratio: 21 / 9;
         }
