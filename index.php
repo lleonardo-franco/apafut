@@ -198,8 +198,8 @@ function getPosicaoIcon($posicao) {
         }
         
         .indicator {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
             border: 2px solid white;
@@ -210,8 +210,9 @@ function getPosicaoIcon($posicao) {
         
         .indicator.active {
             background: white;
-            width: 40px;
-            border-radius: 50%;
+            width: 32px;
+            height: 10px;
+            border-radius: 5px;
         }
         
         .indicator:hover {
