@@ -325,8 +325,6 @@ try {
         </div>
     </main>
 
-    <?php include 'includes/footer.php'; ?>
-
     <script src="assets/js/script.min.js"></script>
 </body>
 </html>
