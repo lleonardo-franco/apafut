@@ -228,20 +228,20 @@ function getPosicaoIcon($posicao) {
         @media (max-width: 768px) {
             .banner-carousel {
                 width: 100%;
-                height: 450px;
-                min-height: 450px;
+                height: auto;
                 background: #f8f9fa;
                 overflow: hidden;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                padding: 0;
             }
             
             .banner-slides {
                 position: relative;
                 width: 100%;
-                height: 100%;
-                aspect-ratio: auto;
+                height: auto;
+                aspect-ratio: 7 / 6;
             }
             
             .banner-slide {
