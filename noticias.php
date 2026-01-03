@@ -1,23 +1,14 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-require_once 'config/security-headers.php';
 require_once 'config/db.php';
-require_once 'src/SEO.php';
-require_once 'src/Cache.php';
-require_once 'src/BotProtection.php';
-
-// Proteção contra bots
-BotProtection::check();
 
 try {
     $conn = getConnection();
     
     // Buscar todas as notícias ativas
-    $noticias = Cache::remember('todas_noticias', function() use ($conn) {
-        $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE ativo = 1 ORDER BY data_publicacao DESC, created_at DESC");
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }, 1800); // 30 minutos
+    $stmt = $conn->prepare("SELECT id, titulo, categoria, resumo, imagem, data_publicacao FROM noticias WHERE ativo = 1 ORDER BY data_publicacao DESC, created_at DESC");
+    $stmt->execute();
+    $noticias = $stmt->fetchAll();
     
 } catch(PDOException $e) {
     error_log('Erro ao buscar notícias: ' . $e->getMessage());
@@ -27,13 +18,11 @@ try {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <?php 
-    SEO::renderMetaTags('noticias', [
-        'title' => 'Todas as Notícias - Apafut Caxias do Sul',
-        'description' => 'Confira todas as notícias e novidades da Apafut - Associação de Pais e Atletas de Futebol de Caxias do Sul',
-        'keywords' => 'apafut, notícias, futebol, caxias do sul, novidades'
-    ]);
-    ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todas as Notícias - Apafut Caxias do Sul</title>
+    <meta name="description" content="Confira todas as notícias e novidades da Apafut - Associação de Pais e Atletas de Futebol de Caxias do Sul">
+    <meta name="keywords" content="apafut, notícias, futebol, caxias do sul, novidades">
     <!-- favicon -->
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">
