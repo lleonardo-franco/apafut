@@ -229,7 +229,6 @@ function getPosicaoIcon($posicao) {
             .banner-carousel {
                 width: 100%;
                 height: auto;
-                background: #f8f9fa;
                 overflow: hidden;
                 display: flex;
                 align-items: center;
