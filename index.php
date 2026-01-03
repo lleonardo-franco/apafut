@@ -272,18 +272,7 @@ function getPosicaoIcon($posicao) {
             }
             
             .banner-indicators {
-                bottom: 12px;
-                gap: 6px;
-            }
-            
-            .indicator {
-                width: 8px;
-                height: 8px;
-                border: 1.5px solid white;
-            }
-            
-            .indicator.active {
-                width: 24px;
+                bottom: 20px;
             }
         }
         
