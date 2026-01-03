@@ -121,10 +121,11 @@ function getPosicaoIcon($posicao) {
             width: 100%;
             height: auto;
             overflow: hidden;
-            background: #f8f9fa;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0 20px;
         }
         
         .banner-slides {
@@ -133,8 +134,9 @@ function getPosicaoIcon($posicao) {
             max-width: 1400px;
             margin: 0 auto;
             aspect-ratio: 21 / 9;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         }
         
         .banner-slide {
@@ -325,7 +327,7 @@ function getPosicaoIcon($posicao) {
     </header>
     
     <!-- Carrossel de Banners Fullscreen -->
-    <section class="banner-carousel" style="margin-top: 60px;">
+    <section class="banner-carousel" style="margin-top: 80px;">
         <div class="banner-slides">
             <?php if (count($banners) > 0): ?>
                 <?php foreach($banners as $index => $banner): ?>
