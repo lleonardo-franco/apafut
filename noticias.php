@@ -10,9 +10,14 @@ try {
     $stmt->execute();
     $noticias = $stmt->fetchAll();
     
+    // Extrair categorias únicas
+    $categorias = array_unique(array_column($noticias, 'categoria'));
+    sort($categorias);
+    
 } catch(PDOException $e) {
     error_log('Erro ao buscar notícias: ' . $e->getMessage());
     $noticias = [];
+    $categorias = [];
 }
 ?>
 <!DOCTYPE html>
@@ -227,6 +232,102 @@ try {
             color: #999;
         }
         
+        /* Filtros */
+        .filtros-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .busca-container {
+            margin-bottom: 25px;
+        }
+        
+        .busca-input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23999"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>') no-repeat 18px center;
+            background-size: 20px;
+        }
+        
+        .busca-input:focus {
+            outline: none;
+            border-color: var(--vermelho-primario);
+        }
+        
+        .categorias-filtro {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filtro-categoria {
+            padding: 10px 20px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 25px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .filtro-categoria:hover {
+            border-color: var(--vermelho-primario);
+            color: var(--vermelho-primario);
+        }
+        
+        .filtro-categoria.active {
+            background: var(--vermelho-primario);
+            border-color: var(--vermelho-primario);
+            color: white;
+        }
+        
+        .noticia-card.hidden {
+            display: none;
+        }
+        
+        .filtros-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filtros-header h3 {
+            color: var(--azul-secundario);
+            font-size: 1.25rem;
+            margin: 0;
+        }
+        
+        .limpar-filtros {
+            background: transparent;
+            border: none;
+            color: var(--vermelho-primario);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            padding: 5px 10px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .limpar-filtros:hover {
+            opacity: 0.7;
+        }
+        
+        .limpar-filtros.hidden {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .noticias-page {
                 padding: 100px 15px 60px;
@@ -239,6 +340,19 @@ try {
             
             .page-header {
                 margin-bottom: 40px;
+            }
+            
+            .filtros-container {
+                padding: 20px;
+            }
+            
+            .categorias-filtro {
+                gap: 8px;
+            }
+            
+            .filtro-categoria {
+                padding: 8px 16px;
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -279,9 +393,41 @@ try {
                     <p>Em breve teremos novidades por aqui!</p>
                 </div>
             <?php else: ?>
+                <!-- Filtros -->
+                <div class="filtros-container">
+                    <div class="filtros-header">
+                        <h3><i class="fas fa-filter"></i> Filtrar Notícias</h3>
+                        <button class="limpar-filtros hidden" onclick="limparFiltros()">
+                            <i class="fas fa-times"></i> Limpar Filtros
+                        </button>
+                    </div>
+                    
+                    <div class="busca-container">
+                        <input type="text" 
+                               id="busca-noticia" 
+                               class="busca-input" 
+                               placeholder="Buscar por título ou conteúdo..."
+                               oninput="filtrarNoticias()">
+                    </div>
+                    
+                    <div class="categorias-filtro">
+                        <button class="filtro-categoria active" data-categoria="todas" onclick="filtrarPorCategoria('todas', this)">
+                            <i class="fas fa-th"></i> Todas
+                        </button>
+                        <?php foreach ($categorias as $categoria): ?>
+                            <button class="filtro-categoria" data-categoria="<?= htmlspecialchars($categoria) ?>" onclick="filtrarPorCategoria('<?= htmlspecialchars($categoria) ?>', this)">
+                                <?= htmlspecialchars($categoria) ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
                 <div class="noticias-grid">
                     <?php foreach ($noticias as $noticia): ?>
-                        <article class="noticia-card">
+                        <article class="noticia-card" 
+                                 data-titulo="<?= strtolower(htmlspecialchars($noticia['titulo'])) ?>"
+                                 data-resumo="<?= strtolower(htmlspecialchars($noticia['resumo'])) ?>"
+                                 data-categoria="<?= htmlspecialchars($noticia['categoria']) ?>">
                             <div class="noticia-imagem">
                                 <img src="<?= htmlspecialchars($noticia['imagem']) ?>" 
                                      alt="<?= htmlspecialchars($noticia['titulo']) ?>"
@@ -368,6 +514,104 @@ try {
             </div>
         </div>
     </footer>
+
+    <script>
+        let categoriaAtual = 'todas';
+        
+        function filtrarNoticias() {
+            const busca = document.getElementById('busca-noticia').value.toLowerCase();
+            const cards = document.querySelectorAll('.noticia-card');
+            let algumVisivel = false;
+            
+            cards.forEach(card => {
+                const titulo = card.getAttribute('data-titulo');
+                const resumo = card.getAttribute('data-resumo');
+                const categoria = card.getAttribute('data-categoria');
+                
+                const matchBusca = !busca || titulo.includes(busca) || resumo.includes(busca);
+                const matchCategoria = categoriaAtual === 'todas' || categoria === categoriaAtual;
+                
+                if (matchBusca && matchCategoria) {
+                    card.classList.remove('hidden');
+                    algumVisivel = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            atualizarBotaoLimpar();
+            mostrarMensagemVazio(algumVisivel);
+        }
+        
+        function filtrarPorCategoria(categoria, button) {
+            // Atualizar categoria atual
+            categoriaAtual = categoria;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.filtro-categoria').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+            
+            // Aplicar filtro
+            filtrarNoticias();
+        }
+        
+        function limparFiltros() {
+            // Limpar campo de busca
+            document.getElementById('busca-noticia').value = '';
+            
+            // Resetar categoria para "todas"
+            categoriaAtual = 'todas';
+            document.querySelectorAll('.filtro-categoria').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-categoria') === 'todas') {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Mostrar todas as notícias
+            document.querySelectorAll('.noticia-card').forEach(card => {
+                card.classList.remove('hidden');
+            });
+            
+            atualizarBotaoLimpar();
+            mostrarMensagemVazio(true);
+        }
+        
+        function atualizarBotaoLimpar() {
+            const busca = document.getElementById('busca-noticia').value;
+            const btnLimpar = document.querySelector('.limpar-filtros');
+            
+            if (busca || categoriaAtual !== 'todas') {
+                btnLimpar.classList.remove('hidden');
+            } else {
+                btnLimpar.classList.add('hidden');
+            }
+        }
+        
+        function mostrarMensagemVazio(algumVisivel) {
+            let mensagemVazio = document.querySelector('.sem-resultados');
+            
+            if (!algumVisivel) {
+                if (!mensagemVazio) {
+                    mensagemVazio = document.createElement('div');
+                    mensagemVazio.className = 'sem-noticias sem-resultados';
+                    mensagemVazio.innerHTML = `
+                        <i class="fas fa-search"></i>
+                        <h3>Nenhuma notícia encontrada</h3>
+                        <p>Tente ajustar os filtros de busca</p>
+                    `;
+                    document.querySelector('.noticias-grid').after(mensagemVazio);
+                }
+                mensagemVazio.style.display = 'block';
+            } else {
+                if (mensagemVazio) {
+                    mensagemVazio.style.display = 'none';
+                }
+            }
+        }
+    </script>
 
     <script src="assets/js/script.min.js"></script>
 </body>
