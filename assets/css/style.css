@@ -735,13 +735,27 @@ section#sobre .btn-sobre:hover {
 .carousel {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    height: clamp(250px, 40vw, 400px);
+    max-width: 1200px;
+    height: 800px;
     margin: 0 auto;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     touch-action: pan-y pinch-zoom;
+}
+
+@media (max-width: 1400px) {
+    .carousel {
+        max-width: 90%;
+        height: calc(90vw * 2 / 3);
+    }
+}
+
+@media (max-width: 1024px) {
+    .carousel {
+        max-width: 95%;
+        height: calc(95vw * 2 / 3);
+    }
 }
 
 .carousel img {
