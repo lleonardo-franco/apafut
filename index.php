@@ -211,7 +211,7 @@ function getPosicaoIcon($posicao) {
         .indicator.active {
             background: white;
             width: 40px;
-            border-radius: 6px;
+            border-radius: 50%;
         }
         
         .indicator:hover {
