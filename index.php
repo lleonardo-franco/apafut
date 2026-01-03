@@ -401,126 +401,73 @@ function getPosicaoIcon($posicao) {
         <!-- Destaques -->
         <section id="noticias" class="destaques-section">
             <div class="destaques-container">
-                <div class="destaques-wrapper">
-                    <h2 class="destaques-titulo">DESTAQUES</h2>
+                <h2 class="destaques-titulo">DESTAQUES</h2>
+                
+                <?php
+                // Buscar notícias ativas do banco de dados
+                try {
+                    require_once 'config/db.php';
+                    $conn = getConnection();
                     
-                    <?php
-                    // Buscar notícias ativas do banco de dados
-                    try {
-                        require_once 'config/db.php';
-                        $conn = getConnection();
-                        
-                        $stmt = $conn->query("
-                            SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
-                            FROM noticias 
-                            WHERE ativo = 1 
-                            ORDER BY destaque DESC, data_publicacao DESC 
-                            LIMIT 6
-                        ");
-                        $noticias = $stmt->fetchAll();
-                        
-                        // Preencher com dados padrão se não houver notícias suficientes
-                        while (count($noticias) < 6) {
-                            $noticias[] = [
-                                'id' => 0,
-                                'titulo' => 'Notícia em breve',
-                                'resumo' => 'Aguarde novidades',
-                                'imagem' => 'assets/fundo.jpg',
-                                'data_publicacao' => date('Y-m-d')
-                            ];
-                        }
-                        
-                        // Notícia principal
-                        $principal = $noticias[0];
-                        $imagemPrincipal = !empty($principal['imagem']) ? htmlspecialchars($principal['imagem']) : 'assets/fundo.jpg';
-                        $dataPrincipal = date('d/m/Y', strtotime($principal['data_publicacao']));
-                    ?>
+                    $stmt = $conn->query("
+                        SELECT id, titulo, categoria, resumo, imagem, data_publicacao 
+                        FROM noticias 
+                        WHERE ativo = 1 
+                        ORDER BY destaque DESC, data_publicacao DESC 
+                        LIMIT 6
+                    ");
+                    $noticias = $stmt->fetchAll();
                     
-                    <div class="destaque-card destaque-card-principal">
-                        <a href="noticia.php?id=<?= $principal['id'] ?>" class="destaque-link">
-                            <img src="<?= $imagemPrincipal ?>" alt="<?= htmlspecialchars($principal['titulo']) ?>" class="destaque-imagem" loading="lazy">
-                        </a>
-                        <div class="destaque-borda">
-                            <div class="destaque-borda-conteudo">
-                                <span class="destaque-data"><?= $dataPrincipal ?></span>
-                                <p class="destaque-resumo"><?= htmlspecialchars($principal['resumo']) ?></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="destaques-grid-secundario">
-                        <?php 
-                        // Primeiro card secundário (esquerda)
-                        $noticia = $noticias[1];
+                    // Preencher com dados padrão se não houver notícias suficientes
+                    while (count($noticias) < 6) {
+                        $noticias[] = [
+                            'id' => 0,
+                            'titulo' => 'Notícia em breve',
+                            'resumo' => 'Aguarde novidades',
+                            'imagem' => 'assets/fundo.jpg',
+                            'data_publicacao' => date('Y-m-d')
+                        ];
+                    }
+                ?>
+                
+                <div class="bento-grid-noticias">
+                    <?php foreach ($noticias as $index => $noticia): 
                         $imagemUrl = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/fundo.jpg';
                         $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
-                        ?>
-                        <div class="destaque-card destaque-card-secundario">
-                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
-                                <img src="<?= $imagemUrl ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem" loading="lazy">
-                            </a>
-                            <div class="destaque-borda">
-                                <div class="destaque-borda-conteudo">
-                                    <span class="destaque-data"><?= $dataNoticia ?></span>
-                                    <p class="destaque-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php 
-                        // Segundo card secundário (direita)
-                        $noticia = $noticias[2];
-                        $imagemUrl2 = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/fundo.jpg';
-                        $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
-                        ?>
-                        <div class="destaque-card destaque-card-secundario">
-                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
-                                <img src="<?= $imagemUrl2 ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem" loading="lazy">
-                            </a>
-                            <div class="destaque-borda">
-                                <div class="destaque-borda-conteudo">
-                                    <span class="destaque-data"><?= $dataNoticia ?></span>
-                                    <p class="destaque-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="destaques-grid-terciario">
-                        <?php 
-                        // Cards terciários
-                        for ($i = 3; $i <= 5; $i++):
-                            $noticia = $noticias[$i];
-                            $dataNoticia = date('d/m/Y', strtotime($noticia['data_publicacao']));
-                            $imagemTerciaria = !empty($noticia['imagem']) ? htmlspecialchars($noticia['imagem']) : 'assets/fundo.jpg';
-                        ?>
-                        <div class="destaque-card destaque-card-terciario">
-                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="destaque-link">
-                                <img src="<?= $imagemTerciaria ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>" class="destaque-imagem" loading="lazy">
-                            </a>
-                            <div class="destaque-borda">
-                                <div class="destaque-borda-conteudo">
-                                    <span class="destaque-data"><?= $dataNoticia ?></span>
-                                    <p class="destaque-resumo"><?= htmlspecialchars($noticia['resumo']) ?></p>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endfor; ?>
-                    </div>
-                    
-                    <div class="destaques-botao-container">
-                        <a href="noticias.php" class="btn-ver-todas-noticias">
-                            Ver todas as notícias <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                    
-                    <?php
-                    } catch (Exception $e) {
-                        error_log('Erro ao carregar notícias: ' . $e->getMessage());
-                        echo '<p style="padding: 40px; text-align: center;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
-                    }
+                        $itemClass = 'bento-item-' . ($index + 1);
                     ?>
+                        <article class="bento-item <?= $itemClass ?>">
+                            <a href="noticia.php?id=<?= $noticia['id'] ?>" class="bento-link">
+                                <div class="bento-image-wrapper">
+                                    <img src="<?= $imagemUrl ?>" 
+                                         alt="<?= htmlspecialchars($noticia['titulo']) ?>" 
+                                         class="bento-image" 
+                                         loading="lazy">
+                                    <div class="bento-overlay"></div>
+                                </div>
+                                <div class="bento-content">
+                                    <time class="bento-date" datetime="<?= $noticia['data_publicacao'] ?>">
+                                        <?= $dataNoticia ?>
+                                    </time>
+                                    <h3 class="bento-resumo"><?= htmlspecialchars($noticia['resumo']) ?></h3>
+                                </div>
+                            </a>
+                        </article>
+                    <?php endforeach; ?>
                 </div>
+                
+                <div class="destaques-botao-container">
+                    <a href="noticias.php" class="btn-ver-todas-noticias">
+                        Ver todas as notícias <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <?php
+                } catch (Exception $e) {
+                    error_log('Erro ao carregar notícias: ' . $e->getMessage());
+                    echo '<p style="padding: 40px; text-align: center;">Erro ao carregar notícias. Tente novamente mais tarde.</p>';
+                }
+                ?>
             </div>
         </section>
 
