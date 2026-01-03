@@ -125,7 +125,6 @@ function getPosicaoIcon($posicao) {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 60px;
         }
         
         .banner-slides {
@@ -324,7 +323,7 @@ function getPosicaoIcon($posicao) {
     </header>
     
     <!-- Carrossel de Banners Fullscreen -->
-    <section class="banner-carousel">
+    <section class="banner-carousel" style="margin-top: 60px;">
         <div class="banner-slides">
             <?php if (count($banners) > 0): ?>
                 <?php foreach($banners as $index => $banner): ?>
