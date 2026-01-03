@@ -150,18 +150,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
 
                         <div class="form-group col-span-2">
-                            <label for="imagem"><i class="fas fa-desktop"></i> Imagem Desktop (1920x600px) *</label>
+                            <label for="imagem"><i class="fas fa-desktop"></i> Imagem Desktop (1400x600px) *</label>
                             <input type="file" id="imagem" name="imagem" accept="image/*" required onchange="previewImage(this, 'preview')">
-                            <small>Recomendado: 1920x600px (formato paisagem). Máximo 10MB</small>
+                            <small>Recomendado: 1400x600px (proporção 21:9). Para alta resolução: 1920x823px. Máximo 10MB</small>
                             <div id="imagePreview" style="margin-top: 15px; display: none;">
                                 <img id="preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
                             </div>
                         </div>
 
                         <div class="form-group col-span-2">
-                            <label for="imagem_mobile"><i class="fas fa-mobile-alt"></i> Imagem Mobile (1200x800px)</label>
+                            <label for="imagem_mobile"><i class="fas fa-mobile-alt"></i> Imagem Mobile (800x1200px)</label>
                             <input type="file" id="imagem_mobile" name="imagem_mobile" accept="image/*" onchange="previewImage(this, 'previewMobile')">
-                            <small>Opcional. Recomendado: 1200x800px ou 800x1200px (retrato). Se não enviar, usa a imagem desktop</small>
+                            <small>Opcional. Recomendado: 800x1200px (proporção 2:3 vertical). Se não enviar, usa a imagem desktop</small>
                             <div id="imagePreviewMobile" style="margin-top: 15px; display: none;">
                                 <img id="previewMobile" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
                             </div>

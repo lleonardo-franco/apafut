@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             
                             <label for="imagem"><i class="fas fa-upload"></i> Alterar Imagem</label>
                             <input type="file" id="imagem" name="imagem" accept="image/*" onchange="previewImage(this)">
-                            <small>Deixe em branco para manter a imagem atual. Recomendado: 1920x600px. Máximo 10MB</small>
+                            <small>Deixe em branco para manter a imagem atual. Recomendado: 1400x600px (proporção 21:9). Máximo 10MB</small>
                             <div id="imagePreview" style="margin-top: 15px; display: none;">
                                 <img id="preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
                             </div>

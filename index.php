@@ -379,6 +379,40 @@ function getPosicaoIcon($posicao) {
         <?php endif; ?>
     </section>
     
+    <!-- Carrossel de Patrocinadores -->
+    <section class="patrocinadores-carousel">
+        <div class="patrocinadores-container">
+            <h3><i class="fas fa-handshake"></i> Nossos Patrocinadores</h3>
+            <div class="patrocinadores-track">
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/ucs.png" alt="UCS">
+                </div>
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/saltur.png" alt="Saltur">
+                </div>
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/chiesa.png" alt="Chiesa">
+                </div>
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/brisa.png" alt="Brisa">
+                </div>
+                <!-- Duplicação para loop infinito -->
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/ucs.png" alt="UCS">
+                </div>
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/saltur.png" alt="Saltur">
+                </div>
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/chiesa.png" alt="Chiesa">
+                </div>
+                <div class="patrocinador-item">
+                    <img src="assets/patrocinadores/brisa.png" alt="Brisa">
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <section>
         <!-- Destaques -->
         <section id="noticias" class="destaques-section">
