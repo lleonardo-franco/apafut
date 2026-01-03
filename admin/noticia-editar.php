@@ -235,6 +235,8 @@ try {
                                 <option value="Categorias de Base" <?= $noticia['categoria'] === 'Categorias de Base' ? 'selected' : '' ?>>Categorias de Base</option>
                                 <option value="Infraestrutura" <?= $noticia['categoria'] === 'Infraestrutura' ? 'selected' : '' ?>>Infraestrutura</option>
                                 <option value="Eventos" <?= $noticia['categoria'] === 'Eventos' ? 'selected' : '' ?>>Eventos</option>
+                                <option value="Depoimentos" <?= $noticia['categoria'] === 'Depoimentos' ? 'selected' : '' ?>>Depoimentos</option>
+                                <option value="Projetos Sociais" <?= $noticia['categoria'] === 'Projetos Sociais' ? 'selected' : '' ?>>Projetos Sociais</option>
                             </select>
                         </div>
 

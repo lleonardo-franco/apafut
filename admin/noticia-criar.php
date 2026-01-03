@@ -177,6 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="Infraestrutura" <?= ($_POST['categoria'] ?? '') === 'Infraestrutura' ? 'selected' : '' ?>>Infraestrutura</option>
                                 <option value="Eventos" <?= ($_POST['categoria'] ?? '') === 'Eventos' ? 'selected' : '' ?>>Eventos</option>
                                 <option value="Depoimentos" <?= ($_POST['categoria'] ?? '') === 'Depoimentos' ? 'selected' : '' ?>>Depoimentos</option>
+                                <option value="Projetos Sociais" <?= ($_POST['categoria'] ?? '') === 'Projetos Sociais' ? 'selected' : '' ?>>Projetos Sociais</option>
                             </select>
                         </div>
 
