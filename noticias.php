@@ -314,6 +314,61 @@ try {
         </div>
     </main>
 
+    <footer id="contato" role="contentinfo" aria-label="Rodapé">
+        <div class="footer-content">
+            <div class="footer-section footer-about">
+                <div class="footer-logo">
+                    <img src="assets/logo.png" alt="Logo Apafut">
+                    <h3>Apafut Caxias do Sul</h3>
+                </div>
+                <p>Formando campeões dentro e fora de campo desde 2010.</p>
+                <div class="footer-contact-quick">
+                    <a href="historia.html#unidades" class="footer-link-unidades">
+                        <i class="fas fa-map-marked-alt"></i> Nossas Unidades
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="index.php#home">Home</a></li>
+                    <li><a href="index.php#sobre">Sobre Nós</a></li>
+                    <li><a href="index.php#depoimentos">Depoimentos</a></li>
+                    <li><a href="index.php#planos">Planos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Redes Sociais</h4>
+                <p class="footer-social-text">Siga-nos nas redes sociais e fique por dentro de todas as novidades!</p>
+                <div class="social-media social-media-large" role="navigation" aria-label="Redes sociais">
+                    <a href="https://www.facebook.com/apafut.oficial/" aria-label="Visite nosso Facebook" target="_blank" rel="noopener" title="Facebook">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.instagram.com/apafutoficial/" aria-label="Visite nosso Instagram" target="_blank" rel="noopener" title="Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@apafutvideos" aria-label="Visite nosso YouTube" target="_blank" rel="noopener" title="YouTube">
+                        <i class="fab fa-youtube" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://wa.me/5554991348163" aria-label="Fale conosco no WhatsApp" target="_blank" rel="noopener" title="WhatsApp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    </a>
+                    <a href="mailto:apafutoficial@gmail.com" aria-label="Envie um e-mail" target="_blank" rel="noopener" title="E-mail">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; <?= date('Y') ?> Apafut Caxias do Sul. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="assets/js/script.min.js"></script>
 </body>
 </html>
