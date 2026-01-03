@@ -973,8 +973,9 @@ function getPosicaoIcon($posicao) {
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
                 <div class="footer-contact-quick">
-                    <p><i class="fas fa-map-marker-alt"></i> Caxias do Sul - RS</p>
-                    <p><i class="fas fa-clock"></i> Seg-Sex: 08:00-18:00 | Sáb: 08:00-12:00</p>
+                    <a href="historia.html#unidades" class="footer-link-unidades">
+                        <i class="fas fa-map-marked-alt"></i> Nossas Unidades
+                    </a>
                 </div>
             </div>
 
@@ -983,7 +984,6 @@ function getPosicaoIcon($posicao) {
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#sobre">Sobre Nós</a></li>
-                    <li><a href="#categorias">Categorias</a></li>
                     <li><a href="#depoimentos">Depoimentos</a></li>
                     <li><a href="#planos">Planos</a></li>
                 </ul>
