@@ -132,7 +132,7 @@ function getPosicaoIcon($posicao) {
             width: 100%;
             max-width: 1400px;
             margin: 0 auto;
-            aspect-ratio: 3 / 2;
+            aspect-ratio: 21 / 9;
         }
         
         .banner-slide {
