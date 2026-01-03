@@ -159,9 +159,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
 
                         <div class="form-group col-span-2">
-                            <label for="imagem_mobile"><i class="fas fa-mobile-alt"></i> Imagem Mobile (800x1200px)</label>
+                            <label for="imagem_mobile"><i class="fas fa-mobile-alt"></i> Imagem Mobile (1400x1200px)</label>
                             <input type="file" id="imagem_mobile" name="imagem_mobile" accept="image/*" onchange="previewImage(this, 'previewMobile')">
-                            <small>Opcional. Recomendado: 800x1200px (proporção 2:3 vertical). Se não enviar, usa a imagem desktop</small>
+                            <small>Opcional. Recomendado: 1400x1200px (proporção 7:6). Se não enviar, usa a imagem desktop</small>
                             <div id="imagePreviewMobile" style="margin-top: 15px; display: none;">
                                 <img id="previewMobile" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
                             </div>
