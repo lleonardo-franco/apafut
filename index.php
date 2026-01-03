@@ -229,17 +229,14 @@ function getPosicaoIcon($posicao) {
             .banner-carousel {
                 width: 100%;
                 height: auto;
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 padding: 0;
                 margin-top: 60px !important;
+                background: transparent;
             }
             
             .banner-slides {
                 position: relative;
-                width: 100vw;
+                width: 100%;
                 aspect-ratio: 7 / 6;
                 overflow: hidden;
             }
@@ -251,6 +248,10 @@ function getPosicaoIcon($posicao) {
                 top: 0;
                 left: 0;
                 opacity: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: transparent;
             }
             
             .banner-slide.active {
@@ -266,7 +267,7 @@ function getPosicaoIcon($posicao) {
                 display: block !important;
                 width: 100%;
                 height: 100%;
-                object-fit: cover;
+                object-fit: contain;
                 object-position: center;
             }
             
