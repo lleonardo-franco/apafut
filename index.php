@@ -302,7 +302,7 @@ function getPosicaoIcon($posicao) {
                 </ul>
                 <div class="nav-buttons">
                     <a href="#planos" class="btn-agendar" aria-label="Ver planos de sócio">Seja Sócio</a>
-                    <a href="https://wa.me/5554991592954?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20a%20inscrição%20para%20aluno%20da%20APAFUT" target="_blank" rel="noopener" class="btn-agendar btn-aluno" aria-label="Entre em contato via WhatsApp">
+                    <a href="https://wa.me/5554991348163?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20a%20inscrição%20para%20aluno%20da%20APAFUT" target="_blank" rel="noopener" class="btn-agendar btn-aluno" aria-label="Entre em contato via WhatsApp">
                         <i class="fab fa-whatsapp" aria-hidden="true"></i> Seja Aluno
                     </a>
                 </div>
@@ -966,17 +966,15 @@ function getPosicaoIcon($posicao) {
     <!-- footer -->
     <footer id="contato" role="contentinfo" aria-label="Rodapé">
         <div class="footer-content">
-            <div class="footer-section">
+            <div class="footer-section footer-about">
                 <div class="footer-logo">
                     <img src="assets/logo.png" alt="Logo Apafut">
                     <h3>Apafut Caxias do Sul</h3>
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
-                <div class="social-media" role="navigation" aria-label="Redes sociais">
-                    <a href="#" aria-label="Visite nosso Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Visite nosso Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Fale conosco no WhatsApp" target="_blank" rel="noopener"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Visite nosso YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                <div class="footer-contact-quick">
+                    <p><i class="fas fa-map-marker-alt"></i> Caxias do Sul - RS</p>
+                    <p><i class="fas fa-clock"></i> Seg-Sex: 08:00-18:00 | Sáb: 08:00-12:00</p>
                 </div>
             </div>
 
@@ -987,40 +985,37 @@ function getPosicaoIcon($posicao) {
                     <li><a href="#sobre">Sobre Nós</a></li>
                     <li><a href="#categorias">Categorias</a></li>
                     <li><a href="#depoimentos">Depoimentos</a></li>
-                    <li><a href="#patrocinadores">Patrocinadores</a></li>
+                    <li><a href="#planos">Planos</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
-                <h4>Contato</h4>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <p>Rua Exemplo, 123<br>Caxias do Sul - RS</p>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <p>(54) 3232-3232</p>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <p>contato@apafut.com.br</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-section">
-                <h4>Horário de Atendimento</h4>
-                <div class="schedule">
-                    <p><strong>Segunda a Sexta:</strong><br>08:00 - 18:00</p>
-                    <p><strong>Sábado:</strong><br>08:00 - 12:00</p>
-                    <p><strong>Domingo:</strong><br>Fechado</p>
+                <h4>Redes Sociais</h4>
+                <p class="footer-social-text">Siga-nos nas redes sociais e fique por dentro de todas as novidades!</p>
+                <div class="social-media social-media-large" role="navigation" aria-label="Redes sociais">
+                    <a href="https://www.facebook.com/apafut.oficial/" aria-label="Visite nosso Facebook" target="_blank" rel="noopener" title="Facebook">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.instagram.com/apafutoficial/" aria-label="Visite nosso Instagram" target="_blank" rel="noopener" title="Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@apafutvideos" aria-label="Visite nosso YouTube" target="_blank" rel="noopener" title="YouTube">
+                        <i class="fab fa-youtube" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://wa.me/5554991348163" aria-label="Fale conosco no WhatsApp" target="_blank" rel="noopener" title="WhatsApp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    </a>
+                    <a href="mailto:apafutoficial@gmail.com" aria-label="Envie um e-mail" target="_blank" rel="noopener" title="E-mail">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2025 Apafut Caxias do Sul. Todos os direitos reservados.</p>
+            <div class="footer-bottom-content">
+                <p>&copy; <?= date('Y') ?> Apafut Caxias do Sul. Todos os direitos reservados.</p>
+            </div>
         </div>
     </footer>
 

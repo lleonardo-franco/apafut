@@ -125,7 +125,7 @@ try {
                 </ul>
                 <div class="nav-buttons">
                     <a href="index.php#planos" class="btn-agendar">Seja Sócio</a>
-                    <a href="https://wa.me/5554991592954?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20inscri%C3%A7%C3%A3o%20para%20aluno%20da%20APAFUT" target="_blank" class="btn-agendar btn-aluno">
+                    <a href="https://wa.me/5554991348163?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20inscri%C3%A7%C3%A3o%20para%20aluno%20da%20APAFUT" target="_blank" class="btn-agendar btn-aluno">
                         <i class="fab fa-whatsapp"></i> Seja Aluno
                     </a>
                 </div>
@@ -252,14 +252,14 @@ try {
             </div>
             <div class="footer-section">
                 <h3>Contato</h3>
-                <p><i class="fas fa-phone"></i> (54) 3221-0000</p>
-                <p><i class="fas fa-envelope"></i> contato@apafut.com.br</p>
+                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/5554991348163" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">(54) 9134-8163</a></p>
+                <p><i class="fas fa-envelope"></i> apafutoficial@gmail.com</p>
             </div>
             <div class="footer-section">
                 <h3>Redes Sociais</h3>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/apafut.oficial/" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/apafutoficial/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>

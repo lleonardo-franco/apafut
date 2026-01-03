@@ -64,8 +64,9 @@ HTML;
                 "addressCountry" => "BR"
             ],
             "sameAs" => [
-                "https://facebook.com/apafut",
-                "https://instagram.com/apafut"
+                "https://www.facebook.com/apafut.oficial/",
+                "https://www.instagram.com/apafutoficial/",
+                "https://www.youtube.com/@apafutvideos"
             ]
         ];
         
