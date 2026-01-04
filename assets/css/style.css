@@ -60,6 +60,22 @@ main {
     overflow-x: hidden;
 }
 
+/* Skip Link - Acessibilidade */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--azul-secundario);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 10001;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
 /* header e navbar */
 header {
     width: 100%;
