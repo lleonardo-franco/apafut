@@ -1386,11 +1386,15 @@ function getPosicaoIcon($posicao) {
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const slides = document.querySelectorAll('.banner-slide');
-        const indicators = document.querySelectorAll('.indicator');
         const carousel = document.querySelector('.banner-carousel');
         
-        if (!slides.length || !indicators.length) {
-            console.error('Elementos do carrossel não encontrados');
+        if (!slides.length) {
+            console.error('Slides do carrossel não encontrados');
+            return;
+        }
+        
+        // Se houver apenas 1 slide, não precisa de carrossel
+        if (slides.length === 1) {
             return;
         }
         
@@ -1402,12 +1406,10 @@ function getPosicaoIcon($posicao) {
         // Função para mudar slide
         function goToSlide(n) {
             slides[currentSlide].classList.remove('active');
-            indicators[currentSlide].classList.remove('active');
             
             currentSlide = (n + slides.length) % slides.length;
             
             slides[currentSlide].classList.add('active');
-            indicators[currentSlide].classList.add('active');
         }
         
         // Próximo slide
@@ -1431,14 +1433,6 @@ function getPosicaoIcon($posicao) {
                 clearInterval(autoPlayInterval);
             }
         }
-        
-        // Indicadores
-        indicators.forEach(function(indicator, index) {
-            indicator.addEventListener('click', function() {
-                goToSlide(index);
-                startAutoPlay();
-            });
-        });
         
         // Pausar auto-play ao passar o mouse
         if (carousel) {
@@ -1487,7 +1481,7 @@ function getPosicaoIcon($posicao) {
         }
         
         // Iniciar auto-play
-        console.log('Carrossel iniciado com auto-play');
+        console.log('Carrossel iniciado com', slides.length, 'slides');
         startAutoPlay();
     });
     </script>
