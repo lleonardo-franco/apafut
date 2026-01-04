@@ -114,7 +114,7 @@
 .quote-icon {
     width: 40px;
     height: 40px;
-    background: #DAA520;
+    background: #eb3835;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -158,7 +158,7 @@
     left: 0;
     width: 3px;
     height: 100%;
-    background: #DAA520;
+    background: #eb3835;
 }
 
 .depoimento-text-only .quote-icon {
@@ -235,7 +235,7 @@
         margin-top: 30px;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: thin;
-        scrollbar-color: rgba(218, 165, 32, 0.3) transparent;
+        scrollbar-color: rgba(235, 56, 53, 0.3) transparent;
     }
     
     .depoimentos-grid::-webkit-scrollbar {
@@ -247,7 +247,7 @@
     }
     
     .depoimentos-grid::-webkit-scrollbar-thumb {
-        background: rgba(218, 165, 32, 0.3);
+        background: rgba(235, 56, 53, 0.3);
         border-radius: 2px;
     }
     

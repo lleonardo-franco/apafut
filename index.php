@@ -805,7 +805,7 @@ function getPosicaoIcon($posicao) {
                                     <div class="jogador-numero"><?= $jogador['numero'] ?></div>
                                 </div>
                                 <div class="jogador-info" style="background: #e8e8e8; padding: 15px; text-align: left;">
-                                    <h4 style="color: #2d3436; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;"><?= $jogador['numero'] ?>. <?= htmlspecialchars($jogador['nome']) ?></h4>
+                                    <h4 style="color: #2d3436; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;"><?= htmlspecialchars($jogador['nome']) ?></h4>
                                     <p class="jogador-posicao" style="color: #636e72; font-size: 0.95rem; margin: 0;">
                                         <?= htmlspecialchars($jogador['posicao']) ?>
                                     </p>
@@ -1136,7 +1136,7 @@ function getPosicaoIcon($posicao) {
                 </div>
                 <div class="modal-jogador-info">
                     <h2 class="modal-titulo">
-                        <span id="modalNumero"></span>. <span id="modalNome"></span>
+                        <span id="modalNome"></span>
                     </h2>
                     <div class="modal-stats">
                         <p><strong>Nome completo:</strong> <span id="modalNomeCompleto"></span></p>
@@ -1185,7 +1185,6 @@ function getPosicaoIcon($posicao) {
             const modal = document.getElementById('modalJogador');
             
             document.getElementById('modalFoto').src = jogadorData.foto || '';
-            document.getElementById('modalNumero').textContent = jogadorData.numero || '';
             document.getElementById('modalNome').textContent = jogadorData.nome || '';
             document.getElementById('modalNomeCompleto').textContent = jogadorData.nomeCompleto || '-';
             document.getElementById('modalCidade').textContent = jogadorData.cidade || '-';
