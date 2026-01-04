@@ -3624,7 +3624,71 @@ video {
     }
 
     .jogadores-carousel {
-        padding: 0 50px;
+        padding: 0 20px;
+        overflow: hidden;
+    }
+
+    .jogadores-carousel .carousel-btn {
+        display: none !important;
+    }
+
+    .jogadores-container {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory;
+        gap: 16px !important;
+        padding: 20px 0 20px 0 !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(218, 165, 32, 0.3) transparent;
+    }
+
+    .jogadores-container::-webkit-scrollbar {
+        display: block !important;
+        height: 4px;
+    }
+
+    .jogadores-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .jogadores-container::-webkit-scrollbar-thumb {
+        background: rgba(218, 165, 32, 0.3);
+        border-radius: 2px;
+    }
+
+    /* Scroll horizontal para comissão */
+    .comissao-container {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory;
+        gap: 16px !important;
+        padding: 20px 0 20px 0 !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(218, 165, 32, 0.3) transparent;
+    }
+
+    .comissao-container::-webkit-scrollbar {
+        display: block !important;
+        height: 4px;
+    }
+
+    .comissao-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .comissao-container::-webkit-scrollbar-thumb {
+        background: rgba(218, 165, 32, 0.3);
+        border-radius: 2px;
+    }
+
+    .comissao-section .carousel-btn {
+        display: none !important;
     }
 
     .filtro-btn {
@@ -3633,9 +3697,17 @@ video {
     }
 
     .jogador-card {
-        flex: 0 0 260px;
-        min-width: 260px;
-        max-width: 260px;
+        flex: 0 0 75% !important;
+        min-width: 75% !important;
+        max-width: 75% !important;
+        scroll-snap-align: center;
+    }
+
+    .comissao-card {
+        flex: 0 0 75% !important;
+        min-width: 75% !important;
+        max-width: 75% !important;
+        scroll-snap-align: center;
     }
 
     .jogador-foto {
@@ -3661,7 +3733,7 @@ video {
 
 @media (max-width: 480px) {
     .jogadores-carousel {
-        padding: 0 40px;
+        padding: 0 20px;
     }
 
     .posicao-filtros {
@@ -3677,9 +3749,15 @@ video {
     }
 
     .jogador-card {
-        flex: 0 0 240px;
-        min-width: 240px;
-        max-width: 240px;
+        flex: 0 0 85% !important;
+        min-width: 85% !important;
+        max-width: 85% !important;
+    }
+
+    .comissao-card {
+        flex: 0 0 85% !important;
+        min-width: 85% !important;
+        max-width: 85% !important;
     }
 
     .jogador-foto {
