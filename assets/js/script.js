@@ -303,6 +303,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 const targetContent = document.getElementById(targetTab);
                 if (targetContent) {
                     targetContent.classList.add('active');
+                    
+                    // Resetar scroll para o início quando mudar de aba - múltiplas tentativas
+                    const resetScroll = () => {
+                        const container = targetContent.querySelector('.jogadores-container, .comissao-container');
+                        if (container) {
+                            container.scrollTo({ left: 0, behavior: 'instant' });
+                            container.scrollLeft = 0;
+                            console.log('Scroll resetado para:', targetTab, 'scrollLeft:', container.scrollLeft);
+                        }
+                    };
+                    
+                    // Tentar múltiplas vezes para garantir
+                    setTimeout(resetScroll, 0);
+                    setTimeout(resetScroll, 50);
+                    setTimeout(resetScroll, 150);
+                    setTimeout(resetScroll, 300);
                 }
             });
         });

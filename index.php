@@ -1384,7 +1384,7 @@ function getPosicaoIcon($posicao) {
         </div>
     </div>
     
-    <script src="assets/js/script.min.js" defer></script>
+    <script src="assets/js/script.js" defer></script>
     <script src="assets/js/lazy-loader.min.js" defer></script>
     <script>
         // Botão WhatsApp flutuante - aparecer após scroll
