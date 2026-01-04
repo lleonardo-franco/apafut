@@ -116,18 +116,23 @@ function getPosicaoIcon($posicao) {
     <style>
         .skip-link {
             position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--vermelho-primario);
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            background: var(--azul-secundario);
             color: white;
             padding: 8px 16px;
             text-decoration: none;
-            z-index: 10000;
+            z-index: 10001;
             font-weight: bold;
-            border-radius: 0 0 4px 0;
         }
         .skip-link:focus {
+            position: absolute;
+            left: 0;
             top: 0;
+            width: auto;
+            height: auto;
         }
         
         /* Carrossel de Banners Fullscreen */
