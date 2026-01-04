@@ -1,0 +1,491 @@
+/* ===================================
+   CTAs - CHAMADAS DE AÇÃO
+   =================================== */
+
+/* Seção Aula Experimental */
+.cta-aula-experimental {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #0f266d 0%, #1a3a8f 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-aula-experimental::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(235, 56, 53, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.cta-experimental-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-experimental-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(235, 56, 53, 0.2);
+    color: var(--vermelho-primario);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border: 2px solid rgba(235, 56, 53, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.cta-experimental-content h2 {
+    color: white;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.cta-experimental-content h2 .destaque {
+    color: var(--vermelho-primario);
+    font-weight: 900;
+}
+
+.cta-experimental-content > p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.cta-beneficios {
+    list-style: none;
+    margin-bottom: 35px;
+}
+
+.cta-beneficios li {
+    color: white;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cta-beneficios i {
+    color: #4ade80;
+    font-size: 1.2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--vermelho-primario);
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(235, 56, 53, 0.4);
+}
+
+.btn-cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(235, 56, 53, 0.6);
+    background: #d13835;
+}
+
+.btn-cta-primary i {
+    font-size: 1.4rem;
+}
+
+.cta-urgencia {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fbbf24;
+    font-size: 0.95rem;
+    font-weight: 600;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.cta-experimental-image {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.cta-experimental-image img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    display: block;
+}
+
+.cta-image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+    padding: 30px;
+}
+
+.cta-stats {
+    display: flex;
+    gap: 30px;
+}
+
+.cta-stats .stat {
+    text-align: center;
+    color: white;
+}
+
+.cta-stats strong {
+    display: block;
+    font-size: 2.2rem;
+    color: var(--vermelho-primario);
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.cta-stats span {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Botão WhatsApp Flutuante */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.whatsapp-float.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.whatsapp-float a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #25D366;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.whatsapp-float a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+    background: #20ba5a;
+}
+
+.whatsapp-float i {
+    font-size: 1.8rem;
+    animation: shake 2s infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-10deg); }
+    20%, 40%, 60%, 80% { transform: rotate(10deg); }
+}
+
+.whatsapp-text {
+    font-size: 0.95rem;
+}
+
+/* Pop-up de Intenção de Saída */
+.exit-intent-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.exit-intent-popup.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.popup-content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100px) scale(0.8); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.popup-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+.popup-close i {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.popup-body {
+    padding: 50px 40px 40px;
+    text-align: center;
+}
+
+.popup-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--vermelho-primario), #ff6b6b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: bounce 2s infinite;
+}
+
+.popup-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.popup-body h3 {
+    font-size: 1.8rem;
+    color: var(--azul-secundario);
+    margin-bottom: 10px;
+}
+
+.popup-subtitle {
+    font-size: 1.3rem;
+    color: var(--vermelho-primario);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.popup-subtitle strong {
+    background: linear-gradient(135deg, var(--vermelho-primario), #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.popup-body > p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+}
+
+.popup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.popup-form input,
+.popup-form select {
+    padding: 15px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.popup-form input:focus,
+.popup-form select:focus {
+    outline: none;
+    border-color: var(--vermelho-primario);
+    box-shadow: 0 0 0 4px rgba(235, 56, 53, 0.1);
+}
+
+.btn-popup-submit {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 16px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-popup-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    background: #20ba5a;
+}
+
+.btn-popup-submit i {
+    font-size: 1.3rem;
+}
+
+.popup-disclaimer {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #999;
+    font-style: italic;
+}
+
+/* Responsivo */
+@media (max-width: 968px) {
+    .cta-experimental-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .cta-experimental-image {
+        order: -1;
+    }
+    
+    .cta-experimental-image img {
+        height: 350px;
+    }
+    
+    .btn-cta-primary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .whatsapp-float a {
+        padding: 12px 20px;
+    }
+    
+    .whatsapp-text {
+        font-size: 0.85rem;
+    }
+    
+    .popup-body {
+        padding: 40px 25px 30px;
+    }
+    
+    .popup-body h3 {
+        font-size: 1.5rem;
+    }
+    
+    .popup-subtitle {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-experimental-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .whatsapp-float a {
+        padding: 12px 18px;
+        font-size: 0.9rem;
+    }
+    
+    .whatsapp-text {
+        display: none;
+    }
+    
+    .whatsapp-float i {
+        font-size: 1.6rem;
+    }
+}

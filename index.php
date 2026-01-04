@@ -111,6 +111,7 @@ function getPosicaoIcon($posicao) {
     <!-- css com preload -->
     <link rel="preload" href="assets/css/style.css" as="style">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/ctas.min.css">
     <style>
         .skip-link {
             position: absolute;
@@ -495,6 +496,45 @@ function getPosicaoIcon($posicao) {
                 </div>
                 <div class="sobre-logo">
                     <img src="assets/logo.png" alt="Logo Apafut">
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Aula Experimental -->
+        <section class="cta-aula-experimental">
+            <div class="cta-experimental-container">
+                <div class="cta-experimental-content">
+                    <div class="cta-experimental-badge">
+                        <i class="fas fa-star"></i> AGENDE SUA AVALIAÇÃO
+                    </div>
+                    <h2>Venha Conhecer a <span class="destaque">APAFUT</span></h2>
+                    <p>Descubra nossa metodologia de treinamento, estrutura e equipe profissional!</p>
+                    <ul class="cta-beneficios">
+                        <li><i class="fas fa-check-circle"></i> Avaliação técnica completa</li>
+                        <li><i class="fas fa-check-circle"></i> Conheça nossa infraestrutura</li>
+                        <li><i class="fas fa-check-circle"></i> Orientação com nossos treinadores</li>
+                    </ul>
+                    <div class="cta-buttons">
+                        <a href="https://wa.me/5554991348163?text=Olá!%20Gostaria%20de%20agendar%20uma%20visita%20e%20conhecer%20a%20APAFUT" target="_blank" class="btn-cta-primary">
+                            <i class="fab fa-whatsapp"></i> Agendar Visita
+                        </a>
+                        <span class="cta-urgencia"><i class="fas fa-clock"></i> Vagas limitadas!</span>
+                    </div>
+                </div>
+                <div class="cta-experimental-image">
+                    <img src="assets/img1.jpg" alt="Treino APAFUT" loading="lazy">
+                    <div class="cta-image-overlay">
+                        <div class="cta-stats">
+                            <div class="stat">
+                                <strong>2000+</strong>
+                                <span>Alunos Ativos</span>
+                            </div>
+                            <div class="stat">
+                                <strong>20+</strong>
+                                <span>Anos de Experiência</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1272,7 +1312,122 @@ function getPosicaoIcon($posicao) {
     });
     </script>
     
+    <!-- Botão WhatsApp Flutuante -->
+    <div class="whatsapp-float" id="whatsapp-float">
+        <a href="https://wa.me/5554991348163?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20a%20APAFUT" target="_blank" rel="noopener" aria-label="Fale conosco no WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+            <span class="whatsapp-text">Fale Conosco!</span>
+        </a>
+    </div>
+
+    <!-- Pop-up de Intenção de Saída -->
+    <div class="exit-intent-popup" id="exitPopup">
+        <div class="popup-overlay" onclick="closeExitPopup()"></div>
+        <div class="popup-content">
+            <button class="popup-close" onclick="closeExitPopup()" aria-label="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="popup-body">
+                <div class="popup-icon">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h3>Espere! Conheça a APAFUT</h3>
+                <p class="popup-subtitle">Agende uma <strong>AVALIAÇÃO TÉCNICA</strong></p>
+                <p>Preencha o formulário e nossa equipe entrará em contato:</p>
+                <form class="popup-form" onsubmit="return submitExitForm(event)">
+                    <input type="text" name="nome" placeholder="Seu nome" required>
+                    <input type="tel" name="telefone" placeholder="WhatsApp" required>
+                    <select name="categoria" required>
+                        <option value="">Selecione a categoria</option>
+                        <option value="sub7">Sub-7 (5-7 anos)</option>
+                        <option value="sub8">Sub-8 (6-8 anos)</option>
+                        <option value="sub9">Sub-9 (7-9 anos)</option>
+                        <option value="sub10">Sub-10 (8-10 anos)</option>
+                        <option value="sub11">Sub-11 (9-11 anos)</option>
+                        <option value="sub12">Sub-12 (10-12 anos)</option>
+                        <option value="sub13">Sub-13 (11-13 anos)</option>
+                        <option value="sub14">Sub-14 (12-14 anos)</option>
+                        <option value="sub15">Sub-15 (13-15 anos)</option>
+                        <option value="sub17">Sub-17 (15-17 anos)</option>
+                    </select>
+                    <button type="submit" class="btn-popup-submit">
+                        <i class="fab fa-whatsapp"></i> Quero Agendar Avaliação
+                    </button>
+                </form>
+                <p class="popup-disclaimer">* Disponível para novos alunos</p>
+            </div>
+        </div>
+    </div>
+    
     <script src="assets/js/script.min.js" defer></script>
     <script src="assets/js/lazy-loader.min.js" defer></script>
+    <script>
+        // Botão WhatsApp flutuante - aparecer após scroll
+        window.addEventListener('scroll', function() {
+            const whatsappBtn = document.getElementById('whatsapp-float');
+            if (window.scrollY > 300) {
+                whatsappBtn.classList.add('visible');
+            } else {
+                whatsappBtn.classList.remove('visible');
+            }
+        });
+
+        // Pop-up de intenção de saída
+        let exitPopupShown = false;
+        let mouseLeaveTimeout;
+
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY < 0 && !exitPopupShown && window.scrollY > 500) {
+                clearTimeout(mouseLeaveTimeout);
+                mouseLeaveTimeout = setTimeout(function() {
+                    showExitPopup();
+                }, 500);
+            }
+        });
+
+        document.addEventListener('mouseenter', function() {
+            clearTimeout(mouseLeaveTimeout);
+        });
+
+        function showExitPopup() {
+            if (!exitPopupShown && !sessionStorage.getItem('exitPopupShown')) {
+                document.getElementById('exitPopup').classList.add('show');
+                document.body.style.overflow = 'hidden';
+                exitPopupShown = true;
+                sessionStorage.setItem('exitPopupShown', 'true');
+            }
+        }
+
+        function closeExitPopup() {
+            document.getElementById('exitPopup').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function submitExitForm(e) {
+            e.preventDefault();
+            const form = e.target;
+            const nome = form.nome.value;
+            const telefone = form.telefone.value;
+            const categoria = form.categoria.value;
+            
+            const mensagem = encodeURIComponent(
+                `Olá! Gostaria de agendar uma avaliação técnica!\\n\\n` +
+                `Nome: ${nome}\\n` +
+                `Telefone: ${telefone}\\n` +
+                `Categoria: ${categoria}`
+            );
+            
+            window.open(`https://wa.me/5554991348163?text=${mensagem}`, '_blank');
+            closeExitPopup();
+            return false;
+        }
+
+        // Fechar popup com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeExitPopup();
+            }
+        });
+    </script>
 </body>
 </html>
