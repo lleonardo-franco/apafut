@@ -112,6 +112,7 @@ function getPosicaoIcon($posicao) {
     <link rel="preload" href="assets/css/style.css" as="style">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/ctas.min.css">
+    <link rel="stylesheet" href="assets/css/depoimentos-modern.css">
     <style>
         .skip-link {
             position: absolute;
@@ -883,12 +884,13 @@ function getPosicaoIcon($posicao) {
             </div>
         </section>
     </section>
-    <!-- 6 depoimentos de pais-->
+    
+    <!-- Depoimentos -->
     <?php
-    // Buscar depoimentos ativos
+    // Buscar depoimentos ativos (máximo 6)
     $depoimentos = [];
     try {
-        $stmt = $conn->query("SELECT * FROM depoimentos WHERE ativo = 1 ORDER BY ordem ASC LIMIT 10");
+        $stmt = $conn->query("SELECT * FROM depoimentos WHERE ativo = 1 ORDER BY ordem ASC LIMIT 6");
         $depoimentos = $stmt->fetchAll();
     } catch (Exception $e) {
         // Silencioso no front-end
@@ -896,94 +898,91 @@ function getPosicaoIcon($posicao) {
     ?>
     
     <?php if (!empty($depoimentos)): ?>
-    <section id="depoimentos" class="depoimentos">
-        <div class="depoimentos-header">
-            <h2>O que Dizem sobre a Apafut</h2>
-            <p>Conheça a experiência de quem faz parte da nossa família</p>
-        </div>
-        
-        <div class="depoimentos-player">
-            <!-- Player de Vídeo -->
-            <div class="video-container">
-                <video id="videoPlayer" controls>
-                    <source id="videoSource" src="<?= htmlspecialchars(str_replace('../', '', $depoimentos[0]['video'])) ?>" type="video/mp4">
-                    Seu navegador não suporta a tag de vídeo.
-                </video>
+    <section id="depoimentos" class="depoimentos-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-aos="fade-up">Depoimentos</h2>
+                <p data-aos="fade-up" data-aos-delay="100">Veja o que ex-profissionais, alunos e pais falam sobre a APAFUT</p>
             </div>
             
-            <!-- Informações do Depoimento -->
-            <div class="depoimento-info">
-                <h3 id="depoimento-nome"><?= htmlspecialchars($depoimentos[0]['nome']) ?></h3>
-                <p id="depoimento-descricao"><?= htmlspecialchars($depoimentos[0]['descricao'] ?? '') ?></p>
-            </div>
-            
-            <!-- Controles de Navegação -->
-            <div class="video-controls">
-                <button id="prevVideo" class="control-btn" title="Anterior">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="video-indicator">
-                    <span id="currentVideo">1</span> / <span id="totalVideos"><?= count($depoimentos) ?></span>
+            <div class="depoimentos-grid">
+                <?php foreach ($depoimentos as $index => $dep): 
+                    $tipo = $dep['tipo_depoimento'] ?? 'video_local';
+                    $delay = ($index % 3) * 100;
+                ?>
+                
+                <div class="depoimento-card" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
+                    <?php if ($tipo === 'video_url' && !empty($dep['video_url'])): 
+                        // Detectar tipo de vídeo (YouTube ou Vimeo)
+                        $videoUrl = $dep['video_url'];
+                        $embedUrl = '';
+                        
+                        if (strpos($videoUrl, 'youtube.com') !== false || strpos($videoUrl, 'youtu.be') !== false) {
+                            preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/', $videoUrl, $matches);
+                            if (!empty($matches[1])) {
+                                $embedUrl = 'https://www.youtube.com/embed/' . $matches[1];
+                            }
+                        } elseif (strpos($videoUrl, 'vimeo.com') !== false) {
+                            preg_match('/vimeo\.com\/(\d+)/', $videoUrl, $matches);
+                            if (!empty($matches[1])) {
+                                $embedUrl = 'https://player.vimeo.com/video/' . $matches[1];
+                            }
+                        }
+                    ?>
+                        <div class="video-wrapper">
+                            <?php if ($embedUrl): ?>
+                                <iframe src="<?= htmlspecialchars($embedUrl) ?>" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                            <?php else: ?>
+                                <div class="video-error">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <p>Vídeo indisponível</p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="depoimento-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h3><?= htmlspecialchars($dep['nome']) ?></h3>
+                            <?php if (!empty($dep['depoimento'])): ?>
+                                <p class="depoimento-text"><?= nl2br(htmlspecialchars($dep['depoimento'])) ?></p>
+                            <?php endif; ?>
+                        </div>
+                    
+                    <?php elseif ($tipo === 'video_local' && !empty($dep['video'])): ?>
+                        <div class="video-wrapper">
+                            <video controls preload="metadata">
+                                <source src="<?= htmlspecialchars(str_replace('../', '', $dep['video'])) ?>" type="video/mp4">
+                                Seu navegador não suporta vídeo.
+                            </video>
+                        </div>
+                        <div class="depoimento-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h3><?= htmlspecialchars($dep['nome']) ?></h3>
+                            <?php if (!empty($dep['depoimento'])): ?>
+                                <p class="depoimento-text"><?= nl2br(htmlspecialchars($dep['depoimento'])) ?></p>
+                            <?php endif; ?>
+                        </div>
+                    
+                    <?php else: // Depoimento apenas texto ?>
+                        <div class="depoimento-text-only">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="depoimento-text"><?= nl2br(htmlspecialchars($dep['depoimento'])) ?></p>
+                            <div class="depoimento-author">
+                                <h3><?= htmlspecialchars($dep['nome']) ?></h3>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <button id="nextVideo" class="control-btn" title="Próximo">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+                
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
-    
-    <script>
-        // Dados dos depoimentos
-        const depoimentos = <?= json_encode($depoimentos) ?>;
-        let currentIndex = 0;
-        const videoPlayer = document.getElementById('videoPlayer');
-        const videoSource = document.getElementById('videoSource');
-        
-        // Atualizar informações do depoimento
-        function updateDepoimentoInfo(index) {
-            const depoimento = depoimentos[index];
-            document.getElementById('depoimento-nome').textContent = depoimento.nome;
-            document.getElementById('depoimento-descricao').textContent = depoimento.descricao || '';
-            document.getElementById('currentVideo').textContent = index + 1;
-        }
-        
-        // Carregar vídeo
-        function loadVideo(index) {
-            if (index >= 0 && index < depoimentos.length) {
-                currentIndex = index;
-                const depoimento = depoimentos[index];
-                
-                // Remover ../ do caminho
-                const videoPath = depoimento.video.replace('../', '');
-                videoSource.src = videoPath;
-                videoPlayer.load();
-                videoPlayer.play();
-                
-                updateDepoimentoInfo(index);
-            }
-        }
-        
-        // Ir para próximo vídeo
-        function nextVideo() {
-            const next = (currentIndex + 1) % depoimentos.length;
-            loadVideo(next);
-        }
-        
-        // Ir para vídeo anterior
-        function prevVideo() {
-            const prev = (currentIndex - 1 + depoimentos.length) % depoimentos.length;
-            loadVideo(prev);
-        }
-        
-        // Auto-play: ir para próximo quando terminar
-        videoPlayer.addEventListener('ended', function() {
-            setTimeout(nextVideo, 1000);
-        });
-        
-        // Event Listeners para os botões
-        document.getElementById('prevVideo')?.addEventListener('click', prevVideo);
-        document.getElementById('nextVideo')?.addEventListener('click', nextVideo);
-    </script>
     <?php endif; ?>
 
     <!-- CTA Sócio Apoiador -->

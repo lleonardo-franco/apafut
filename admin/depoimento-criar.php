@@ -21,54 +21,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = "O vídeo é muito grande. Limites: upload={$uploadSize}, post={$postSize}. Use um vídeo menor ou reduza a qualidade.";
     } else {
     $nome = trim($_POST['nome'] ?? '');
-    $descricao = trim($_POST['descricao'] ?? '');
+    $depoimento = trim($_POST['depoimento'] ?? '');
+    $video_url = trim($_POST['video_url'] ?? '');
+    $tipo_depoimento = $_POST['tipo_depoimento'] ?? 'video_local';
     $ordem = (int)($_POST['ordem'] ?? 0);
     $ativo = isset($_POST['ativo']) ? 1 : 0;
     
     // Validações
     if (empty($nome)) {
         $erro = 'O nome é obrigatório.';
-    } elseif (!isset($_FILES['video']) || $_FILES['video']['error'] !== UPLOAD_ERR_OK) {
-        $erro = 'O vídeo é obrigatório.';
+    } elseif ($tipo_depoimento === 'video_local' && (!isset($_FILES['video']) || $_FILES['video']['error'] !== UPLOAD_ERR_OK)) {
+        $erro = 'O vídeo é obrigatório quando o tipo é "Vídeo Local".';
+    } elseif ($tipo_depoimento === 'video_url' && empty($video_url)) {
+        $erro = 'A URL do vídeo é obrigatória quando o tipo é "YouTube/Vimeo".';
+    } elseif ($tipo_depoimento === 'texto' && empty($depoimento)) {
+        $erro = 'O texto do depoimento é obrigatório quando o tipo é "Apenas Texto".';
     } else {
-        $video = $_FILES['video'];
-        $videoExtension = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
+        $videoDbPath = null;
         
-        // Validar extensão
-        if ($videoExtension !== 'mp4') {
-            $erro = 'Apenas arquivos MP4 são permitidos.';
-        } elseif ($video['size'] > 50 * 1024 * 1024) { // 50MB
-            $erro = 'O vídeo deve ter no máximo 50MB.';
-        } else {
-            // Gerar nome único para o arquivo
-            $slug = preg_replace('/[^a-z0-9]+/', '-', strtolower($nome));
-            $videoName = 'depoimento-' . $slug . '-' . time() . '.mp4';
-            $videoPath = '../assets/videos/' . $videoName;
+        // Upload de vídeo local
+        if ($tipo_depoimento === 'video_local' && isset($_FILES['video'])) {
+            $video = $_FILES['video'];
+            $videoExtension = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
             
-            if (move_uploaded_file($video['tmp_name'], $videoPath)) {
-                try {
-                    $pdo = getConnection();
-                    $videoDbPath = '../assets/videos/' . $videoName;
-                    $stmt = $pdo->prepare("INSERT INTO depoimentos (nome, descricao, video, ordem, ativo) VALUES (:nome, :descricao, :video, :ordem, :ativo)");
-                    $stmt->bindParam(':nome', $nome);
-                    $stmt->bindParam(':descricao', $descricao);
-                    $stmt->bindParam(':video', $videoDbPath);
-                    $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
-                    $stmt->bindParam(':ativo', $ativo, PDO::PARAM_INT);
-                    
-                    if ($stmt->execute()) {
-                        header('Location: depoimentos.php?msg=created');
-                        exit;
-                    } else {
-                        unlink($videoPath);
-                        $erro = 'Erro ao criar depoimento.';
-                    }
-                } catch (PDOException $e) {
-                    unlink($videoPath);
-                    $erro = 'Erro ao criar depoimento: ' . $e->getMessage();
-                }
+            // Validar extensão
+            if ($videoExtension !== 'mp4') {
+                $erro = 'Apenas arquivos MP4 são permitidos.';
+            } elseif ($video['size'] > 50 * 1024 * 1024) { // 50MB
+                $erro = 'O vídeo deve ter no máximo 50MB.';
             } else {
-                $erro = 'Erro ao fazer upload do vídeo.';
+                // Gerar nome único para o arquivo
+                $slug = preg_replace('/[^a-z0-9]+/', '-', strtolower($nome));
+                $videoName = 'depoimento-' . $slug . '-' . time() . '.mp4';
+                $videoPath = '../assets/videos/' . $videoName;
+                
+                if (!move_uploaded_file($video['tmp_name'], $videoPath)) {
+                    $erro = 'Erro ao fazer upload do vídeo.';
+                } else {
+                    $videoDbPath = '../assets/videos/' . $videoName;
+                }
+            }
+        }
+        
+        // Inserir no banco se não houver erros
+        if (empty($erro)) {
+            try {
+                $pdo = getConnection();
+                $stmt = $pdo->prepare("INSERT INTO depoimentos (nome, depoimento, video, video_url, tipo_depoimento, ordem, ativo) VALUES (:nome, :depoimento, :video, :video_url, :tipo_depoimento, :ordem, :ativo)");
+                $stmt->bindParam(':nome', $nome);
+                $stmt->bindParam(':depoimento', $depoimento);
+                $stmt->bindParam(':video', $videoDbPath);
+                $stmt->bindParam(':video_url', $video_url);
+                $stmt->bindParam(':tipo_depoimento', $tipo_depoimento);
+                $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
+                $stmt->bindParam(':ativo', $ativo, PDO::PARAM_INT);
+                
+                if ($stmt->execute()) {
+                    header('Location: depoimentos.php?msg=created');
+                    exit;
+                } else {
+                    if ($videoDbPath && file_exists($videoPath)) unlink($videoPath);
+                    $erro = 'Erro ao criar depoimento.';
+                }
+            } catch (PDOException $e) {
+                if ($videoDbPath && file_exists($videoPath)) unlink($videoPath);
+                $erro = 'Erro ao criar depoimento: ' . $e->getMessage();
             }
         }
     }
@@ -125,30 +142,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <small>Nome completo da pessoa que está dando o depoimento</small>
                     </div>
                     
+                    <!-- Tipo de Depoimento -->
                     <div class="form-group">
-                        <label for="descricao">Descrição</label>
-                        <textarea 
-                            id="descricao" 
-                            name="descricao" 
-                            rows="3"
-                            placeholder="Ex: Pai do atleta Pedro Silva"
-                        ><?= htmlspecialchars($_POST['descricao'] ?? '') ?></textarea>
-                        <small>Breve descrição sobre quem é a pessoa (opcional)</small>
+                        <label for="tipo_depoimento">Tipo de Depoimento <span class="required">*</span></label>
+                        <select id="tipo_depoimento" name="tipo_depoimento" required onchange="toggleDepoimentoFields()">
+                            <option value="video_local" <?= ($_POST['tipo_depoimento'] ?? '') === 'video_local' ? 'selected' : '' ?>>Vídeo Local (MP4)</option>
+                            <option value="video_url" <?= ($_POST['tipo_depoimento'] ?? '') === 'video_url' ? 'selected' : '' ?>>YouTube ou Vimeo (URL)</option>
+                            <option value="texto" <?= ($_POST['tipo_depoimento'] ?? '') === 'texto' ? 'selected' : '' ?>>Apenas Texto</option>
+                        </select>
+                        <small>Escolha o tipo de depoimento que deseja adicionar</small>
                     </div>
                     
-                    <div class="form-group">
+                    <!-- Campo Vídeo Local -->
+                    <div class="form-group" id="field-video-local">
                         <label for="video">Vídeo (MP4) <span class="required">*</span></label>
                         <input 
                             type="file" 
                             id="video" 
                             name="video" 
                             accept="video/mp4"
-                            required
                         >
                         <small>Faça upload de um arquivo de vídeo MP4 (máx: <?= ini_get('upload_max_filesize') ?>)</small>
                         <div id="videoPreview" style="display: none; margin-top: 12px;">
                             <video id="previewVideo" controls style="max-width: 100%; height: auto; border-radius: 8px;"></video>
                         </div>
+                    </div>
+                    
+                    <!-- Campo URL YouTube/Vimeo -->
+                    <div class="form-group" id="field-video-url" style="display: none;">
+                        <label for="video_url">URL do Vídeo (YouTube ou Vimeo) <span class="required">*</span></label>
+                        <input 
+                            type="url" 
+                            id="video_url" 
+                            name="video_url" 
+                            placeholder="Ex: https://www.youtube.com/watch?v=..."
+                            value="<?= htmlspecialchars($_POST['video_url'] ?? '') ?>"
+                        >
+                        <small>Cole a URL completa do vídeo do YouTube ou Vimeo</small>
+                        <div id="urlPreview" style="display: none; margin-top: 12px;">
+                            <iframe id="previewIframe" width="100%" height="315" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo Texto do Depoimento -->
+                    <div class="form-group" id="field-depoimento-texto" style="display: none;">
+                        <label for="depoimento">Texto do Depoimento <span class="required">*</span></label>
+                        <textarea 
+                            id="depoimento" 
+                            name="depoimento" 
+                            rows="5"
+                            placeholder="Digite aqui o depoimento completo..."
+                        ><?= htmlspecialchars($_POST['depoimento'] ?? '') ?></textarea>
+                        <small>Texto completo do depoimento (será exibido com aspas)</small>
                     </div>
                     
                     <div class="form-row">
@@ -324,8 +369,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
     
     <script>
-        // Preview do vídeo
-        document.getElementById('video').addEventListener('change', function(e) {
+        // Toggle campos baseado no tipo de depoimento
+        function toggleDepoimentoFields() {
+            const tipo = document.getElementById('tipo_depoimento').value;
+            const videoLocal = document.getElementById('field-video-local');
+            const videoUrl = document.getElementById('field-video-url');
+            const depoimentoTexto = document.getElementById('field-depoimento-texto');
+            const videoInput = document.getElementById('video');
+            const videoUrlInput = document.getElementById('video_url');
+            const depoimentoInput = document.getElementById('depoimento');
+            
+            // Resetar todos
+            videoLocal.style.display = 'none';
+            videoUrl.style.display = 'none';
+            depoimentoTexto.style.display = 'none';
+            videoInput.removeAttribute('required');
+            videoUrlInput.removeAttribute('required');
+            depoimentoInput.removeAttribute('required');
+            
+            // Mostrar campo apropriado
+            if (tipo === 'video_local') {
+                videoLocal.style.display = 'block';
+                videoInput.setAttribute('required', 'required');
+            } else if (tipo === 'video_url') {
+                videoUrl.style.display = 'block';
+                videoUrlInput.setAttribute('required', 'required');
+            } else if (tipo === 'texto') {
+                depoimentoTexto.style.display = 'block';
+                depoimentoInput.setAttribute('required', 'required');
+            }
+        }
+        
+        // Preview de vídeo local
+        document.getElementById('video')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file && file.type === 'video/mp4') {
                 const preview = document.getElementById('videoPreview');
@@ -334,6 +410,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 preview.style.display = 'block';
             }
         });
+        
+        // Preview de URL (YouTube/Vimeo)
+        document.getElementById('video_url')?.addEventListener('blur', function(e) {
+            const url = e.target.value.trim();
+            if (!url) return;
+            
+            let embedUrl = '';
+            
+            // YouTube
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/);
+                if (match && match[1]) {
+                    embedUrl = 'https://www.youtube.com/embed/' + match[1];
+                }
+            }
+            // Vimeo
+            else if (url.includes('vimeo.com')) {
+                const match = url.match(/vimeo\.com\/(\d+)/);
+                if (match && match[1]) {
+                    embedUrl = 'https://player.vimeo.com/video/' + match[1];
+                }
+            }
+            
+            if (embedUrl) {
+                const urlPreview = document.getElementById('urlPreview');
+                const previewIframe = document.getElementById('previewIframe');
+                previewIframe.src = embedUrl;
+                urlPreview.style.display = 'block';
+            }
+        });
+        
+        // Inicializar ao carregar
+        document.addEventListener('DOMContentLoaded', toggleDepoimentoFields);
     </script>
 </body>
 </html>
