@@ -39,6 +39,7 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <!-- css -->
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <link rel="stylesheet" href="assets/css/ctas.min.css">
     <link rel="stylesheet" href="assets/css/noticia.min.css">
     <style>
         .noticias-page {
@@ -361,9 +362,9 @@ try {
     <header role="banner">
         <!-- NAVBAR -->
         <nav role="navigation" aria-label="Menu principal">
-            <div class="logo">
+            <a href="index.php" class="logo">
                 <img src="assets/logo.png" alt="Logo Apafut">
-            </div>
+            </a>
             <div class="menu">
                 <ul>
                     <li><a href="index.php#home">Home</a></li>
@@ -476,9 +477,12 @@ try {
                     <h3>Apafut Caxias do Sul</h3>
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
-                <div class="footer-contact-quick">
+                <div class="footer-contact-quick footer-links-centered">
                     <a href="historia.html#unidades" class="footer-link-unidades">
                         <i class="fas fa-map-marked-alt"></i> Nossas Unidades
+                    </a>
+                    <a href="index.php#planos" class="footer-link-socio">
+                        <i class="fas fa-id-card"></i> Seja Sócio Torcedor
                     </a>
                 </div>
             </div>

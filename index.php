@@ -302,9 +302,9 @@ function getPosicaoIcon($posicao) {
     <header role="banner">
         <!-- NAVBAR -->
         <nav role="navigation" aria-label="Menu principal">
-            <div class="logo">
+            <a href="index.php" class="logo">
                 <img src="assets/logo.png" alt="Logo Apafut">
-            </div>
+            </a>
             <div class="menu">
                 <ul>
                     <li><a href="#home">Home</a></li>
