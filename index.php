@@ -285,14 +285,7 @@ function getPosicaoIcon($posicao) {
             }
             
             .banner-indicators {
-                bottom: 15px !important;
-                gap: 8px !important;
-            }
-            
-            .indicator {
-                width: 4px !important;
-                height: 4px !important;
-                border: 1px solid white !important;
+                display: none !important;
             }
         }
     </style>
@@ -1271,6 +1264,8 @@ function getPosicaoIcon($posicao) {
         
         let currentSlide = 0;
         let autoPlayInterval;
+        let touchStartX = 0;
+        let touchEndX = 0;
         
         // Função para mudar slide
         function goToSlide(n) {
@@ -1329,6 +1324,35 @@ function getPosicaoIcon($posicao) {
                 startAutoPlay();
             }
         });
+        
+        // Controle por swipe (touch) no mobile
+        const bannerSlides = document.querySelector('.banner-slides');
+        if (bannerSlides) {
+            bannerSlides.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            bannerSlides.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+        }
+        
+        function handleSwipe() {
+            const swipeThreshold = 50; // Mínimo de pixels para considerar um swipe
+            const difference = touchStartX - touchEndX;
+            
+            if (Math.abs(difference) > swipeThreshold) {
+                if (difference > 0) {
+                    // Swipe para esquerda - próximo slide
+                    nextSlide();
+                } else {
+                    // Swipe para direita - slide anterior
+                    prevSlide();
+                }
+                startAutoPlay();
+            }
+        }
         
         // Iniciar auto-play
         console.log('Carrossel iniciado com auto-play');
