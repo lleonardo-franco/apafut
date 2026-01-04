@@ -24,6 +24,19 @@ $jogadores = Cache::remember('jogadores_ativos', function() {
     }
 }, 3600);
 
+// Buscar comissão técnica ativa com cache
+$comissao = Cache::remember('comissao_tecnica_ativos', function() {
+    try {
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT id, nome, cargo, foto, descricao, ordem FROM comissao_tecnica WHERE ativo = 1 ORDER BY ordem ASC, id ASC");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("Erro ao buscar comissão técnica: " . $e->getMessage());
+        return [];
+    }
+}, 3600);
+
 // Buscar banners ativos
 $banners = Cache::remember('banners_ativos', function() {
     try {
@@ -663,8 +676,18 @@ function getPosicaoIcon($posicao) {
                 </div>
             </div>
 
+            <!-- Abas: Elenco e Comissão Técnica -->
+            <div class="profissional-tabs">
+                <button class="tab-btn active" data-tab="elenco">
+                    <i class="fas fa-users"></i> Elenco
+                </button>
+                <button class="tab-btn" data-tab="comissao">
+                    <i class="fas fa-users-cog"></i> Comissão Técnica
+                </button>
+            </div>
+
             <!-- Elenco -->
-            <div class="elenco-section">
+            <div class="elenco-section tab-content active" id="elenco">
                 <!-- Filtros de Posição -->
                 <div class="posicao-filtros">
                     <button class="filtro-btn active" data-posicao="todos">
@@ -743,6 +766,51 @@ function getPosicaoIcon($posicao) {
                         <?php endforeach; ?>
                     </div>
                     <button class="carousel-btn next-jogador">❯</button>
+                </div>
+            </div>
+
+            <!-- Comissão Técnica -->
+            <div class="comissao-section tab-content" id="comissao">
+                <div class="jogadores-carousel">
+                    <button class="carousel-btn prev-comissao">❮</button>
+                    <div class="comissao-container">
+                        <?php 
+                        foreach ($comissao as $membro): 
+                            // Usar foto do banco se existir
+                            $fotoBanco = str_replace('../', '', $membro['foto']);
+                            if (!empty($fotoBanco) && file_exists($fotoBanco)) {
+                                $fotoExibir = $fotoBanco;
+                            } else {
+                                $fotoExibir = 'assets/images/comissao/default.jpg';
+                            }
+                        ?>
+                            <div class="jogador-card comissao-card" 
+                                 data-membro='<?= json_encode([
+                                    'nome' => $membro['nome'],
+                                    'cargo' => $membro['cargo'],
+                                    'descricao' => $membro['descricao'] ?? '',
+                                    'foto' => $fotoExibir
+                                 ], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
+                                 onclick="abrirModalComissao(this)">
+                                <div class="jogador-foto">
+                                    <?php if (!empty($fotoExibir)): ?>
+                                        <img src="<?= htmlspecialchars($fotoExibir) ?>" alt="<?= htmlspecialchars($membro['nome']) ?>" loading="lazy" width="280" height="350">
+                                    <?php else: ?>
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111D69, #eb3835); display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user-tie" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="jogador-info" style="background: #e8e8e8; padding: 15px; text-align: left;">
+                                    <h4 style="color: #2d3436; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;"><?= htmlspecialchars($membro['nome']) ?></h4>
+                                    <p class="jogador-posicao" style="color: #636e72; font-size: 0.95rem; margin: 0;">
+                                        <i class="fas fa-briefcase"></i> <?= htmlspecialchars($membro['cargo']) ?>
+                                    </p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="carousel-btn next-comissao">❯</button>
                 </div>
             </div>
 
@@ -1017,6 +1085,27 @@ function getPosicaoIcon($posicao) {
             </div>
         </div>
     </div>
+
+    <!-- Modal da Comissão Técnica -->
+    <div id="modalComissao" class="modal-jogador">
+        <div class="modal-jogador-content">
+            <span class="modal-close" onclick="fecharModalComissao()">&times;</span>
+            <div class="modal-jogador-body">
+                <div class="modal-jogador-foto">
+                    <img id="modalComissaoFoto" src="" alt="">
+                </div>
+                <div class="modal-jogador-info">
+                    <h2 class="modal-titulo">
+                        <span id="modalComissaoNome"></span>
+                    </h2>
+                    <div class="modal-stats">
+                        <p><strong>Cargo:</strong> <span id="modalComissaoCargo"></span></p>
+                        <p style="margin-top: 20px;"><span id="modalComissaoDescricao"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script>
     // Funções do Modal do Jogador
@@ -1065,6 +1154,41 @@ function getPosicaoIcon($posicao) {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             fecharModalJogador();
+            fecharModalComissao();
+        }
+    });
+
+    // Funções do Modal da Comissão Técnica
+    function abrirModalComissao(element) {
+        try {
+            const membroDataStr = element.getAttribute('data-membro');
+            const membroData = JSON.parse(membroDataStr);
+            
+            const modal = document.getElementById('modalComissao');
+            
+            document.getElementById('modalComissaoFoto').src = membroData.foto || '';
+            document.getElementById('modalComissaoNome').textContent = membroData.nome || '';
+            document.getElementById('modalComissaoCargo').textContent = membroData.cargo || '';
+            document.getElementById('modalComissaoDescricao').textContent = membroData.descricao || '';
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        } catch (error) {
+            console.error('Erro ao abrir modal:', error);
+            alert('Erro ao carregar informações do membro');
+        }
+    }
+    
+    function fecharModalComissao() {
+        const modal = document.getElementById('modalComissao');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Fechar modal ao clicar fora
+    document.getElementById('modalComissao')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharModalComissao();
         }
     });
     </script>

@@ -27,6 +27,10 @@
             <i class="fas fa-users"></i>
             <span>Jogadores</span>
         </a>
+        <a href="comissao.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'comissao.php' || strpos(basename($_SERVER['PHP_SELF']), 'comissao-') === 0 ? 'active' : '' ?>">
+            <i class="fas fa-users-cog"></i>
+            <span>Comissão Técnica</span>
+        </a>
         <a href="depoimentos.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'depoimentos.php' || strpos(basename($_SERVER['PHP_SELF']), 'depoimento-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-comments"></i>
             <span>Depoimentos</span>

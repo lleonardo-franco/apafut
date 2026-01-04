@@ -1,0 +1,6 @@
+# Pasta de imagens da comissão técnica
+
+Esta pasta armazena as fotos dos membros da comissão técnica.
+
+As imagens são carregadas através do painel admin em:
+admin/comissao-criar.php e admin/comissao-editar.php

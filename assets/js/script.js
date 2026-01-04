@@ -237,6 +237,77 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Carrossel da Comissão Técnica
+    const comissaoContainer = document.querySelector('.comissao-container');
+    const prevComissaoBtn = document.querySelector('.prev-comissao');
+    const nextComissaoBtn = document.querySelector('.next-comissao');
+
+    if (comissaoContainer && prevComissaoBtn && nextComissaoBtn) {
+        const scrollAmount = 250;
+
+        nextComissaoBtn.addEventListener('click', () => {
+            comissaoContainer.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        prevComissaoBtn.addEventListener('click', () => {
+            comissaoContainer.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        // Suporte para touch/swipe em mobile
+        let startXComissao;
+        let scrollLeftComissao;
+
+        comissaoContainer.addEventListener('touchstart', (e) => {
+            startXComissao = e.touches[0].pageX - comissaoContainer.offsetLeft;
+            scrollLeftComissao = comissaoContainer.scrollLeft;
+        });
+
+        comissaoContainer.addEventListener('touchmove', (e) => {
+            if (!startXComissao) return;
+            const x = e.touches[0].pageX - comissaoContainer.offsetLeft;
+            const walk = (x - startXComissao) * 2;
+            comissaoContainer.scrollLeft = scrollLeftComissao - walk;
+        });
+
+        comissaoContainer.addEventListener('touchend', () => {
+            startXComissao = null;
+        });
+    }
+
+    // Tabs Profissional: Elenco e Comissão Técnica
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    if (tabBtns.length > 0) {
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+                
+                // Remove active de todos os botões
+                tabBtns.forEach(b => b.classList.remove('active'));
+                // Adiciona active ao botão clicado
+                btn.classList.add('active');
+                
+                // Esconde todos os conteúdos
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Mostra o conteúdo da aba selecionada
+                const targetContent = document.getElementById(targetTab);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+    }
+
     // Filtros de Posição dos Jogadores
     const filtrosBtns = document.querySelectorAll('.filtro-btn');
     const jogadorCards = document.querySelectorAll('.jogador-card');
