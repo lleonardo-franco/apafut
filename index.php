@@ -285,14 +285,14 @@ function getPosicaoIcon($posicao) {
             }
             
             .banner-indicators {
-                bottom: 15px;
-                gap: 8px;
+                bottom: 15px !important;
+                gap: 8px !important;
             }
             
             .indicator {
-                width: 4px;
-                height: 4px;
-                border: 1px solid white;
+                width: 4px !important;
+                height: 4px !important;
+                border: 1px solid white !important;
             }
         }
     </style>
