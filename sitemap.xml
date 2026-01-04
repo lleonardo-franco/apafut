@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- Página Principal -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    <!-- Página Principal - Máxima prioridade -->
     <url>
         <loc>https://apafutoficial.com.br/</loc>
-        <lastmod>2025-12-17</lastmod>
+        <lastmod>2026-01-04</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
+        <image:image>
+            <image:loc>https://apafutoficial.com.br/assets/hero.png</image:loc>
+            <image:title>APAFUT - Escolinha de Futebol Caxias do Sul</image:title>
+        </image:image>
     </url>
     
-    <!-- História -->
+    <!-- Página de Notícias -->
+    <url>
+        <loc>https://apafutoficial.com.br/noticias.php</loc>
+        <lastmod>2026-01-04</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- História - Alta relevância -->
     <url>
         <loc>https://apafutoficial.com.br/historia.html</loc>
-        <lastmod>2025-12-17</lastmod>
+        <lastmod>2026-01-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -19,15 +33,15 @@
     <!-- Eventos Sociais -->
     <url>
         <loc>https://apafutoficial.com.br/eventos-sociais.html</loc>
-        <lastmod>2025-12-17</lastmod>
-        <changefreq>monthly</changefreq>
+        <lastmod>2026-01-04</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <!-- Evento Feminino -->
     <url>
         <loc>https://apafutoficial.com.br/evento-feminino.html</loc>
-        <lastmod>2025-12-17</lastmod>
+        <lastmod>2026-01-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -35,7 +49,7 @@
     <!-- Evento Formação -->
     <url>
         <loc>https://apafutoficial.com.br/evento-formacao.html</loc>
-        <lastmod>2025-12-17</lastmod>
+        <lastmod>2026-01-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -43,8 +57,17 @@
     <!-- Evento Solidariedade -->
     <url>
         <loc>https://apafutoficial.com.br/evento-solidariedade.html</loc>
-        <lastmod>2025-12-17</lastmod>
+        <lastmod>2026-01-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
+    
+    <!-- Checkout/Planos -->
+    <url>
+        <loc>https://apafutoficial.com.br/checkout.php</loc>
+        <lastmod>2026-01-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
 </urlset>

@@ -2,6 +2,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 mb_internal_encoding('UTF-8');
 require_once 'config/security-headers.php';
+require_once 'config/version.php';
 require_once 'config/db.php';
 require_once 'includes/analytics-tracker.php';
 require_once 'src/SEO.php';
@@ -85,35 +86,158 @@ function getPosicaoIcon($posicao) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- Performance Meta Tags -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
     <?php 
     SEO::renderMetaTags('home', [
-        'title' => 'APAFUT - Associação de Pais e Amigos do Futebol | Caxias do Sul',
-        'description' => 'APAFUT Caxias do Sul: Formação de jovens atletas com infraestrutura completa, categorias de base e treinadores especializados. Venha conhecer a melhor escolinha de futebol da região!',
-        'keywords' => 'apafut, apafut caxias do sul, escolinha de futebol caxias, futebol caxias do sul, categorias de base, formação atletas, futebol juvenil, associação futebol, escola de futebol',
-        'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/assets/hero.png'
+        'title' => 'APAFUT - Associação de Pais e Amigos do Futebol | Caxias do Sul - RS',
+        'description' => 'APAFUT Caxias do Sul: Escolinha de futebol referência com categorias de base (Sub-8 a Sub-20), time profissional e +2000 alunos. Formação de atletas desde 2003 na Serra Gaúcha. Agende sua avaliação gratuita!',
+        'keywords' => 'apafut, apafut caxias do sul, apafut rs, apafut escolinha, escolinha de futebol caxias, escola de futebol caxias do sul, futebol caxias do sul, categorias de base caxias, formação atletas, futebol juvenil rs, escolinha futebol serra gaúcha, sub-8, sub-11, sub-13, sub-15, sub-17, sub-20, time profissional caxias',
+        'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/assets/hero.png',
+        'url' => 'https://apafutoficial.com.br/'
     ]);
     ?>
     <!-- favicon -->
+    <link rel="icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="assets/logo.png">
     
-    <!-- Preconnect para recursos externos -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Resource Hints para melhorar LCP e reduzir latência -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://kit.fontawesome.com">
+    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
+    <link rel="dns-prefetch" href="https://ka-f.fontawesome.com">
     
-    <!-- Lato Font com font-display swap -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- Preload CSS crítico para eliminar render blocking -->
+    <link rel="preload" href="<?php echo asset_url('assets/css/style.css'); ?>" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" as="style">
     
-    <!-- FontAwesome async -->
-    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous" async></script>
+    <!-- Preload primeira imagem do banner para otimizar LCP -->
+    <?php if (!empty($banners)): ?>
+    <link rel="preload" href="<?= htmlspecialchars($banners[0]['imagem']) ?>" as="image" type="image/jpeg">
+    <?php else: ?>
+    <link rel="preload" href="assets/images/banner1.jpg" as="image" type="image/jpeg">
+    <?php endif; ?>
     
-    <!-- css com preload -->
-    <link rel="preload" href="assets/css/style.css" as="style">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/ctas.min.css">
-    <link rel="stylesheet" href="assets/css/depoimentos-modern.css">
+    <!-- Lato Font otimizada com font-display: swap e apenas pesos necessários -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome com preload para reduzir render blocking -->
+    <link rel="preload" href="https://kit.fontawesome.com/15d6bd6a1c.js" as="script" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous" defer></script>
+    
+    <!-- css com preload e versionamento para cache busting -->
+    <link rel="preload" href="<?php echo asset_url('assets/css/style.css'); ?>" as="style">
+    <link rel="stylesheet" href="<?php echo asset_url('assets/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('assets/css/ctas.min.css'); ?>" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="<?php echo asset_url('assets/css/depoimentos-modern.css'); ?>" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="<?php echo asset_url('assets/css/ctas.min.css'); ?>">
+        <link rel="stylesheet" href="<?php echo asset_url('assets/css/depoimentos-modern.css'); ?>">
+    </noscript>
+    
+    <!-- CSS Crítico Inline para Above-the-Fold -->
     <style>
+        /* Reset e variáveis críticas */
+        :root {
+            --azul-primario: #003366;
+            --azul-secundario: #111D69;
+            --vermelho-primario: #eb3835;
+            --branco: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        
+        /* Header crítico */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: #111D69;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        /* Banner crítico */
+        .banner-carousel {
+            margin-top: 80px;
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            background: #f8f9fa;
+        }
+        
+        .banner-slides {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            aspect-ratio: 21 / 9;
+        }
+        
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        
+        .banner-slide.active {
+            opacity: 1;
+        }
+        
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .banner-mobile {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .banner-desktop {
+                display: none !important;
+            }
+            .banner-mobile {
+                display: block !important;
+            }
+            .banner-slides {
+                aspect-ratio: 7 / 6;
+            }
+        }
+        
         .skip-link {
             position: absolute;
             left: -9999px;
@@ -294,10 +418,22 @@ function getPosicaoIcon($posicao) {
             }
         }
     </style>
-    <?php SEO::renderOrganizationSchema(); ?>
+    
+    <!-- Structured Data / Schema.org -->
+    <?php 
+    SEO::renderOrganizationSchema();
+    SEO::renderWebSiteSchema();
+    SEO::renderFAQSchema();
+    SEO::renderOffersSchema();
+    ?>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <!-- H1 principal para SEO -->
+    <h1 class="seo-title" style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0;">
+        APAFUT - Associação de Pais e Amigos do Futebol Caxias do Sul: Escolinha de Futebol com Categorias de Base Sub-8 a Sub-20 e Time Profissional na Serra Gaúcha
+    </h1>
     
     <header role="banner">
         <!-- NAVBAR -->
@@ -308,10 +444,10 @@ function getPosicaoIcon($posicao) {
             <div class="menu">
                 <ul>
                     <li><a href="#home">Home</a></li>
+                    <li><a href="#noticias">Notícias</a></li>
                     <li><a href="#sobre">Sobre</a></li>
                     <li><a href="#categorias">Categorias</a></li>
                     <li><a href="#depoimentos">Depoimentos</a></li>
-                    <li><a href="#noticias">Notícias</a></li>
                 </ul>
                 <div class="nav-buttons">
                     <a href="#planos" class="btn-agendar" aria-label="Ver planos de sócio">Seja Sócio</a>
@@ -338,49 +474,40 @@ function getPosicaoIcon($posicao) {
                         <img class="banner-desktop" 
                              src="<?= htmlspecialchars($banner['imagem']) ?>" 
                              alt="<?= htmlspecialchars($banner['titulo']) ?>" 
+                             width="1400"
+                             height="600"
                              loading="<?= $index === 0 ? 'eager' : 'lazy' ?>"
+                             <?= $index === 0 ? 'fetchpriority="high"' : '' ?>
+                             decoding="<?= $index === 0 ? 'sync' : 'async' ?>"
                              onerror="this.src='assets/hero.png'">
                         <!-- Imagem Mobile -->
                         <?php $imagemMobile = !empty($banner['imagem_mobile']) ? $banner['imagem_mobile'] : $banner['imagem']; ?>
                         <img class="banner-mobile" 
                              src="<?= htmlspecialchars($imagemMobile) ?>" 
                              alt="<?= htmlspecialchars($banner['titulo']) ?>" 
+                             width="768"
+                             height="660"
                              loading="<?= $index === 0 ? 'eager' : 'lazy' ?>"
+                             <?= $index === 0 ? 'fetchpriority="high"' : '' ?>
+                             decoding="<?= $index === 0 ? 'sync' : 'async' ?>"
                              onerror="this.src='assets/hero.png'">
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="banner-slide active">
-                    <img class="banner-desktop" src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
-                    <img class="banner-mobile" src="assets/images/banner1.jpg" alt="Banner 1" loading="eager">
+                    <img class="banner-desktop" src="assets/images/banner1.jpg" alt="Banner 1" width="1400" height="600" loading="eager" fetchpriority="high" decoding="sync">
+                    <img class="banner-mobile" src="assets/images/banner1.jpg" alt="Banner 1" width="768" height="660" loading="eager" fetchpriority="high" decoding="sync">
                 </div>
                 <div class="banner-slide">
-                    <img class="banner-desktop" src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
-                    <img class="banner-mobile" src="assets/images/banner2.jpg" alt="Banner 2" loading="lazy">
+                    <img class="banner-desktop" src="assets/images/banner2.jpg" alt="Banner 2" width="1400" height="600" loading="lazy" decoding="async">
+                    <img class="banner-mobile" src="assets/images/banner2.jpg" alt="Banner 2" width="768" height="660" loading="lazy" decoding="async">
                 </div>
                 <div class="banner-slide">
-                    <img class="banner-desktop" src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
-                    <img class="banner-mobile" src="assets/images/banner3.jpg" alt="Banner 3" loading="lazy">
+                    <img class="banner-desktop" src="assets/images/banner3.jpg" alt="Banner 3" width="1400" height="600" loading="lazy" decoding="async">
+                    <img class="banner-mobile" src="assets/images/banner3.jpg" alt="Banner 3" width="768" height="660" loading="lazy" decoding="async">
                 </div>
             <?php endif; ?>
         </div>
-        
-        <!-- Indicadores -->
-        <?php if (count($banners) > 1): ?>
-        <div class="banner-indicators">
-            <?php foreach($banners as $index => $banner): ?>
-                <button class="indicator <?= $index === 0 ? 'active' : '' ?>" 
-                        data-slide="<?= $index ?>" 
-                        aria-label="<?= htmlspecialchars($banner['titulo']) ?>"></button>
-            <?php endforeach; ?>
-        </div>
-        <?php elseif (count($banners) === 0): ?>
-        <div class="banner-indicators">
-            <button class="indicator active" data-slide="0" aria-label="Banner 1"></button>
-            <button class="indicator" data-slide="1" aria-label="Banner 2"></button>
-            <button class="indicator" data-slide="2" aria-label="Banner 3"></button>
-        </div>
-        <?php endif; ?>
     </section>
     
     <!-- Carrossel de Patrocinadores -->
@@ -906,7 +1033,7 @@ function getPosicaoIcon($posicao) {
     <section id="depoimentos" class="depoimentos-section">
         <div class="container">
             <div class="section-header">
-                <h2 data-aos="fade-up">Depoimentos</h2>
+                <h2 class="destaques-titulo">DEPOIMENTOS</h2>
                 <p data-aos="fade-up" data-aos-delay="100">Veja o que ex-profissionais, alunos e pais falam sobre a APAFUT</p>
             </div>
             
@@ -1412,8 +1539,9 @@ function getPosicaoIcon($posicao) {
         </div>
     </div>
     
-    <script src="assets/js/script.js" defer></script>
-    <script src="assets/js/lazy-loader.min.js" defer></script>
+    <!-- JavaScript com versionamento para cache busting -->
+    <script src="<?php echo asset_url('assets/js/script.js'); ?>" defer></script>
+    <script src="<?php echo asset_url('assets/js/lazy-loader.min.js'); ?>" defer></script>
     <script>
         // Botão WhatsApp flutuante - aparecer após scroll
         window.addEventListener('scroll', function() {

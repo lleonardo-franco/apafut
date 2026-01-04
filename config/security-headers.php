@@ -1,7 +1,10 @@
 <?php
 /**
- * Arquivo de configuração de segurança global
+ * Arquivo de configuração de segurança global e cache inteligente
  * Inclua no início de cada arquivo PHP público
+ * 
+ * @package APAFUT
+ * @version 2.0
  */
 
 // Headers de segurança
@@ -25,10 +28,49 @@ header("Content-Security-Policy: " . implode("; ", $csp));
 
 // HSTS (somente em produção com HTTPS)
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-    header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+    header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 }
 
-// Cache control para páginas dinâmicas
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
+// ====================================
+// CACHE CONTROL INTELIGENTE
+// ====================================
+
+/**
+ * Define estratégia de cache baseada no tipo de página
+ * Páginas dinâmicas (PHP) não devem usar cache do navegador
+ */
+
+// Detectar se é uma requisição AJAX/API
+$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+          strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+// Detectar se é área administrativa
+$isAdmin = strpos($_SERVER['REQUEST_URI'], '/admin/') !== false;
+
+if ($isAjax) {
+    // APIs e requisições AJAX - cache curto para dados dinâmicos
+    header("Cache-Control: public, max-age=300, must-revalidate");
+    header("Expires: " . gmdate('D, d M Y H:i:s', time() + 300) . ' GMT');
+} elseif ($isAdmin) {
+    // Área administrativa - sem cache (sempre conteúdo fresco)
+    header("Cache-Control: no-cache, no-store, must-revalidate, max-age=0, s-maxage=0");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+} else {
+    // Páginas públicas dinâmicas - sem cache (HTML é dinâmico, assets têm versionamento)
+    header("Cache-Control: no-cache, no-store, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+}
+
+// ====================================
+// HEADERS ADICIONAIS DE PERFORMANCE
+// ====================================
+
+// Prevenir buffering desnecessário
+header("X-Accel-Buffering: no");
+
+// Indicar que a resposta pode variar com Accept-Encoding
+header("Vary: Accept-Encoding");
+

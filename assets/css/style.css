@@ -307,7 +307,7 @@ header nav .hamburger i {
         display: flex;
         flex-direction: column;
         position: absolute;
-        top: 80px;
+        top: 60px;
         left: 0;
         width: 100%;
         background-color: var(--azul-secundario);
@@ -1178,7 +1178,7 @@ section#categorias {
 
 @media (max-width: 432px) {
     section#categorias {
-        padding: 20px 4%;
+        padding: 25px 4%;
     }
 }
 
@@ -1313,26 +1313,26 @@ section#categorias h2 {
 @media (max-width: 432px) {
     .bento-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 12px;
     }
 
     .card {
-        padding: 20px;
+        padding: 16px 18px;
     }
 
     .card-icon {
-        font-size: 24px;
-        margin-bottom: 8px;
+        font-size: 22px;
+        margin-bottom: 6px;
     }
 
     .card h3 {
-        font-size: 1.1rem;
-        margin-bottom: 5px;
+        font-size: 1.05rem;
+        margin-bottom: 4px;
     }
 
     .card p {
-        font-size: 0.85rem;
-        line-height: 1.4;
+        font-size: 0.82rem;
+        line-height: 1.35;
     }
 }
 
@@ -1570,6 +1570,51 @@ section#categorias h2 {
 }
 
 .destaques-titulo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--vermelho-primario);
+    border-radius: 2px;
+}
+
+/* Seção de Depoimentos */
+.depoimentos-section {
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.depoimentos-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.depoimentos-subtitulo {
+    font-size: 1rem;
+    color: #666;
+    margin-top: -15px;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+/* Título de Depoimentos com mesma formatação */
+.depoimentos-section .section-header h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #003366;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.depoimentos-section .section-header h2::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -3319,12 +3364,21 @@ video {
 
 @media (max-width: 768px) {
     .detalhe-item {
-        font-size: 0.85em;
-        padding: 8px 0;
+        font-size: 0.8em;
+        padding: 6px 0;
+        gap: 8px;
+    }
+    
+    .detalhe-item i {
+        font-size: 1.1em;
     }
 
     .detalhes-content {
-        padding: 12px;
+        padding: 10px;
+    }
+    
+    .card.active .categoria-detalhes {
+        margin-top: 10px;
     }
 }
 
@@ -3476,10 +3530,13 @@ video {
 .posicao-filtros {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
     padding: 0 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .filtro-btn {
@@ -3488,19 +3545,23 @@ video {
     backdrop-filter: blur(10px);
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.15);
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 0.85em;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.9em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    min-height: 44px; /* Touch target mínimo recomendado */
 }
 
 .filtro-btn i {
     font-size: 1.1em;
+    flex-shrink: 0;
 }
 
 .filtro-btn:hover {
@@ -3514,11 +3575,12 @@ video {
     background: var(--vermelho-primario);
     border-color: var(--vermelho-primario);
     box-shadow: 0 4px 16px rgba(235, 56, 53, 0.4);
+    transform: scale(1.05);
 }
 
 .filtro-btn.active:hover {
     background: #d42f2c;
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .jogador-card {
@@ -3822,15 +3884,32 @@ video {
     }
 
     .posicao-filtros {
-        gap: 6px;
-        margin-bottom: 25px;
+        gap: 10px;
+        margin-bottom: 30px;
+        padding: 0 15px;
+        justify-content: center;
     }
 
     .filtro-btn {
-        padding: 7px 12px;
-        font-size: 0.75em;
-        flex: 1 1 auto;
-        min-width: calc(50% - 3px);
+        padding: 10px 16px;
+        font-size: 0.8em;
+        border-radius: 25px;
+        gap: 6px;
+        flex: 0 1 auto;
+        min-width: calc(33.333% - 7px); /* 3 colunas */
+        min-height: 44px;
+    }
+    
+    .filtro-btn i {
+        font-size: 1em;
+    }
+    
+    /* Botão "Todos" ocupa linha inteira para destaque */
+    .filtro-btn[data-posicao="todos"] {
+        flex: 0 1 auto;
+        max-width: 180px;
+        margin: 0 auto;
+        font-size: 0.85em;
     }
 
     .jogador-card {
@@ -3874,6 +3953,33 @@ video {
         font-size: 1.1em;
         top: 10px;
         right: 10px;
+    }
+}
+
+/* Otimização para telas muito pequenas (smartphones compactos) */
+@media (max-width: 380px) {
+    .posicao-filtros {
+        gap: 8px;
+        padding: 0 10px;
+    }
+    
+    .filtro-btn {
+        padding: 8px 12px;
+        font-size: 0.75em;
+        min-width: calc(50% - 4px); /* 2 colunas em telas muito pequenas */
+        border-radius: 20px;
+        gap: 4px;
+    }
+    
+    .filtro-btn i {
+        font-size: 0.95em;
+    }
+    
+    /* Botão "Todos" continua em destaque */
+    .filtro-btn[data-posicao="todos"] {
+        flex: 0 1 auto;
+        max-width: 160px;
+        font-size: 0.8em;
     }
 
     .carousel-btn {
