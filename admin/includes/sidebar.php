@@ -31,6 +31,10 @@
             <i class="fas fa-users-cog"></i>
             <span>Comissão Técnica</span>
         </a>
+        <a href="diretoria.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'diretoria.php' || strpos(basename($_SERVER['PHP_SELF']), 'diretoria-') === 0 ? 'active' : '' ?>">
+            <i class="fas fa-user-tie"></i>
+            <span>Diretoria</span>
+        </a>
         <a href="depoimentos.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'depoimentos.php' || strpos(basename($_SERVER['PHP_SELF']), 'depoimento-') === 0 ? 'active' : '' ?>">
             <i class="fas fa-comments"></i>
             <span>Depoimentos</span>

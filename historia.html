@@ -92,24 +92,55 @@
     <section class="historia-hero">
         <div class="historia-hero-content">
             <h1>Sobre a Apafut</h1>
-            <p>Mais de 20 anos de história e compromisso com a formação de jovens talentos em Caxias do Sul</p>
+            <p>Mais de 20 anos de história e compromisso com a formação de jovens talentos</p>
         </div>
     </section>
 
     <main style="padding-top: 20px;">
         <!-- Sobre Empresa -->
         <section class="sobre-empresa-section">
-            <div class="container-empresa" aria-labelledby="quem-somos-title">
-                <div class="empresa-texto" id="quem-somos">
-                    <h2 id="quem-somos-title">Quem Somos</h2>
-                    <p class="lead">A <strong>APAFUT</strong> nasceu com o propósito de ir além do futebol. Desde sua fundação, a academia tem como missão formar atletas e cidadãos, utilizando o esporte como ferramenta de transformação social, educação e desenvolvimento humano.</p>
-                    <p>Ao longo de sua trajetória, a APAFUT construiu um trabalho sólido baseado em treinamento técnico de qualidade, valores éticos e compromisso com o futuro de seus alunos. Com uma equipe de profissionais experientes e uma metodologia focada no desenvolvimento técnico, tático, físico e mental, a academia vem impactando positivamente a vida de jovens atletas.</p>
-                    <p>Atenta às diferentes realidades sociais, a APAFUT acredita na inclusão e na igualdade de oportunidades. Por meio de projetos sociais, parcerias e bolsas de incentivo, ampliamos o acesso ao esporte e reafirmamos nosso compromisso com a responsabilidade social, formando não apenas jogadores, mas pessoas preparadas para os desafios dentro e fora de campo.</p>
+            <div class="section-header-historia">
+                <h2>Quem Somos</h2>
+                <p>Formando atletas e cidadãos há mais de 20 anos</p>
+            </div>
+
+            <div class="historia-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Nossa Missão</h3>
+                        <p>A <strong>APAFUT</strong> nasceu com o propósito de ir além do futebol. Desde sua fundação, a academia tem como missão formar atletas e cidadãos, utilizando o esporte como ferramenta de transformação social, educação e desenvolvimento humano.</p>
+                    </div>
+                    <div class="timeline-image">
+                        <img src="assets/img1.jpg" alt="Missão APAFUT" loading="lazy">
+                    </div>
                 </div>
 
-                <div class="empresa-imagem" aria-hidden="false">
-                    <div class="img-placeholder" role="img" aria-label="Atletas treinando na Apafut">
-                        <img src="assets/img1.jpg" alt="Atletas treinando na Apafut">
+                <div class="timeline-item timeline-item-reverse">
+                    <div class="timeline-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Nossa Metodologia</h3>
+                        <p>Ao longo de nossa trajetória, construímos um trabalho sólido baseado em treinamento técnico de qualidade, valores éticos e compromisso com o futuro de nossos alunos. Com profissionais experientes e metodologia focada no desenvolvimento técnico, tático, físico e mental.</p>
+                    </div>
+                    <div class="timeline-image">
+                        <img src="assets/hero.png" alt="Metodologia APAFUT" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Responsabilidade Social</h3>
+                        <p>Atentos às diferentes realidades sociais, acreditamos na inclusão e igualdade de oportunidades. Por meio de projetos sociais, parcerias e bolsas de incentivo, ampliamos o acesso ao esporte e reafirmamos nosso compromisso em formar pessoas preparadas para os desafios dentro e fora de campo.</p>
+                    </div>
+                    <div class="timeline-image">
+                        <img src="assets/img2.jpg" alt="Responsabilidade Social" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -117,23 +148,83 @@
             <!-- Estatísticas -->
             <div class="stats-container">
                 <div class="stat-box">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
                     <h3>20+</h3>
-                    <p>Anos</p>
+                    <p>Anos de História</p>
+                    <div class="stat-decoration"></div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
                     <h3>3</h3>
-                    <p>Unidades</p>
+                    <p>Unidades Ativas</p>
+                    <div class="stat-decoration"></div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
                     <h3>2000+</h3>
-                    <p>Atletas</p>
+                    <p>Atletas Formados</p>
+                    <div class="stat-decoration"></div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
                     <h3>100%</h3>
-                    <p>Dedicação</p>
+                    <p>Dedicação e Excelência</p>
+                    <div class="stat-decoration"></div>
                 </div>
             </div>
         </section>
+
+        <!-- Diretoria -->
+        <section id="diretoria" class="diretoria-section">
+            <div class="section-header">
+                <h2>Nossa Diretoria</h2>
+                <p>Conheça os líderes que dirigem a APAFUT</p>
+            </div>
+
+            <div id="diretoria-grid" class="diretoria-grid">
+                <!-- Carregado via JavaScript -->
+                <div class="loading-skeleton">
+                    <i class="fas fa-spinner fa-spin"></i> Carregando diretoria...
+                </div>
+            </div>
+        </section>
+
+        <script>
+        // Carregar diretoria
+        fetch('api/get_diretoria.php')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('diretoria-grid');
+                
+                if (data.success && data.diretoria && data.diretoria.length > 0) {
+                    container.innerHTML = data.diretoria.map(membro => `
+                        <div class="diretoria-card">
+                            <div class="diretoria-foto">
+                                <img src="${membro.foto || 'assets/placeholder-user.jpg'}" alt="${membro.nome}" loading="lazy">
+                            </div>
+                            <div class="diretoria-info">
+                                <h3>${membro.nome}</h3>
+                                <p>${membro.cargo}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Nenhum membro cadastrado.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar diretoria:', error);
+                document.getElementById('diretoria-grid').innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Erro ao carregar diretoria.</p>';
+            });
+        </script>
 
         <!-- Unidades -->
         <section id="unidades" class="unidades-section">
@@ -144,38 +235,140 @@
 
             <div class="unidades-grid">
                 <div class="unidade-card">
+                    <div class="unidade-header">
+                        <div class="unidade-badge">Centro</div>
+                    </div>
                     <div class="unidade-imagem">
-                        <img src="assets/images/unidades/centro.jpg" alt="Unidade Centro">
+                        <img src="assets/img1.jpg" alt="Unidade Centro" loading="lazy">
+                        <div class="unidade-overlay">
+                            <a href="https://wa.me/5554991348163?text=Olá!%20Gostaria%20de%20informações%20sobre%20a%20unidade%20Centro" target="_blank" class="btn-unidade">
+                                <i class="fab fa-whatsapp"></i> Entre em Contato
+                            </a>
+                        </div>
                     </div>
                     <div class="unidade-info">
-                        <h3><i class="fas fa-map-pin"></i> Centro</h3>
-                        <p><strong>Endereço:</strong> Rua do Futebol, 123</p>
-                        <p><strong>Sub-7 até Sub-14</strong></p>
-                        <p><i class="fas fa-phone"></i> (54) 3221-4567</p>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Endereço</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Rua+Francisco+Getúlio+Vargas,+1130+-+Petrópolis,+Caxias+do+Sul+-+RS" target="_blank" class="unidade-endereco">
+                                    Rua Francisco Getúlio Vargas, 1130 - Petrópolis, Caxias do Sul - RS
+                                </a>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <strong>Categorias</strong>
+                                <span>Sub-7 até Sub-14</span>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Horários</strong>
+                                <span>Seg a Sex: 14h - 20h</span>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-futbol"></i>
+                            <div>
+                                <strong>Estrutura</strong>
+                                <span>Campo society e sintético</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="unidade-card">
+                    <div class="unidade-header">
+                        <div class="unidade-badge">Zona Norte</div>
+                    </div>
                     <div class="unidade-imagem">
-                        <img src="assets/images/unidades/norte.jpg" alt="Unidade Zona Norte">
+                        <img src="assets/hero.png" alt="Unidade Zona Norte" loading="lazy">
+                        <div class="unidade-overlay">
+                            <a href="https://wa.me/5554991348163?text=Olá!%20Gostaria%20de%20informações%20sobre%20a%20unidade%20Zona%20Norte" target="_blank" class="btn-unidade">
+                                <i class="fab fa-whatsapp"></i> Entre em Contato
+                            </a>
+                        </div>
                     </div>
                     <div class="unidade-info">
-                        <h3><i class="fas fa-map-pin"></i> Zona Norte</h3>
-                        <p><strong>Endereço:</strong> Avenida Brasil, 456</p>
-                        <p><strong>Sub-7 até Sub-16</strong></p>
-                        <p><i class="fas fa-phone"></i> (54) 3221-5678</p>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Endereço</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Rua+Francisco+Getúlio+Vargas,+1130+-+Petrópolis,+Caxias+do+Sul+-+RS" target="_blank" class="unidade-endereco">
+                                    Rua Francisco Getúlio Vargas, 1130 - Petrópolis, Caxias do Sul - RS
+                                </a>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <strong>Categorias</strong>
+                                <span>Sub-7 até Sub-17</span>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Horários</strong>
+                                <span>Seg a Sex: 15h - 21h</span>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-futbol"></i>
+                            <div>
+                                <strong>Estrutura</strong>
+                                <span>2 campos e vestiários</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="unidade-card">
+                    <div class="unidade-header">
+                        <div class="unidade-badge">Zona Sul</div>
+                    </div>
                     <div class="unidade-imagem">
-                        <img src="assets/images/unidades/sul.jpg" alt="Unidade Zona Sul">
+                        <img src="assets/img2.jpg" alt="Unidade Zona Sul" loading="lazy">
+                        <div class="unidade-overlay">
+                            <a href="https://wa.me/5554991348163?text=Olá!%20Gostaria%20de%20informações%20sobre%20a%20unidade%20Zona%20Sul" target="_blank" class="btn-unidade">
+                                <i class="fab fa-whatsapp"></i> Entre em Contato
+                            </a>
+                        </div>
                     </div>
                     <div class="unidade-info">
-                        <h3><i class="fas fa-map-pin"></i> Zona Sul</h3>
-                        <p><strong>Endereço:</strong> Rua das Flores, 789</p>
-                        <p><strong>Sub-8 até Sub-17</strong></p>
-                        <p><i class="fas fa-phone"></i> (54) 3221-6789</p>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Endereço</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Rua+Francisco+Getúlio+Vargas,+1130+-+Petrópolis,+Caxias+do+Sul+-+RS" target="_blank" class="unidade-endereco">
+                                    Rua Francisco Getúlio Vargas, 1130 - Petrópolis, Caxias do Sul - RS
+                                </a>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <strong>Categorias</strong>
+                                <span>Sub-8 até Sub-16</span>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Horários</strong>
+                                <span>Seg a Sáb: 14h - 19h</span>
+                            </div>
+                        </div>
+                        <div class="unidade-detalhe">
+                            <i class="fas fa-futbol"></i>
+                            <div>
+                                <strong>Estrutura</strong>
+                                <span>Campo oficial e academia</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -338,9 +531,12 @@
                     <h3>Apafut Caxias do Sul</h3>
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
-                <div class="footer-contact-quick">
+                <div class="footer-contact-quick footer-links-centered">
                     <a href="historia.html#unidades" class="footer-link-unidades">
                         <i class="fas fa-map-marked-alt"></i> Nossas Unidades
+                    </a>
+                    <a href="index.php#planos" class="footer-link-socio">
+                        <i class="fas fa-id-card"></i> Seja Sócio Torcedor
                     </a>
                 </div>
             </div>
