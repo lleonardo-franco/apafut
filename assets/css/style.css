@@ -2626,25 +2626,29 @@ footer {
 }
 
 .footer-link-unidades {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    color: rgba(255, 255, 255, 0.9);
+    gap: 8px;
+    background: linear-gradient(135deg, #0f266d, #1e3a8a);
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 50px;
     text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
     transition: all 0.3s ease;
+    border: 2px solid rgba(96, 165, 250, 0.3);
 }
 
 .footer-link-unidades:hover {
-    color: var(--vermelho-primario);
-    gap: 15px;
+    transform: translateX(5px);
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    border-color: rgba(96, 165, 250, 0.5);
 }
 
 .footer-link-unidades i {
-    color: var(--vermelho-primario);
-    font-size: 18px;
-    min-width: 20px;
+    color: #60a5fa;
+    font-size: 1rem;
 }
 
 .footer-contact-quick p {

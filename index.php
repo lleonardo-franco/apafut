@@ -1001,7 +1001,7 @@ function getPosicaoIcon($posicao) {
                 <p>Apoie nosso time profissional e acompanhe de perto todas as partidas. Benefícios exclusivos para quem vive o futebol!</p>
             </div>
             <a href="#planos" class="btn-socio">
-                <i class="fas fa-heart"></i> Quero Ser Sócio
+                <i class="fas fa-id-card"></i> Quero Ser Sócio
             </a>
         </div>
     </div>
@@ -1079,7 +1079,7 @@ function getPosicaoIcon($posicao) {
                         <i class="fas fa-map-marked-alt"></i> Nossas Unidades
                     </a>
                     <a href="#planos" class="footer-link-socio">
-                        <i class="fas fa-heart"></i> Seja Sócio Torcedor
+                        <i class="fas fa-id-card"></i> Seja Sócio Torcedor
                     </a>
                 </div>
             </div>
