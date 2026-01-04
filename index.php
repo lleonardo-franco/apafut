@@ -986,6 +986,22 @@ function getPosicaoIcon($posicao) {
     </script>
     <?php endif; ?>
 
+    <!-- CTA Sócio Apoiador -->
+    <div class="cta-socio-apoiador">
+        <div class="socio-card">
+            <div class="socio-icon">
+                <i class="fas fa-hands-helping"></i>
+            </div>
+            <div class="socio-content">
+                <h3>Seja Sócio da APAFUT</h3>
+                <p>Apoie nosso time profissional e acompanhe de perto todas as partidas. Benefícios exclusivos para quem vive o futebol!</p>
+            </div>
+            <a href="#planos" class="btn-socio">
+                <i class="fas fa-heart"></i> Quero Ser Sócio
+            </a>
+        </div>
+    </div>
+
     <!-- Planos -->
     <section id="planos" class="planos">
         <div class="planos-header">
@@ -1054,9 +1070,12 @@ function getPosicaoIcon($posicao) {
                     <h3>Apafut Caxias do Sul</h3>
                 </div>
                 <p>Formando campeões dentro e fora de campo desde 2010.</p>
-                <div class="footer-contact-quick">
+                <div class="footer-contact-quick footer-links-centered">
                     <a href="historia.html#unidades" class="footer-link-unidades">
                         <i class="fas fa-map-marked-alt"></i> Nossas Unidades
+                    </a>
+                    <a href="#planos" class="footer-link-socio">
+                        <i class="fas fa-heart"></i> Seja Sócio Torcedor
                     </a>
                 </div>
             </div>

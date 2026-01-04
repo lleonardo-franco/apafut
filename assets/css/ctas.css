@@ -489,3 +489,186 @@
         font-size: 1.6rem;
     }
 }
+
+/* ===================================
+   CTA SÓCIO APOIADOR
+   =================================== */
+
+/* Card Sócio após Planos */
+.cta-socio-apoiador {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+.socio-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f266d 100%);
+    border-radius: 20px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 30px;
+    align-items: center;
+    box-shadow: 0 8px 30px rgba(15, 38, 109, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.socio-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.socio-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+}
+
+.socio-icon i {
+    font-size: 2.5rem;
+    color: #60a5fa;
+}
+
+.socio-content {
+    position: relative;
+    z-index: 1;
+}
+
+.socio-content h3 {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.socio-content p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.btn-socio {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: #0f266d;
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.btn-socio:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    background: #f0f9ff;
+}
+
+.btn-socio i {
+    color: #ef4444;
+    font-size: 1.2rem;
+}
+
+/* Badge Sócio no Rodapé */
+.footer-link-socio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0f266d, #1e3a8a);
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    border: 2px solid rgba(96, 165, 250, 0.3);
+}
+
+.footer-link-socio:hover {
+    transform: translateX(5px);
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    border-color: rgba(96, 165, 250, 0.5);
+}
+
+.footer-link-socio i {
+    color: #ef4444;
+    font-size: 1rem;
+}
+
+/* Centralizar links do rodapé */
+.footer-links-centered {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Responsivo Sócio */
+@media (max-width: 968px) {
+    .socio-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 35px 25px;
+        gap: 20px;
+    }
+    
+    .socio-icon {
+        margin: 0 auto;
+    }
+    
+    .btn-socio {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-socio-apoiador {
+        margin-top: 40px;
+    }
+    
+    .socio-card {
+        padding: 30px 20px;
+    }
+    
+    .socio-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .socio-icon i {
+        font-size: 2rem;
+    }
+    
+    .socio-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .socio-content p {
+        font-size: 0.95rem;
+    }
+}
