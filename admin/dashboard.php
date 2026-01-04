@@ -228,54 +228,7 @@ try {
 <body>
     <div class="admin-wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <i class="fas fa-futbol"></i>
-                    <span>Apafut Admin</span>
-                </div>
-            </div>
-            
-            <nav class="sidebar-menu">
-                <div class="menu-section-title">Principal</div>
-                <a href="dashboard.php" class="menu-item active">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-                
-                <div class="menu-section-title">Conteúdo</div>
-                <a href="noticias.php" class="menu-item">
-                    <i class="fas fa-newspaper"></i>
-                    <span>Notícias</span>
-                </a>
-                <a href="banners.php" class="menu-item">
-                    <i class="fas fa-images"></i>
-                    <span>Banners</span>
-                </a>
-                <a href="jogadores.php" class="menu-item">
-                    <i class="fas fa-users"></i>
-                    <span>Jogadores</span>
-                </a>
-                <a href="depoimentos.php" class="menu-item">
-                    <i class="fas fa-comments"></i>
-                    <span>Depoimentos</span>
-                </a>
-                <a href="planos.php" class="menu-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Planos</span>
-                </a>
-                
-                <div class="menu-section-title">Sistema</div>
-                <a href="analytics.php" class="menu-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Analytics</span>
-                </a>
-                <a href="configuracoes.php" class="menu-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Configurações</span>
-                </a>
-            </nav>
-        </aside>
+        <?php include 'includes/sidebar.php'; ?>
 
         <!-- Main Content -->
         <main class="main-content">
