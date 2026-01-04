@@ -215,7 +215,8 @@
     }
     
     .depoimentos-section .section-header p {
-        font-size: 14px;
+        font-size: 13px;
+        line-height: 1.4;
     }
     
     .depoimentos-section .container {
@@ -266,6 +267,11 @@
     
     .depoimentos-section .section-header h2 {
         font-size: 24px;
+    }
+    
+    .depoimentos-section .section-header p {
+        font-size: 12px;
+        padding: 0 10px;
     }
     
     .depoimento-content h3,
