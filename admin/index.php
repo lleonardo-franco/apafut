@@ -157,10 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <div class="form-options">
-                        <a href="#" class="forgot-link">Esqueceu a senha?</a>
-                    </div>
-
                     <button type="submit" class="btn-signin">
                         <span>Entrar</span>
                         <i class="fas fa-arrow-right"></i>
