@@ -246,7 +246,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-group">
                         <label for="conteudo">Conteúdo *</label>
                         <textarea id="conteudo" name="conteudo" rows="15" required><?= htmlspecialchars($_POST['conteudo'] ?? '') ?></textarea>
-                        <small style="color: #999;">MODO DEBUG: Editor de texto simples (TinyMCE temporariamente desabilitado)</small>
                     </div>
 
                     <div class="form-row">
@@ -377,7 +376,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
         
         // TEMPORARIAMENTE DESABILITADO PARA DEBUG
-        /*
         // Inicializar TinyMCE
         tinymce.init({
             selector: '#conteudo',
@@ -404,7 +402,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 });
             }
         });
-        */
         
         // Controlar exibição dos campos de depoimento
         const categoriaSelect = document.getElementById('categoria');
