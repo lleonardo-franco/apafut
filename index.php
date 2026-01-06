@@ -1246,7 +1246,7 @@ function getPosicaoIcon($posicao) {
 
         <div class="footer-bottom">
             <div class="footer-bottom-content">
-                <p>&copy; <?= date('Y') ?> Apafut Caxias do Sul. Todos os direitos reservados.</p>
+                <p>&copy; <?= date('Y') ?> Apafut Caxias do Sul. Todos os direitos reservados. | <a href="admin/" style="color: inherit; text-decoration: none; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Painel Administrativo</a></p>
             </div>
         </div>
     </footer>
