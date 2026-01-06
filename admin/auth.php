@@ -13,10 +13,14 @@ class Auth {
      */
     public static function startSession() {
         if (session_status() === PHP_SESSION_NONE) {
-            // Configurações de sessão segura
+            // Configurações de sessão segura avançadas
             ini_set('session.cookie_httponly', 1);
             ini_set('session.use_only_cookies', 1);
-            ini_set('session.cookie_secure', isset($_SERVER['HTTPS'])); // HTTPS apenas em produção
+            ini_set('session.cookie_secure', isset($_SERVER['HTTPS']));
+            ini_set('session.cookie_samesite', 'Strict');
+            ini_set('session.use_strict_mode', 1);
+            ini_set('session.sid_length', 48);
+            ini_set('session.sid_bits_per_character', 6);
             
             session_name('APAFUT_ADMIN_SESSION');
             session_start();
@@ -42,10 +46,10 @@ class Auth {
                 return ['success' => false, 'message' => 'Email inválido'];
             }
             
-            // Rate limiting
+            // Rate limiting - 10 tentativas em 5 minutos (mais permissivo)
             $clientIP = getClientIP();
-            if (!Security::rateLimit('login_' . $clientIP, 5, 300)) {
-                return ['success' => false, 'message' => 'Muitas tentativas de login. Tente novamente em 5 minutos.'];
+            if (!Security::rateLimit('login_' . $clientIP, 10, 300)) {
+                return ['success' => false, 'message' => 'Muitas tentativas de login. Tente novamente em alguns minutos.'];
             }
             
             $conn = getConnection();
@@ -69,6 +73,12 @@ class Auth {
             
             // Login bem-sucedido
             self::startSession();
+            
+            // Limpa rate limit após login bem-sucedido
+            $rateLimitKey = 'rate_limit_' . md5('login_' . $clientIP);
+            if (isset($_SESSION[$rateLimitKey])) {
+                unset($_SESSION[$rateLimitKey]);
+            }
             
             // Armazenar dados na sessão
             $_SESSION['admin_logged_in'] = true;
