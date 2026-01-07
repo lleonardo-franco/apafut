@@ -26,17 +26,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tempo_leitura = Security::validateInt($_POST['tempo_leitura'] ?? 5, 1);
         $ativo = isset($_POST['ativo']) ? 1 : 0;
         $destaque = isset($_POST['destaque']) ? 1 : 0;
+        
+        // Validar limite de notícias em destaque (máximo 6)
+        if ($destaque) {
+            $stmt = $conn->prepare("SELECT COUNT(*) as total FROM noticias WHERE destaque = 1");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result['total'] >= 6) {
+                throw new Exception('Limite de 6 notícias em destaque atingido. Remova o destaque de outra notícia primeiro.');
+            }
+        }
+        
         $ordem = Security::validateInt($_POST['ordem'] ?? 0, 0);
         $data_publicacao = $_POST['data_publicacao'] ?? date('Y-m-d');
         $status = Security::sanitizeString($_POST['status'] ?? 'publicado');
         $data_agendamento = !empty($_POST['data_agendamento']) ? $_POST['data_agendamento'] : null;
         
+        // Se for agendado, a data de publicação deve ser a mesma do agendamento
+        if ($status === 'agendado' && $data_agendamento) {
+            $data_publicacao = date('Y-m-d', strtotime($data_agendamento));
+        }
+        
         // Campos específicos de depoimentos
         $depoimento_texto = Security::sanitizeString($_POST['depoimento_texto'] ?? '');
         $depoimento_autor = Security::sanitizeString($_POST['depoimento_autor'] ?? '');
         
+        // Validações avançadas
         if (empty($titulo) || empty($categoria) || empty($resumo) || empty($conteudo)) {
             throw new Exception('Por favor, preencha todos os campos obrigatórios');
+        }
+        
+        if (strlen($titulo) < 10) {
+            throw new Exception('O título deve ter no mínimo 10 caracteres');
+        }
+        
+        if (strlen($titulo) > 200) {
+            throw new Exception('O título deve ter no máximo 200 caracteres');
+        }
+        
+        if (strlen($resumo) > 500) {
+            throw new Exception('O resumo deve ter no máximo 500 caracteres');
+        }
+        
+        if (strlen($conteudo) < 50) {
+            throw new Exception('O conteúdo deve ter no mínimo 50 caracteres');
+        }
+        
+        if ($tempo_leitura < 1 || $tempo_leitura > 60) {
+            throw new Exception('O tempo de leitura deve estar entre 1 e 60 minutos');
+        }
+        
+        if ($status === 'agendado' && empty($data_agendamento)) {
+            throw new Exception('Para status agendado, informe a data e hora do agendamento');
+        }
+        
+        if (!empty($data_agendamento)) {
+            $dataAgendamentoObj = new DateTime($data_agendamento);
+            $agora = new DateTime();
+            if ($dataAgendamentoObj <= $agora) {
+                throw new Exception('A data de agendamento deve ser futura');
+            }
+        }
+        
+        // Verificar se já existe notícia com mesmo título
+        $stmt = $conn->prepare("SELECT id FROM noticias WHERE titulo = ?");
+        $stmt->execute([$titulo]);
+        if ($stmt->fetch()) {
+            throw new Exception('Já existe uma notícia com este título');
         }
         
         // Processar upload de imagem
@@ -132,11 +188,217 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/noticias.css">
+    <style>
+        /* Modal de erro personalizado */
+        .error-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        .error-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-content {
+            background: white;
+            border-radius: 12px;
+            padding: 0;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.3s ease;
+        }
+        
+        .error-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .error-header i {
+            font-size: 28px;
+        }
+        
+        .error-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .error-body {
+            padding: 28px;
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .error-footer {
+            padding: 20px 28px;
+            border-top: 1px solid #f0f0f0;
+            text-align: right;
+        }
+        
+        .error-btn {
+            background: var(--vermelho-primario);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .error-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <style>
+        /* Modal de erro personalizado */
+        .error-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        .error-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-content {
+            background: white;
+            border-radius: 12px;
+            padding: 0;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.3s ease;
+        }
+        
+        .error-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .error-header i {
+            font-size: 28px;
+        }
+        
+        .error-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .error-body {
+            padding: 28px;
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .error-footer {
+            padding: 20px 28px;
+            border-top: 1px solid #f0f0f0;
+            text-align: right;
+        }
+        
+        .error-btn {
+            background: var(--vermelho-primario);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .error-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
     <!-- TinyMCE: Obtenha sua API key gratuita em https://www.tiny.cloud/auth/signup/ -->
     <!-- Substitua 'SUA_API_KEY_AQUI' pela sua chave real -->
     <script src="https://cdn.tiny.cloud/1/pjivdo2bif18etpq2hxcq117ejq55w9zlu2aa2u669mwgdpl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="error-modal">
+        <div class="error-content">
+            <div class="error-header">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>Erro de Validação</h3>
+            </div>
+            <div class="error-body" id="errorMessage"></div>
+            <div class="error-footer">
+                <button class="error-btn" onclick="closeErrorModal()">Entendi</button>
+            </div>
+        </div>
+    </div>
+
     <div class="admin-wrapper">
         <?php include 'includes/sidebar.php'; ?>
 
@@ -144,13 +406,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php $pageTitle = 'Nova Notícia'; include 'includes/topbar.php'; ?>
 
             <div class="content">
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-plus"></i> Nova Notícia</h1>
-                        <p>Criar uma nova notícia</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div>
+                            <h1>Nova Notícia</h1>
+                            <p>Criar uma nova notícia</p>
+                        </div>
                     </div>
-                    <a href="noticias.php" class="btn btn-light">
-                        <i class="fas fa-arrow-left"></i> Voltar
+                    <a href="noticias.php" class="btn-balanced-light">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Voltar</span>
                     </a>
                 </div>
 
@@ -161,14 +429,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" enctype="multipart/form-data" class="form-card">
-                    <div class="form-group">
-                        <label for="titulo">Título *</label>
-                        <input type="text" id="titulo" name="titulo" required value="<?= htmlspecialchars($_POST['titulo'] ?? '') ?>">
-                    </div>
-
-                    <div class="form-row">
+                <form method="POST" enctype="multipart/form-data" class="form-balanced">
+                    <div class="form-section">
+                        <h3><i class="fas fa-file-alt"></i> Informações Básicas</h3>
+                        
                         <div class="form-group">
+                            <label for="titulo">Título *</label>
+                            <input type="text" id="titulo" name="titulo" required value="<?= htmlspecialchars($_POST['titulo'] ?? '') ?>" placeholder="Digite o título da notícia">
+                        </div>
+
+                        <div class="form-group" style="max-width: 500px;">
                             <label for="categoria">Categoria *</label>
                             <select id="categoria" name="categoria" required>
                                 <option value="">Selecione...</option>
@@ -180,111 +450,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="Projetos Sociais" <?= ($_POST['categoria'] ?? '') === 'Projetos Sociais' ? 'selected' : '' ?>>Projetos Sociais</option>
                             </select>
                         </div>
+                        
+                        <div class="form-group" style="margin-top: 28px;">
+                            <label for="resumo">Resumo *</label>
+                            <textarea id="resumo" name="resumo" rows="3" required placeholder="Breve resumo da notícia (será exibido nos cards)"><?= htmlspecialchars($_POST['resumo'] ?? '') ?></textarea>
+                        </div>
 
                         <div class="form-group">
-                            <label for="posicao_card">
-                                <i class="fas fa-sort-numeric-down"></i> Posição do Card na Home
-                            </label>
-                            <select id="posicao_card" name="ordem">
-                                <option value="0" <?= ($_POST['ordem'] ?? '0') === '0' ? 'selected' : '' ?>>Automático</option>
-                                <option value="1" <?= ($_POST['ordem'] ?? '') === '1' ? 'selected' : '' ?>>Card Principal (1º - Grande)</option>
-                                <option value="2" <?= ($_POST['ordem'] ?? '') === '2' ? 'selected' : '' ?>>Card Secundário Esquerda (2º)</option>
-                                <option value="3" <?= ($_POST['ordem'] ?? '') === '3' ? 'selected' : '' ?>>Card Secundário Direita (3º)</option>
-                                <option value="4" <?= ($_POST['ordem'] ?? '') === '4' ? 'selected' : '' ?>>Card Terciário 1 (4º)</option>
-                                <option value="5" <?= ($_POST['ordem'] ?? '') === '5' ? 'selected' : '' ?>>Card Terciário 2 (5º)</option>
-                                <option value="6" <?= ($_POST['ordem'] ?? '') === '6' ? 'selected' : '' ?>>Card Terciário 3 (6º)</option>
-                            </select>
-                            <small class="form-help">
-                                <i class="fas fa-info-circle"></i> Define a posição desta notícia nos destaques da página inicial
-                            </small>
+                            <label for="conteudo">Conteúdo *</label>
+                            <textarea id="conteudo" name="conteudo" rows="12"><?= htmlspecialchars($_POST['conteudo'] ?? '') ?></textarea>
                         </div>
                     </div>
                     
-                    <div class="form-row">
+                    <div class="form-section">
+                        <h3><i class="fas fa-calendar-alt"></i> Publicação</h3>
 
-                        <div class="form-group">
-                            <label for="data_publicacao">Data de Publicação *</label>
-                            <input type="date" id="data_publicacao" name="data_publicacao" required value="<?= $_POST['data_publicacao'] ?? date('Y-m-d') ?>">
-                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="data_publicacao">Data de Publicação *</label>
+                                <input type="date" id="data_publicacao" name="data_publicacao" required value="<?= $_POST['data_publicacao'] ?? date('Y-m-d') ?>">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="tempo_leitura">Tempo de Leitura (min)</label>
-                            <input type="number" id="tempo_leitura" name="tempo_leitura" min="1" value="<?= $_POST['tempo_leitura'] ?? 5 ?>">
+                            <div class="form-group">
+                                <label for="tempo_leitura">Tempo de Leitura (min)</label>
+                                <input type="number" id="tempo_leitura" name="tempo_leitura" min="1" value="<?= $_POST['tempo_leitura'] ?? 5 ?>" placeholder="5">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="autor">Autor</label>
+                                <input type="text" id="autor" name="autor" value="<?= htmlspecialchars($_POST['autor'] ?? $user['nome']) ?>" placeholder="Nome do autor">
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Campos específicos para Depoimentos -->
-                    <div id="campos-depoimento" style="display: none;">
-                        <div class="form-row" style="background: #f8f9fa; padding: 20px; border-radius: 12px; border-left: 4px solid var(--vermelho-primario); margin-bottom: 20px;">
-                            <div class="form-group" style="flex: 2;">
-                                <label for="depoimento_texto">
-                                    <i class="fas fa-quote-left"></i> Texto do Depoimento (Opcional)
-                                </label>
-                                <textarea id="depoimento_texto" name="depoimento_texto" rows="4" placeholder="Digite o depoimento de quem a notícia está falando..."><?= htmlspecialchars($_POST['depoimento_texto'] ?? '') ?></textarea>
-                                <small class="form-help">
-                                    <i class="fas fa-info-circle"></i> Use este campo quando a notícia incluir uma citação ou depoimento de alguém
-                                </small>
-                            </div>
+                    <div id="campos-depoimento" style="display: none;" class="form-section">
+                        <h3><i class="fas fa-quote-left"></i> Depoimento</h3>
+                        
+                        <div class="form-group">
+                            <label for="depoimento_texto">Texto do Depoimento</label>
+                            <textarea id="depoimento_texto" name="depoimento_texto" rows="3" placeholder="Digite o depoimento..."><?= htmlspecialchars($_POST['depoimento_texto'] ?? '') ?></textarea>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="depoimento_autor">
-                                    <i class="fas fa-user"></i> Nome da Pessoa (Opcional)
-                                </label>
-                                <input type="text" id="depoimento_autor" name="depoimento_autor" placeholder="Ex: João Silva" value="<?= htmlspecialchars($_POST['depoimento_autor'] ?? '') ?>">
-                                <small class="form-help">
-                                    <i class="fas fa-info-circle"></i> Nome de quem deu o depoimento
-                                </small>
-                            </div>
+                        <div class="form-group">
+                            <label for="depoimento_autor">Nome da Pessoa</label>
+                            <input type="text" id="depoimento_autor" name="depoimento_autor" placeholder="Ex: João Silva" value="<?= htmlspecialchars($_POST['depoimento_autor'] ?? '') ?>">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="resumo">Resumo *</label>
-                        <textarea id="resumo" name="resumo" rows="3" required><?= htmlspecialchars($_POST['resumo'] ?? '') ?></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="conteudo">Conteúdo *</label>
-                        <textarea id="conteudo" name="conteudo" rows="15" required><?= htmlspecialchars($_POST['conteudo'] ?? '') ?></textarea>
-                    </div>
-
-                    <div class="form-row">
+                    <div class="form-section">
+                        <h3><i class="fas fa-image"></i> Imagem</h3>
+                        
                         <div class="form-group">
-                            <label for="imagem">
-                                <i class="fas fa-image"></i> Imagem da Notícia
-                            </label>
+                            <label for="imagem">Imagem da Notícia</label>
                             
-                            <div class="image-upload-container">
-                                <div class="no-image" id="noImagePlaceholder">
+                            <div class="image-upload-box">
+                                <div class="image-preview" id="noImagePlaceholder">
                                     <i class="fas fa-image"></i>
-                                    <p>Nenhuma imagem selecionada</p>
+                                    <p>Clique no botão abaixo para escolher uma imagem</p>
                                 </div>
-                                <img id="previewImagem" style="display: none; max-width: 100%; max-height: 300px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                <img id="previewImagem" class="image-preview-img" style="display: none;">
                                 
-                                <div class="image-upload-actions">
-                                    <label for="imagem" class="btn btn-secondary">
-                                        <i class="fas fa-upload"></i> Escolher imagem
+                                <div class="image-upload-buttons">
+                                    <label for="imagem" class="btn-upload">
+                                        <i class="fas fa-upload"></i> Escolher Imagem
                                     </label>
                                     <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
-                                    <button type="button" id="removeImageBtn" class="btn btn-danger" style="display: none;">
-                                        <i class="fas fa-times"></i> Remover
+                                    <button type="button" id="removeImageBtn" class="btn-remove" style="display: none;">
+                                        <i class="fas fa-trash"></i> Remover
                                     </button>
                                 </div>
-                                <small class="form-help">
-                                    <i class="fas fa-info-circle"></i> Formatos: JPG, PNG, GIF, WEBP | Máximo: 5MB
+                                <small class="image-help">
+                                    <i class="fas fa-info-circle"></i> Formatos aceitos: JPG, PNG, GIF, WEBP (máx. 5MB)
                                 </small>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="autor">
-                                <i class="fas fa-user-edit"></i> Autor
-                            </label>
+                            <label for="autor">Autor</label>
                             <input type="text" id="autor" name="autor" value="<?= htmlspecialchars($_POST['autor'] ?? $user['nome']) ?>" placeholder="Nome do autor">
                         </div>
                     </div>
+                    
+                    <div class="form-section">
+                        <h3><i class="fas fa-cog"></i> Configurações de Publicação</h3>
 
-                    <div class="form-row">
                         <div class="form-group">
                             <label for="status">Status da Publicação *</label>
                             <select id="status" name="status" required>
@@ -295,46 +545,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
 
                         <div class="form-group" id="agendamento-group" style="display: none;">
-                            <label for="data_agendamento">
-                                <i class="far fa-calendar-alt" style="color: var(--azul-secundario);"></i> Data e Hora do Agendamento
-                            </label>
-                            <div style="position: relative;">
-                                <input type="datetime-local" id="data_agendamento" name="data_agendamento" value="<?= $_POST['data_agendamento'] ?? '' ?>" 
-                                       style="padding-left: 45px; padding-right: 15px; height: 45px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: all 0.3s;" 
-                                       onmouseover="this.style.borderColor='var(--azul-secundario)'" 
-                                       onmouseout="this.style.borderColor='#e0e0e0'" 
-                                       onfocus="this.style.borderColor='var(--azul-secundario)'; this.style.boxShadow='0 0 0 3px rgba(0, 105, 217, 0.1)'" 
-                                       onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'">
-                                <i class="far fa-clock" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--azul-secundario); pointer-events: none; font-size: 18px;"></i>
-                            </div>
-                            <small style="color: #666; font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 6px; background: #f0f7ff; padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--azul-secundario);">
-                                <i class="fas fa-info-circle" style="color: var(--azul-secundario);"></i> 
-                                <span>A notícia será publicada automaticamente na data e hora definidas</span>
-                            </small>
+                            <label for="data_agendamento">Data e Hora do Agendamento</label>
+                            <input type="datetime-local" id="data_agendamento" name="data_agendamento" value="<?= $_POST['data_agendamento'] ?? '' ?>">
                         </div>
-                    </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <div class="checkbox-item">
                                 <input type="checkbox" id="ativo" name="ativo" <?= isset($_POST['ativo']) || !$_POST ? 'checked' : '' ?>>
-                                <label for="ativo" style="margin-bottom: 0;">Publicar notícia (ativa)</label>
+                                <label for="ativo">
+                                    <span class="checkbox-label">Publicar notícia (ativa)</span>
+                                    <span class="checkbox-help">A notícia estará visível no site</span>
+                                </label>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="checkbox-group">
+                            <div class="checkbox-item">
                                 <input type="checkbox" id="destaque" name="destaque" <?= isset($_POST['destaque']) ? 'checked' : '' ?>>
-                                <label for="destaque" style="margin-bottom: 0;">Notícia em destaque</label>
+                                <label for="destaque">
+                                    <span class="checkbox-label">Notícia em destaque</span>
+                                    <span class="checkbox-help">Será exibida com mais destaque na home</span>
+                                </label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary" onclick="console.log('BOTÃO CLICADO!'); return true;">
-                            <i class="fas fa-save"></i> Criar Notícia
+                    <div class="form-actions-balanced">
+                        <button type="submit" class="btn-balanced">
+                            <i class="fas fa-check"></i> Criar Notícia
                         </button>
-                        <a href="noticias.php" class="btn btn-light">
+                        <a href="noticias.php" class="btn-balanced-cancel">
                             <i class="fas fa-times"></i> Cancelar
                         </a>
                     </div>
@@ -345,6 +583,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <script>
         console.log('Script carregado!');
+        
+        // Função para mostrar erro formatado
+        function showError(message) {
+            const modal = document.getElementById('errorModal');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.innerHTML = message;
+            modal.classList.add('active');
+        }
+        
+        function closeErrorModal() {
+            const modal = document.getElementById('errorModal');
+            modal.classList.remove('active');
+        }
+        
+        // Fechar modal ao clicar fora
+        document.getElementById('errorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeErrorModal();
+            }
+        });
         
         // Aguardar o DOM estar pronto
         document.addEventListener('DOMContentLoaded', function() {
@@ -361,21 +619,120 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Debug: verificar se o formulário está sendo submetido
             form.addEventListener('submit', function(e) {
                 console.log('=== FORM SUBMIT TRIGGERED ===');
-                console.log('Título:', document.getElementById('titulo').value);
-                console.log('Categoria:', document.getElementById('categoria').value);
-                console.log('Resumo:', document.getElementById('resumo').value);
                 
-                // Sincronizar TinyMCE
+                // Sincronizar TinyMCE antes de validar
                 if (typeof tinymce !== 'undefined' && tinymce.get('conteudo')) {
                     tinymce.get('conteudo').save();
-                    console.log('TinyMCE synced. Content length:', document.getElementById('conteudo').value.length);
-                } else {
-                    console.warn('TinyMCE não inicializado ainda');
                 }
+                
+                // Validações avançadas
+                const titulo = document.getElementById('titulo').value.trim();
+                const categoria = document.getElementById('categoria').value;
+                const resumo = document.getElementById('resumo').value.trim();
+                const conteudo = document.getElementById('conteudo').value.trim();
+                const tempoLeitura = parseInt(document.getElementById('tempo_leitura').value);
+                const status = document.getElementById('status').value;
+                const dataAgendamento = document.getElementById('data_agendamento').value;
+                
+                // Validar título
+                if (!titulo) {
+                    e.preventDefault();
+                    showError('<i class="fas fa-heading"></i> <strong>Título obrigatório</strong><br>Por favor, informe o título da notícia.');
+                    document.getElementById('titulo').focus();
+                    return false;
+                }
+                
+                if (titulo.length < 10) {
+                    e.preventDefault();
+                    showError(`<i class="fas fa-heading"></i> <strong>Título muito curto</strong><br>O título deve ter no mínimo 10 caracteres.<br><small style="color: #7f8c8d;">Você digitou ${titulo.length} caractere(s).</small>`);
+                    document.getElementById('titulo').focus();
+                    return false;
+                }
+                
+                if (titulo.length > 200) {
+                    e.preventDefault();
+                    showError(`<i class="fas fa-heading"></i> <strong>Título muito longo</strong><br>O título deve ter no máximo 200 caracteres.<br><small style="color: #7f8c8d;">Você digitou ${titulo.length} caracteres.</small>`);
+                    document.getElementById('titulo').focus();
+                    return false;
+                }
+                
+                // Validar categoria
+                if (!categoria) {
+                    e.preventDefault();
+                    showError('<i class="fas fa-folder"></i> <strong>Categoria obrigatória</strong><br>Por favor, selecione uma categoria para a notícia.');
+                    document.getElementById('categoria').focus();
+                    return false;
+                }
+                
+                // Validar resumo
+                if (!resumo) {
+                    e.preventDefault();
+                    showError('<i class="fas fa-align-left"></i> <strong>Resumo obrigatório</strong><br>Por favor, informe um resumo para a notícia.');
+                    document.getElementById('resumo').focus();
+                    return false;
+                }
+                
+                if (resumo.length > 500) {
+                    e.preventDefault();
+                    showError(`<i class="fas fa-align-left"></i> <strong>Resumo muito longo</strong><br>O resumo deve ter no máximo 500 caracteres.<br><small style="color: #7f8c8d;">Você digitou ${resumo.length} caracteres.</small>`);
+                    document.getElementById('resumo').focus();
+                    return false;
+                }
+                
+                // Validar conteúdo
+                if (!conteudo) {
+                    e.preventDefault();
+                    showError('<i class="fas fa-file-alt"></i> <strong>Conteúdo obrigatório</strong><br>Por favor, escreva o conteúdo da notícia.');
+                    if (typeof tinymce !== 'undefined' && tinymce.get('conteudo')) {
+                        tinymce.get('conteudo').focus();
+                    }
+                    return false;
+                }
+                
+                if (conteudo.length < 50) {
+                    e.preventDefault();
+                    showError(`<i class="fas fa-file-alt"></i> <strong>Conteúdo muito curto</strong><br>O conteúdo deve ter no mínimo 50 caracteres para ser publicado.<br><small style="color: #7f8c8d;">Você digitou ${conteudo.length} caractere(s).</small>`);
+                    if (typeof tinymce !== 'undefined' && tinymce.get('conteudo')) {
+                        tinymce.get('conteudo').focus();
+                    }
+                    return false;
+                }
+                
+                // Validar tempo de leitura
+                if (isNaN(tempoLeitura) || tempoLeitura < 1 || tempoLeitura > 60) {
+                    e.preventDefault();
+                    showError('<i class="fas fa-clock"></i> <strong>Tempo de leitura inválido</strong><br>O tempo de leitura deve estar entre 1 e 60 minutos.');
+                    document.getElementById('tempo_leitura').focus();
+                    return false;
+                }
+                
+                // Validar agendamento
+                if (status === 'agendado' && !dataAgendamento) {
+                    e.preventDefault();
+                    showError('<i class="fas fa-calendar-alt"></i> <strong>Data de agendamento obrigatória</strong><br>Para publicações agendadas, você deve informar a data e hora.');
+                    document.getElementById('data_agendamento').focus();
+                    return false;
+                }
+                
+                if (dataAgendamento) {
+                    const agendamento = new Date(dataAgendamento);
+                    const agora = new Date();
+                    if (agendamento <= agora) {
+                        e.preventDefault();
+                        showError('<i class="fas fa-calendar-times"></i> <strong>Data de agendamento inválida</strong><br>A data e hora do agendamento devem ser futuras.');
+                        document.getElementById('data_agendamento').focus();
+                        return false;
+                    }
+                }
+                
+                console.log('✅ Todas as validações passaram!');
+                console.log('Título:', titulo);
+                console.log('Categoria:', categoria);
+                console.log('Resumo length:', resumo.length);
+                console.log('Content length:', conteudo.length);
             });
         });
         
-        // TEMPORARIAMENTE DESABILITADO PARA DEBUG
         // Inicializar TinyMCE
         tinymce.init({
             selector: '#conteudo',
@@ -474,6 +831,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const statusSelect = document.getElementById('status');
         const agendamentoGroup = document.getElementById('agendamento-group');
         const dataAgendamento = document.getElementById('data_agendamento');
+        const dataPublicacao = document.getElementById('data_publicacao');
+        
+        // Definir mínimo para data de agendamento (agora)
+        const agora = new Date();
+        const agoraISO = agora.toISOString().slice(0, 16);
+        dataAgendamento.min = agoraISO;
+        
+        // Atualizar data de publicação quando data de agendamento mudar
+        dataAgendamento.addEventListener('change', function() {
+            if (this.value && statusSelect.value === 'agendado') {
+                const dataAgendamentoSelecionada = new Date(this.value);
+                const hoje = new Date();
+                
+                // Validar se a data é futura
+                if (dataAgendamentoSelecionada <= hoje) {
+                    showError('<i class="fas fa-calendar-times"></i> <strong>Data inválida</strong><br>A data de agendamento deve ser futura.');
+                    this.value = '';
+                    return;
+                }
+                
+                // Atualizar data de publicação com a data do agendamento
+                const dataFormatada = this.value.split('T')[0];
+                dataPublicacao.value = dataFormatada;
+                console.log('Data de publicação atualizada para:', dataFormatada);
+            }
+        });
+        
+        // Validar em tempo real durante digitação
+        dataAgendamento.addEventListener('input', function() {
+            if (this.value) {
+                const dataAgendamentoSelecionada = new Date(this.value);
+                const hoje = new Date();
+                
+                if (dataAgendamentoSelecionada <= hoje) {
+                    this.style.borderColor = '#e74c3c';
+                } else {
+                    this.style.borderColor = '';
+                }
+            }
+        });
         
         statusSelect.addEventListener('change', function() {
             if (this.value === 'agendado') {
@@ -482,6 +879,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 agendamentoGroup.style.display = 'none';
                 dataAgendamento.required = false;
+                dataAgendamento.value = '';
             }
         });
         

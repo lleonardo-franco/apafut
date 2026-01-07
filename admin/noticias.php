@@ -34,7 +34,7 @@ try {
         $sql .= " AND ativo = :status";
     }
     
-    $sql .= " ORDER BY data_publicacao DESC, id DESC";
+    $sql .= " ORDER BY id ASC";
     
     $stmt = $conn->prepare($sql);
     
@@ -85,13 +85,19 @@ try {
                     </div>
                 <?php endif; ?>
 
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-newspaper"></i> Notícias</h1>
-                        <p>Gerencie as notícias do site</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div>
+                            <h1>Notícias</h1>
+                            <p>Gerencie o conteúdo do site</p>
+                        </div>
                     </div>
-                    <a href="noticia-criar.php" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nova Notícia
+                    <a href="noticia-criar.php" class="btn-balanced">
+                        <i class="fas fa-plus"></i>
+                        <span>Nova Notícia</span>
                     </a>
                 </div>
 
@@ -130,59 +136,74 @@ try {
                 </div>
 
                 <!-- Listagem -->
-                <div class="table-card">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th width="60">ID</th>
-                                <th>Título</th>
-                                <th width="180">Categoria</th>
-                                <th width="120">Data</th>
-                                <th width="80">Status</th>
-                                <th width="150">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($noticias)): ?>
+                <div class="table-balanced">
+                    <div class="table-top">
+                        <h3><i class="fas fa-list"></i> Lista de Notícias</h3>
+                        <span class="badge-count"><?= count($noticias) ?> notícias</span>
+                    </div>
+                    <table class="table-styled">
+                            <thead>
                                 <tr>
-                                    <td colspan="6" class="text-center">Nenhuma notícia encontrada</td>
+                                    <th width="60">ID</th>
+                                    <th>Título</th>
+                                    <th width="140">Categoria</th>
+                                    <th width="110">Data</th>
+                                    <th width="100">Status</th>
+                                    <th width="140">Ações</th>
                                 </tr>
-                            <?php else: ?>
-                                <?php foreach ($noticias as $noticia): ?>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($noticias)): ?>
                                     <tr>
-                                        <td><?= $noticia['id'] ?></td>
-                                        <td>
-                                            <strong><?= htmlspecialchars($noticia['titulo']) ?></strong>
-                                            <?php if ($noticia['destaque']): ?>
-                                                <span class="badge badge-warning">Destaque</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?= htmlspecialchars($noticia['categoria']) ?></td>
-                                        <td><?= date('d/m/Y', strtotime($noticia['data_publicacao'])) ?></td>
-                                        <td>
-                                            <?php if ($noticia['ativo']): ?>
-                                                <span class="badge badge-success">Ativo</span>
-                                            <?php else: ?>
-                                                <span class="badge badge-danger">Inativo</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="../noticia.php?id=<?= $noticia['id'] ?>" class="btn-icon btn-secondary" title="Visualizar" target="_blank">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="noticia-editar.php?id=<?= $noticia['id'] ?>" class="btn-icon btn-primary" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="noticia-toggle.php?id=<?= $noticia['id'] ?>" class="btn-icon btn-toggle <?= $noticia['ativo'] ? 'active' : '' ?>" 
-                                                   title="<?= $noticia['ativo'] ? 'Desativar' : 'Ativar' ?>">
-                                                    <i class="fas fa-<?= $noticia['ativo'] ? 'toggle-on' : 'toggle-off' ?>"></i>
-                                                </a>
+                                        <td colspan="6" class="empty-cell">
+                                            <div class="empty-state">
+                                                <i class="fas fa-inbox"></i>
+                                                <p>Nenhuma notícia encontrada</p>
                                             </div>
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                <?php else: ?>
+                                    <?php foreach ($noticias as $noticia): ?>
+                                        <tr>
+                                            <td><span class="badge-id"><?= $noticia['id'] ?></span></td>
+                                            <td class="col-title">
+                                                <strong><?= htmlspecialchars($noticia['titulo']) ?></strong>
+                                                <?php if ($noticia['destaque']): ?>
+                                                    <span class="badge-star"><i class="fas fa-star"></i></span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td><span class="badge-cat"><?= htmlspecialchars($noticia['categoria']) ?></span></td>
+                                            <td class="col-date">
+                                                <i class="fas fa-calendar"></i>
+                                                <?= date('d/m/Y', strtotime($noticia['data_publicacao'])) ?>
+                                            </td>
+                                            <td>
+                                                <?php if ($noticia['ativo']): ?>
+                                                    <span class="badge-status active">
+                                                        <i class="fas fa-check-circle"></i> Ativo
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="badge-status inactive">
+                                                        <i class="fas fa-times-circle"></i> Inativo
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <div class="actions-flex">
+                                                    <a href="../noticia.php?id=<?= $noticia['id'] ?>" class="btn-action view" title="Visualizar" target="_blank">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="noticia-editar.php?id=<?= $noticia['id'] ?>" class="btn-action edit" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="noticia-toggle.php?id=<?= $noticia['id'] ?>" class="btn-action toggle <?= $noticia['ativo'] ? 'toggle-active' : 'toggle-inactive' ?>" title="<?= $noticia['ativo'] ? 'Desativar' : 'Ativar' ?>">
+                                                        <i class="fas fa-toggle-<?= $noticia['ativo'] ? 'on' : 'off' ?>"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
