@@ -69,6 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!move_uploaded_file($_FILES['imagem_mobile']['tmp_name'], $uploadDir . $fileName)) {
                 throw new Exception('Erro ao fazer upload da imagem mobile');
             }
+        } else {
+            throw new Exception('Imagem mobile é obrigatória');
         }
         
         // Inserir no banco
@@ -114,8 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/jogadores.css">
-    <link rel="stylesheet" href="assets/css/alerts.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -125,94 +126,243 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php include 'includes/topbar.php'; ?>
 
             <div class="content">
-                <?php if ($error): ?>
-                    <div class="alert alert-error">
-                        <i class="fas fa-exclamation-circle"></i> <?= $error ?>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Novo Banner</h1>
+                            <p>Adicione um novo banner ao carrossel da página inicial</p>
+                        </div>
                     </div>
-                <?php endif; ?>
-
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-plus-circle"></i> Novo Banner</h1>
-                        <p>Adicione um novo banner ao carrossel</p>
-                    </div>
-                    <a href="banners.php" class="btn btn-light">
+                    <a href="banners.php" class="btn-balanced-light">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
                 </div>
 
-                <div class="form-card">
-                    <form method="POST" enctype="multipart/form-data" class="form-grid">
-                        <div class="form-group col-span-2">
-                            <label for="titulo"><i class="fas fa-heading"></i> Título *</label>
-                            <input type="text" id="titulo" name="titulo" required maxlength="100" placeholder="Ex: Banner Principal">
-                            <small>Nome para identificação interna do banner</small>
-                        </div>
+                <form method="POST" enctype="multipart/form-data" class="form-balanced" id="bannerForm">
+                    <!-- Informações Básicas -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-info-circle"></i> Informações Básicas</h3>
+                        
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label for="titulo">Título do Banner</label>
+                                <input type="text" id="titulo" name="titulo" maxlength="100" 
+                                       placeholder="Ex: Banner Principal Temporada 2026">
+                            </div>
 
-                        <div class="form-group col-span-2">
-                            <label for="imagem"><i class="fas fa-desktop"></i> Imagem Desktop (1400x600px) *</label>
-                            <input type="file" id="imagem" name="imagem" accept="image/*" required onchange="previewImage(this, 'preview')">
-                            <small>Recomendado: 1400x600px (proporção 21:9). Para alta resolução: 1920x823px. Máximo 10MB</small>
-                            <div id="imagePreview" style="margin-top: 15px; display: none;">
-                                <img id="preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+                            <div class="form-group">
+                                <label for="ordem">Ordem de Exibição</label>
+                                <input type="number" id="ordem" name="ordem" value="1" min="1" max="99">
+                                <small>Define a sequência no carrossel (1 = primeiro)</small>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group col-span-2">
-                            <label for="imagem_mobile"><i class="fas fa-mobile-alt"></i> Imagem Mobile (1400x1200px)</label>
-                            <input type="file" id="imagem_mobile" name="imagem_mobile" accept="image/*" onchange="previewImage(this, 'previewMobile')">
-                            <small>Opcional. Recomendado: 1400x1200px (proporção 7:6). Se não enviar, usa a imagem desktop</small>
-                            <div id="imagePreviewMobile" style="margin-top: 15px; display: none;">
-                                <img id="previewMobile" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+                    <!-- Imagem Desktop -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-desktop"></i> Imagem Desktop</h3>
+                        
+                        <div class="form-group">
+                            <label>Selecionar Imagem</label>
+                            <div class="image-upload-box">
+                                <input type="file" id="imagem" name="imagem" accept="image/*" 
+                                       onchange="previewImage(this, 'preview', 'imagePreview')">
+                                <label for="imagem" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Clique para selecionar ou arraste a imagem</span>
+                                    <small>Recomendado: 1400x600px (21:9) · Alta resolução: 1920x823px · Máximo 10MB</small>
+                                </label>
+                            </div>
+                            <div id="imagePreview" class="image-preview-container" style="display: none;">
+                                <img id="preview" alt="Preview Desktop" />
+                                <button type="button" onclick="removePreview('imagem', 'imagePreview')" class="btn-remove-preview">
+                                    <i class="fas fa-times"></i> Remover
+                                </button>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Imagem Mobile -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-mobile-alt"></i> Imagem Mobile</h3>
+                        
                         <div class="form-group">
-                            <label for="ordem"><i class="fas fa-sort-numeric-down"></i> Ordem de Exibição *</label>
-                            <input type="number" id="ordem" name="ordem" value="1" min="1" max="99" required>
-                            <small>Define a sequência no carrossel (1 = primeiro)</small>
+                            <label>Selecionar Imagem</label>
+                            <div class="image-upload-box">
+                                <input type="file" id="imagem_mobile" name="imagem_mobile" accept="image/*" 
+                                       onchange="previewImage(this, 'previewMobile', 'imagePreviewMobile')">
+                                <label for="imagem_mobile" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Clique para selecionar ou arraste a imagem</span>
+                                    <small>Recomendado: 1400x1200px (7:6) · Máximo 10MB</small>
+                                </label>
+                            </div>
+                            <div id="imagePreviewMobile" class="image-preview-container" style="display: none;">
+                                <img id="previewMobile" alt="Preview Mobile" />
+                                <button type="button" onclick="removePreview('imagem_mobile', 'imagePreviewMobile')" class="btn-remove-preview">
+                                    <i class="fas fa-times"></i> Remover
+                                </button>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="ativo" checked>
-                                <span><i class="fas fa-eye"></i> Banner Ativo</span>
-                            </label>
-                            <small>Apenas banners ativos são exibidos no site</small>
+                    <!-- Configurações -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-cog"></i> Configurações</h3>
+                        
+                        <div class="checkbox-wrapper">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="ativo" checked>
+                                    <span class="checkbox-label-text">
+                                        <strong>Banner Ativo</strong>
+                                        <small>Apenas banners ativos são exibidos no carrossel do site</small>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-actions col-span-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Cadastrar Banner
-                            </button>
-                            <a href="banners.php" class="btn btn-light">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
-                        </div>
-                    </form>
-                </div>
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-balanced">
+                            <i class="fas fa-save"></i> Cadastrar Banner
+                        </button>
+                        <a href="banners.php" class="btn-balanced-cancel">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
 
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="error-modal">
+        <div class="error-content">
+            <div class="error-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Atenção</h3>
+            </div>
+            <div class="error-body">
+                <ul id="errorList"></ul>
+            </div>
+            <button onclick="closeErrorModal()" class="btn-balanced">
+                <i class="fas fa-check"></i> Entendi
+            </button>
+        </div>
+    </div>
+
     <script>
-        function previewImage(input, previewId) {
-            const previewContainer = previewId === 'preview' ? document.getElementById('imagePreview') : document.getElementById('imagePreviewMobile');
+        // Variáveis globais
+        const form = document.getElementById('bannerForm');
+        const errorModal = document.getElementById('errorModal');
+        const errorList = document.getElementById('errorList');
+
+        // Preview de imagem
+        function previewImage(input, previewId, containerId) {
+            const previewContainer = document.getElementById(containerId);
             const previewImg = document.getElementById(previewId);
             
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+                const file = input.files[0];
                 
+                // Validar tamanho
+                if (file.size > 10 * 1024 * 1024) {
+                    showError(['A imagem não pode ter mais de 10MB']);
+                    input.value = '';
+                    return;
+                }
+                
+                // Validar tipo
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    showError(['Formato inválido. Use JPG, PNG, GIF ou WEBP']);
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
                     previewContainer.style.display = 'block';
                 };
-                
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                previewContainer.style.display = 'none';
+                reader.readAsDataURL(file);
             }
         }
+
+        // Remover preview
+        function removePreview(inputId, containerId) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            
+            input.value = '';
+            container.style.display = 'none';
+        }
+
+        // Validação do formulário
+        form.addEventListener('submit', function(e) {
+            const errors = [];
+            
+            // Validar título
+            const titulo = document.getElementById('titulo').value.trim();
+            if (!titulo) {
+                errors.push('O título é obrigatório');
+            } else if (titulo.length < 3) {
+                errors.push('O título deve ter pelo menos 3 caracteres');
+            }
+            
+            // Validar ordem
+            const ordem = parseInt(document.getElementById('ordem').value);
+            if (!ordem || ordem < 1) {
+                errors.push('A ordem deve ser um número maior que zero');
+            }
+            
+            // Validar imagem desktop
+            const imagem = document.getElementById('imagem');
+            if (!imagem.files || imagem.files.length === 0) {
+                errors.push('A imagem desktop é obrigatória');
+            }
+            
+            // Validar imagem mobile
+            const imagemMobile = document.getElementById('imagem_mobile');
+            if (!imagemMobile.files || imagemMobile.files.length === 0) {
+                errors.push('A imagem mobile é obrigatória');
+            }
+            
+            // Se houver erros, exibir modal
+            if (errors.length > 0) {
+                e.preventDefault();
+                showError(errors);
+                return false;
+            }
+        });
+
+        // Exibir modal de erro
+        function showError(errors) {
+            errorList.innerHTML = '';
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            errorModal.classList.add('show');
+        }
+
+        // Fechar modal de erro
+        function closeErrorModal() {
+            errorModal.classList.remove('show');
+        }
+
+        // Fechar modal ao clicar fora
+        errorModal.addEventListener('click', function(e) {
+            if (e.target === errorModal) {
+                closeErrorModal();
+            }
+        });
     </script>
 </body>
 </html>

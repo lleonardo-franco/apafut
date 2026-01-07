@@ -34,7 +34,7 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/jogadores.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -44,31 +44,36 @@ try {
             <?php include 'includes/topbar.php'; ?>
 
             <div class="content">
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <div>
+                            <h1>Banners</h1>
+                            <p>Gerencie os banners do carrossel da página inicial</p>
+                        </div>
+                    </div>
+                    <a href="banner-criar.php" class="btn-balanced">
+                        <i class="fas fa-plus"></i> Novo Banner
+                    </a>
+                </div>
+
                 <?php if ($success): ?>
                     <div class="alert alert-success">
                         <i class="fas fa-check-circle"></i> <?= $success ?>
                     </div>
                 <?php endif; ?>
 
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-images"></i> Banners</h1>
-                        <p>Gerencie os banners do carrossel da página inicial</p>
-                    </div>
-                    <a href="banner-criar.php" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Novo Banner
-                    </a>
-                </div>
-
                 <div class="table-card">
-                    <table class="data-table">
+                    <table class="table-styled">
                         <thead>
                             <tr>
-                                <th>Imagem</th>
+                                <th style="width: 100px;">Imagem</th>
                                 <th>Título</th>
-                                <th>Ordem</th>
-                                <th>Status</th>
-                                <th>Ações</th>
+                                <th style="width: 100px; text-align: center;">Ordem</th>
+                                <th style="width: 120px; text-align: center;">Status</th>
+                                <th style="width: 140px; text-align: center;">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,36 +83,49 @@ try {
                                         <td>
                                             <img src="../<?= htmlspecialchars($banner['imagem']) ?>" 
                                                  alt="<?= htmlspecialchars($banner['titulo']) ?>" 
-                                                 style="width: 80px; height: 45px; object-fit: cover; border-radius: 4px;"
+                                                 class="table-image"
                                                  onerror="this.src='../assets/hero.png'">
                                         </td>
-                                        <td><?= htmlspecialchars($banner['titulo']) ?></td>
-                                        <td>
-                                            <span class="badge badge-info"><?= $banner['ordem'] ?></span>
-                                        </td>
-                                        <td>
-                                            <?php if ($banner['ativo']): ?>
-                                                <span class="badge badge-success">Ativo</span>
-                                            <?php else: ?>
-                                                <span class="badge badge-secondary">Inativo</span>
+                                        <td class="col-title">
+                                            <strong><?= htmlspecialchars($banner['titulo']) ?></strong>
+                                            <?php if (!empty($banner['descricao'])): ?>
+                                                <br><small style="color: #757575;"><?= htmlspecialchars(substr($banner['descricao'], 0, 50)) ?>...</small>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="actions">
-                                            <a href="banner-editar.php?id=<?= $banner['id'] ?>" class="btn btn-sm btn-info" title="Editar">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="banner-excluir.php?id=<?= $banner['id'] ?>" class="btn btn-sm btn-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este banner?')">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
+                                        <td style="text-align: center;">
+                                            <span class="badge-id"><?= $banner['ordem'] ?></span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <?php if ($banner['ativo']): ?>
+                                                <span class="badge-status active">
+                                                    <i class="fas fa-check-circle"></i> Ativo
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="badge-status inactive">
+                                                    <i class="fas fa-times-circle"></i> Inativo
+                                                </span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <div class="actions-flex">
+                                                <a href="banner-editar.php?id=<?= $banner['id'] ?>" class="btn-action edit" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="banner-excluir.php?id=<?= $banner['id'] ?>" class="btn-action toggle-inactive" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este banner?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="5" class="empty-state">
-                                        <i class="fas fa-images"></i>
-                                        <p>Nenhum banner cadastrado</p>
-                                        <a href="banner-criar.php" class="btn btn-primary">Cadastrar Primeiro Banner</a>
+                                    <td colspan="5" style="text-align: center; padding: 60px 20px;">
+                                        <i class="fas fa-images" style="font-size: 48px; color: #e0e0e0; margin-bottom: 16px;"></i>
+                                        <p style="color: #757575; font-size: 15px; margin-bottom: 20px;">Nenhum banner cadastrado</p>
+                                        <a href="banner-criar.php" class="btn-balanced">
+                                            <i class="fas fa-plus"></i> Cadastrar Primeiro Banner
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endif; ?>

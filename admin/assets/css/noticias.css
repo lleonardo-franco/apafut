@@ -166,6 +166,15 @@
     display: inline-block;
 }
 
+/* Imagem na tabela */
+.table-image {
+    width: 80px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+}
+
 .col-title {
     font-weight: 500;
 }
@@ -489,31 +498,57 @@
 /* Seção de checkboxes */
 .checkbox-wrapper {
     display: flex;
-    gap: 24px;
-    margin-top: 24px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
 }
 
 .checkbox-item {
-    flex: 1;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 18px 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+    background: #fff;
+    border-color: #dee2e6;
+}
+
+.checkbox-item label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    margin: 0;
 }
 
 .checkbox-item input[type="checkbox"] {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    margin-right: 0;
+    margin-top: 2px;
+    flex-shrink: 0;
 }
 
-.checkbox-item label {
+.checkbox-label-text {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    cursor: pointer;
-    margin-left: 30px;
-    margin-top: -22px;
+}
+
+.checkbox-label-text strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.checkbox-label-text small {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 .checkbox-label {
@@ -551,15 +586,110 @@
     background: #fafafa;
     border: 2px dashed #e0e0e0;
     border-radius: 10px;
-    padding: 24px;
+    padding: 0;
     text-align: center;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .image-upload-box:hover {
     border-color: var(--vermelho-primario);
     background: #fff;
 }
+
+.image-upload-box input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.image-upload-box .upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    cursor: pointer;
+    min-height: 160px;
+    gap: 0;
+}
+
+.image-upload-box .upload-label i {
+    font-size: 52px;
+    color: #bdbdbd;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.image-upload-box:hover .upload-label i {
+    color: var(--vermelho-primario);
+    transform: scale(1.1);
+}
+
+.image-upload-box .upload-label > span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #424242;
+    margin-bottom: 8px;
+    display: block;
+    text-align: center;
+}
+
+.image-upload-box .upload-label small {
+    font-size: 12px;
+    color: #757575;
+    line-height: 1.5;
+    max-width: 100%;
+    margin-top: 0;
+    display: block;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* Container de Preview */
+.image-preview-container {
+    margin-top: 20px;
+    position: relative;
+}
+
+.image-preview-container img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+}
+
+.btn-remove-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 10px 20px;
+    background: white;
+    color: #d32f2f;
+    border: 2px solid #d32f2f;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-remove-preview:hover {
+    background: #d32f2f;
+    color: white;
+    transform: translateY(-1px);
+}
+
 
 /* Imagem atual no editar */
 .current-image-preview {
