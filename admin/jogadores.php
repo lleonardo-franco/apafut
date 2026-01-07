@@ -60,6 +60,7 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
     <link rel="stylesheet" href="assets/css/jogadores.css">
 </head>
 <body>
@@ -76,12 +77,17 @@ try {
                     </div>
                 <?php endif; ?>
 
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-users"></i> Jogadores</h1>
-                        <p>Gerencie o elenco do time</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Jogadores</h1>
+                            <p>Gerencie o elenco do time</p>
+                        </div>
                     </div>
-                    <a href="jogador-criar.php" class="btn btn-primary">
+                    <a href="jogador-criar.php" class="btn-balanced">
                         <i class="fas fa-plus"></i> Novo Jogador
                     </a>
                 </div>
