@@ -150,8 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/jogadores.css">
-    <link rel="stylesheet" href="assets/css/alerts.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -173,54 +172,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
                     </div>
                 <?php endif; ?>
 
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-user-edit"></i> Editar Jogador</h1>
-                        <p>Atualize as informações do jogador</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Editar Jogador</h1>
+                            <p>Atualize as informações do jogador</p>
+                        </div>
                     </div>
-                    <a href="jogadores.php" class="btn btn-light">
+                    <a href="jogadores.php" class="btn-balanced-light">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
                 </div>
 
                 <?php if (!empty($jogador['foto'])): ?>
-                    <div class="form-card" style="margin-bottom: 24px;">
-                        <h3 style="margin-bottom: 16px;">Foto Atual</h3>
-                        <div class="foto-preview">
-                            <img src="../<?= htmlspecialchars($jogador['foto']) ?>" alt="Foto atual" onerror="this.style.display='none'">
+                    <div class="form-section" style="margin-bottom: 24px;">
+                        <h3><i class="fas fa-image"></i> Foto Atual</h3>
+                        <div class="image-preview-container" style="display: block;">
+                            <img src="../<?= htmlspecialchars($jogador['foto']) ?>" alt="Foto atual" onerror="this.style.display='none'" style="max-width: 100%; max-height: 300px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
                         </div>
                     </div>
                 <?php endif; ?>
 
-                <div class="form-card">
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="form-row">
+                <form method="POST" enctype="multipart/form-data" class="form-balanced" id="jogadorForm">
+                    <!-- Informações Básicas -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-id-card"></i> Informações Básicas</h3>
+                        
+                        <div class="form-grid-2">
                             <div class="form-group">
-                                <label for="nome">Nome *</label>
-                                <input type="text" id="nome" name="nome" required value="<?= htmlspecialchars($jogador['nome']) ?>">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" value="<?= htmlspecialchars($jogador['nome']) ?>">
                                 <small>Nome curto para exibição no card</small>
                             </div>
                             <div class="form-group">
                                 <label for="nome_completo">Nome Completo</label>
-                                <input type="text" id="nome_completo" name="nome_completo" value="<?= htmlspecialchars($jogador['nome_completo'] ?? '') ?>">
+                                <input type="text" id="nome_completo" name="nome_completo" placeholder="Nome completo do jogador" value="<?= htmlspecialchars($jogador['nome_completo'] ?? '') ?>">
                             </div>
                         </div>
                         
-                        <div class="form-row">
+                        <div class="form-grid-3">
                             <div class="form-group">
-                                <label for="cidade">Cidade</label>
-                                <input type="text" id="cidade" name="cidade" placeholder="Ex: Caxias do Sul (RS)" value="<?= htmlspecialchars($jogador['cidade'] ?? '') ?>">
+                                <label for="numero">Número da Camisa</label>
+                                <input type="number" id="numero" name="numero" min="1" max="99" placeholder="1-99" value="<?= htmlspecialchars($jogador['numero']) ?>">
                             </div>
                             <div class="form-group">
-                                <label for="numero">Número da Camisa *</label>
-                                <input type="number" id="numero" name="numero" min="1" max="99" required value="<?= htmlspecialchars($jogador['numero']) ?>">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="posicao">Posição *</label>
-                                <select id="posicao" name="posicao" required>
+                                <label for="posicao">Posição</label>
+                                <select id="posicao" name="posicao">
                                     <option value="">Selecione...</option>
                                     <option value="Goleiro" <?= $jogador['posicao'] === 'Goleiro' ? 'selected' : '' ?>>Goleiro</option>
                                     <option value="Zagueiro" <?= $jogador['posicao'] === 'Zagueiro' ? 'selected' : '' ?>>Zagueiro</option>
@@ -231,77 +231,198 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="data_nascimento">Data de Nascimento</label>
-                                <input type="text" id="data_nascimento" name="data_nascimento" placeholder="Ex: 15/03/2000" value="<?= htmlspecialchars($jogador['data_nascimento'] ?? '') ?>">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" id="cidade" name="cidade" placeholder="Ex: Caxias do Sul (RS)" value="<?= htmlspecialchars($jogador['cidade'] ?? '') ?>">
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Dados Físicos -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-heartbeat"></i> Dados Físicos</h3>
                         
-                        <div class="form-row">
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="data_nascimento">Data de Nascimento</label>
+                                <input type="text" id="data_nascimento" name="data_nascimento" placeholder="15/03/2000" value="<?= htmlspecialchars($jogador['data_nascimento'] ?? '') ?>">
+                            </div>
                             <div class="form-group">
                                 <label for="altura">Altura</label>
-                                <input type="text" id="altura" name="altura" placeholder="Ex: 1.85m" value="<?= htmlspecialchars($jogador['altura'] ?? '') ?>">
+                                <input type="text" id="altura" name="altura" placeholder="1.85m" value="<?= htmlspecialchars($jogador['altura'] ?? '') ?>">
                             </div>
                             <div class="form-group">
                                 <label for="peso">Peso</label>
-                                <input type="text" id="peso" name="peso" placeholder="Ex: 78kg" value="<?= htmlspecialchars($jogador['peso'] ?? '') ?>">
+                                <input type="text" id="peso" name="peso" placeholder="78kg" value="<?= htmlspecialchars($jogador['peso'] ?? '') ?>">
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Nova Foto -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-camera"></i> Atualizar Foto</h3>
                         
-                        <div class="form-row">
+                        <div class="form-group">
+                            <label>Selecionar Nova Foto</label>
+                            <div class="image-upload-box">
+                                <input type="file" id="foto" name="foto" accept="image/*" onchange="previewImage(this, 'fotoPreview', 'fotoPreviewContainer')">
+                                <label for="foto" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Clique para selecionar ou arraste a foto</span>
+                                    <small>Deixe em branco para manter a foto atual · Formatos: JPG, PNG, GIF, WEBP · Máximo 5MB</small>
+                                </label>
+                            </div>
+                            <div id="fotoPreviewContainer" class="image-preview-container" style="display: none;">
+                                <img id="fotoPreview" alt="Preview" />
+                                <button type="button" onclick="removePreview('foto', 'fotoPreviewContainer')" class="btn-remove-preview">
+                                    <i class="fas fa-times"></i> Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurações -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-cog"></i> Configurações</h3>
+                        
+                        <div class="form-grid-2">
                             <div class="form-group">
                                 <label for="ordem">Ordem de Exibição</label>
                                 <input type="number" id="ordem" name="ordem" min="0" value="<?= htmlspecialchars($jogador['ordem']) ?>">
                                 <small>Jogadores com menor ordem aparecem primeiro</small>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="foto">Nova Foto do Jogador</label>
-                            <input type="file" id="foto" name="foto" accept="image/*" onchange="previewFoto(this)">
-                            <small>Deixe em branco para manter a foto atual. Formatos aceitos: JPG, PNG, GIF, WEBP. Tamanho máximo: 5MB</small>
-                            <div id="foto-preview" class="foto-preview" style="display: none;">
-                                <img src="" alt="Preview">
+                        
+                        <div class="checkbox-wrapper">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="ativo" <?= $jogador['ativo'] ? 'checked' : '' ?>>
+                                    <span class="checkbox-label-text">
+                                        <strong>Jogador Ativo</strong>
+                                        <small>Apenas jogadores ativos são exibidos no site</small>
+                                    </span>
+                                </label>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="ativo" name="ativo" <?= $jogador['ativo'] ? 'checked' : '' ?>>
-                                <label for="ativo" style="margin: 0;">Jogador ativo no elenco</label>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Salvar Alterações
-                            </button>
-                            <a href="jogadores.php" class="btn btn-light">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
-                        </div>
-                    </form>
-                </div>
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-balanced">
+                            <i class="fas fa-save"></i> Salvar Alterações
+                        </button>
+                        <a href="jogadores.php" class="btn-balanced-cancel">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
 
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="error-modal">
+        <div class="error-content">
+            <div class="error-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Atenção</h3>
+            </div>
+            <div class="error-body">
+                <ul id="errorList"></ul>
+            </div>
+            <button onclick="closeErrorModal()" class="btn-balanced">
+                <i class="fas fa-check"></i> Entendi
+            </button>
+        </div>
+    </div>
+
+    <script src="assets/js/masks.js"></script>
     <script>
-        function previewFoto(input) {
-            const preview = document.getElementById('foto-preview');
-            const img = preview.querySelector('img');
+        const form = document.getElementById('jogadorForm');
+        const errorModal = document.getElementById('errorModal');
+        const errorList = document.getElementById('errorList');
+
+        function previewImage(input, previewId, containerId) {
+            const previewContainer = document.getElementById(containerId);
+            const previewImg = document.getElementById(previewId);
             
             if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    showError(['A foto não pode ter mais de 5MB']);
+                    input.value = '';
+                    return;
+                }
+                
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    showError(['Formato inválido. Use JPG, PNG, GIF ou WEBP']);
+                    input.value = '';
+                    return;
+                }
+                
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    img.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                preview.style.display = 'none';
+                    previewImg.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             }
         }
+
+        function removePreview(inputId, containerId) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            input.value = '';
+            container.style.display = 'none';
+        }
+
+        form.addEventListener('submit', function(e) {
+            const errors = [];
+            
+            const nome = document.getElementById('nome').value.trim();
+            if (!nome) {
+                errors.push('O nome é obrigatório');
+            } else if (nome.length < 3) {
+                errors.push('O nome deve ter pelo menos 3 caracteres');
+            }
+            
+            const numero = parseInt(document.getElementById('numero').value);
+            if (!numero || numero < 1 || numero > 99) {
+                errors.push('O número da camisa deve estar entre 1 e 99');
+            }
+            
+            const posicao = document.getElementById('posicao').value;
+            if (!posicao) {
+                errors.push('A posição é obrigatória');
+            }
+            
+            if (errors.length > 0) {
+                e.preventDefault();
+                showError(errors);
+                return false;
+            }
+        });
+
+        function showError(errors) {
+            errorList.innerHTML = '';
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            errorModal.classList.add('show');
+        }
+
+        function closeErrorModal() {
+            errorModal.classList.remove('show');
+        }
+
+        errorModal.addEventListener('click', function(e) {
+            if (e.target === errorModal) {
+                closeErrorModal();
+            }
+        });
     </script>
-    <script src="assets/js/masks.js"></script>
 </body>
 </html>

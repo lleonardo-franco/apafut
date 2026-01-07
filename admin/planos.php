@@ -65,12 +65,10 @@ $planos = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planos - Painel Administrativo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/noticias.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         .plano-card {
             background: white;
@@ -234,14 +232,18 @@ $planos = $stmt->fetchAll();
                     </div>
                 <?php endif; ?>
 
-                <div class="page-header">
-                    <div>
-                        <h1>Planos</h1>
-                        <p>Gerencie os planos de sócio da Apafut</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Planos</h1>
+                            <p>Gerencie os planos de sócio da Apafut</p>
+                        </div>
                     </div>
-                    <a href="plano-criar.php" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Novo Plano
+                    <a href="plano-criar.php" class="btn-balanced">
+                        <i class="fas fa-plus"></i> Novo Plano
                     </a>
                 </div>
 
@@ -346,11 +348,11 @@ $planos = $stmt->fetchAll();
                                     </div>
                                     
                                     <div class="plano-actions">
-                                        <a href="plano-editar.php?id=<?= $plano['id'] ?>" class="btn-icon" title="Editar">
+                                        <a href="plano-editar.php?id=<?= $plano['id'] ?>" class="btn-balanced-light btn-sm">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button onclick="confirmarExclusao(<?= $plano['id'] ?>, '<?= htmlspecialchars($plano['nome']) ?>')" 
-                                                class="btn-icon btn-danger" title="Excluir">
+                                                class="btn-balanced-light btn-sm btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>

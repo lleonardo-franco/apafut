@@ -49,10 +49,6 @@
         </a>
         
         <div class="menu-section-title">Sistema</div>
-        <a href="analytics.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'analytics.php' ? 'active' : '' ?>">
-            <i class="fas fa-chart-line"></i>
-            <span>Analytics</span>
-        </a>
         <a href="configuracoes.php" class="menu-item <?= basename($_SERVER['PHP_SELF']) === 'configuracoes.php' ? 'active' : '' ?>">
             <i class="fas fa-cog"></i>
             <span>Configurações</span>

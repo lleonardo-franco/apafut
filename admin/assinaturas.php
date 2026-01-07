@@ -85,12 +85,10 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Assinaturas - Painel Administrativo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/noticias.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         .stats-grid {
             display: grid;
@@ -226,10 +224,15 @@ try {
             <?php include 'includes/topbar.php'; ?>
 
             <div class="content">
-                <div class="page-header">
-                    <div>
-                        <h1>Gestão de Assinaturas</h1>
-                        <p>Acompanhe e gerencie todas as assinaturas de sócios</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Gestão de Assinaturas</h1>
+                            <p>Acompanhe e gerencie todas as assinaturas de sócios</p>
+                        </div>
                     </div>
                 </div>
 

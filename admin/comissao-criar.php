@@ -100,8 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/jogadores.css">
-    <link rel="stylesheet" href="assets/css/alerts.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -111,38 +110,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php include 'includes/topbar.php'; ?>
 
             <div class="content">
-                <?php if ($error): ?>
-                    <div class="alert alert-error">
-                        <i class="fas fa-exclamation-circle"></i> <?= $error ?>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Novo Membro da Comissão</h1>
+                            <p>Adicione um novo membro à comissão técnica</p>
+                        </div>
                     </div>
-                <?php endif; ?>
-
-                <?php if ($success): ?>
-                    <div class="alert alert-success">
-                        <i class="fas fa-check-circle"></i> <?= $success ?>
-                    </div>
-                <?php endif; ?>
-
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-user-plus"></i> Novo Membro da Comissão</h1>
-                        <p>Adicione um novo membro à comissão técnica</p>
-                    </div>
-                    <a href="comissao.php" class="btn btn-light">
+                    <a href="comissao.php" class="btn-balanced-light">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
                 </div>
 
-                <div class="form-card">
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="form-row">
+                <form method="POST" enctype="multipart/form-data" class="form-balanced" id="comissaoForm">
+                    <!-- Informações Básicas -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-id-card"></i> Informações Básicas</h3>
+                        
+                        <div class="form-grid-2">
                             <div class="form-group">
-                                <label for="nome">Nome *</label>
-                                <input type="text" id="nome" name="nome" required value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" name="nome" placeholder="Ex: Carlos Silva" value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>">
                             </div>
                             <div class="form-group">
-                                <label for="cargo">Cargo *</label>
-                                <select id="cargo" name="cargo" required>
+                                <label for="cargo">Cargo</label>
+                                <select id="cargo" name="cargo">
                                     <option value="">Selecione...</option>
                                     <option value="Técnico Principal" <?= ($_POST['cargo'] ?? '') === 'Técnico Principal' ? 'selected' : '' ?>>Técnico Principal</option>
                                     <option value="Auxiliar Técnico" <?= ($_POST['cargo'] ?? '') === 'Auxiliar Técnico' ? 'selected' : '' ?>>Auxiliar Técnico</option>
@@ -156,64 +151,186 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </select>
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="descricao">Descrição</label>
                             <textarea id="descricao" name="descricao" rows="4" placeholder="Breve descrição sobre o profissional..."><?= htmlspecialchars($_POST['descricao'] ?? '') ?></textarea>
                         </div>
+                    </div>
 
+                    <!-- Foto -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-camera"></i> Foto do Membro</h3>
+                        
                         <div class="form-group">
-                            <label for="ordem">Ordem de Exibição</label>
-                            <input type="number" id="ordem" name="ordem" min="0" value="<?= htmlspecialchars($_POST['ordem'] ?? '0') ?>">
-                            <small>Membros com menor ordem aparecem primeiro</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="foto">Foto do Membro</label>
-                            <input type="file" id="foto" name="foto" accept="image/*" onchange="previewFoto(this)">
-                            <small>Formatos aceitos: JPG, PNG, GIF, WEBP. Tamanho máximo: 5MB</small>
-                            <div id="foto-preview" class="foto-preview" style="display: none;">
-                                <img src="" alt="Preview">
+                            <label>Selecionar Foto</label>
+                            <div class="image-upload-box">
+                                <input type="file" id="foto" name="foto" accept="image/*" onchange="previewImage(this, 'fotoPreview', 'fotoPreviewContainer')">
+                                <label for="foto" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Clique para selecionar ou arraste a foto</span>
+                                    <small>Formatos aceitos: JPG, PNG, GIF, WEBP · Máximo 5MB</small>
+                                </label>
+                            </div>
+                            <div id="fotoPreviewContainer" class="image-preview-container" style="display: none;">
+                                <img id="fotoPreview" alt="Preview" />
+                                <button type="button" onclick="removePreview('foto', 'fotoPreviewContainer')" class="btn-remove-preview">
+                                    <i class="fas fa-times"></i> Remover
+                                </button>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="ativo" name="ativo" checked>
-                                <label for="ativo" style="margin: 0;">Membro ativo na comissão</label>
+                    <!-- Configurações -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-cog"></i> Configurações</h3>
+                        
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label for="ordem">Ordem de Exibição</label>
+                                <input type="number" id="ordem" name="ordem" min="0" value="<?= htmlspecialchars($_POST['ordem'] ?? '0') ?>">
+                                <small>Membros com menor ordem aparecem primeiro</small>
                             </div>
                         </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Salvar Membro
-                            </button>
-                            <a href="comissao.php" class="btn btn-light">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
+                        
+                        <div class="checkbox-wrapper">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="ativo" checked>
+                                    <span class="checkbox-label-text">
+                                        <strong>Membro Ativo</strong>
+                                        <small>Apenas membros ativos são exibidos no site</small>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-balanced">
+                            <i class="fas fa-save"></i> Cadastrar Membro
+                        </button>
+                        <a href="comissao.php" class="btn-balanced-cancel">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
 
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="error-modal">
+        <div class="error-content">
+            <div class="error-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Atenção</h3>
+            </div>
+            <div class="error-body">
+                <ul id="errorList"></ul>
+            </div>
+            <button onclick="closeErrorModal()" class="btn-balanced">
+                <i class="fas fa-check"></i> Entendi
+            </button>
+        </div>
+    </div>
+
     <script>
-        function previewFoto(input) {
-            const preview = document.getElementById('foto-preview');
-            const img = preview.querySelector('img');
+        // Variáveis globais
+        const form = document.getElementById('comissaoForm');
+        const errorModal = document.getElementById('errorModal');
+        const errorList = document.getElementById('errorList');
+
+        // Preview de imagem
+        function previewImage(input, previewId, containerId) {
+            const previewContainer = document.getElementById(containerId);
+            const previewImg = document.getElementById(previewId);
             
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+                const file = input.files[0];
                 
-                reader.onload = function(e) {
-                    img.src = e.target.result;
-                    preview.style.display = 'block';
+                // Validar tamanho
+                if (file.size > 5 * 1024 * 1024) {
+                    showError(['A foto não pode ter mais de 5MB']);
+                    input.value = '';
+                    return;
                 }
                 
-                reader.readAsDataURL(input.files[0]);
+                // Validar tipo
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    showError(['Formato inválido. Use JPG, PNG, GIF ou WEBP']);
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             }
         }
+
+        // Remover preview
+        function removePreview(inputId, containerId) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            
+            input.value = '';
+            container.style.display = 'none';
+        }
+
+        // Validação do formulário
+        form.addEventListener('submit', function(e) {
+            const errors = [];
+            
+            // Validar nome
+            const nome = document.getElementById('nome').value.trim();
+            if (!nome) {
+                errors.push('O nome é obrigatório');
+            } else if (nome.length < 3) {
+                errors.push('O nome deve ter pelo menos 3 caracteres');
+            }
+            
+            // Validar cargo
+            const cargo = document.getElementById('cargo').value;
+            if (!cargo) {
+                errors.push('O cargo é obrigatório');
+            }
+            
+            // Se houver erros, exibir modal
+            if (errors.length > 0) {
+                e.preventDefault();
+                showError(errors);
+                return false;
+            }
+        });
+
+        // Exibir modal de erro
+        function showError(errors) {
+            errorList.innerHTML = '';
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            errorModal.classList.add('show');
+        }
+
+        // Fechar modal de erro
+        function closeErrorModal() {
+            errorModal.classList.remove('show');
+        }
+
+        // Fechar modal ao clicar fora
+        errorModal.addEventListener('click', function(e) {
+            if (e.target === errorModal) {
+                closeErrorModal();
+            }
+        });
     </script>
 </body>
 </html>

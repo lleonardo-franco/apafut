@@ -47,11 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'A URL do vídeo é obrigatória quando o tipo é "YouTube/Vimeo".';
     } elseif ($tipo_depoimento === 'texto' && empty($depoimentoTexto)) {
         $erro = 'O texto do depoimento é obrigatório quando o tipo é "Apenas Texto".';
+    } elseif ($tipo_depoimento === 'video_com_texto' && empty($depoimentoTexto)) {
+        $erro = 'O texto é obrigatório quando o tipo é "Vídeo com Texto".';
     } else {
         $videoPath = $depoimento['video']; // Manter vídeo atual por padrão
         
-        // Se um novo vídeo foi enviado (tipo video_local)
-        if ($tipo_depoimento === 'video_local' && isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
+        // Se um novo vídeo foi enviado (tipo video_local ou video_com_texto)
+        if (($tipo_depoimento === 'video_local' || $tipo_depoimento === 'video_com_texto') && isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
             $video = $_FILES['video'];
             $videoExtension = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
             
@@ -76,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        // Se mudou para tipo diferente de video_local, limpar video path
-        if ($tipo_depoimento !== 'video_local') {
+        // Se mudou para tipo diferente de video_local e video_com_texto, limpar video path
+        if ($tipo_depoimento !== 'video_local' && $tipo_depoimento !== 'video_com_texto') {
             $videoPath = null;
         }
         
@@ -115,27 +117,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Depoimento - Painel Admin</title>
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/depoimentos.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include 'includes/sidebar.php'; ?>
-    <?php include 'includes/topbar.php'; ?>
-    
-    <main class="main-content">
-        <div class="container">
-            <!-- Header -->
-            <div class="page-header">
-                <div>
-                    <h1><i class="fas fa-edit"></i> Editar Depoimento</h1>
-                    <p>Altere as informações do depoimento</p>
-                </div>
-            </div>
+    <div class="admin-wrapper">
+        <?php include 'includes/sidebar.php'; ?>
+        
+        <main class="main-content">
+            <?php include 'includes/topbar.php'; ?>
             
-            <!-- Preview do Conteúdo Atual -->
-            <div class="video-preview-card">
-                <h3>Conteúdo Atual</h3>
+            <div class="content">
+                <?php if ($erro): ?>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <?= htmlspecialchars($erro) ?>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Editar Depoimento</h1>
+                            <p>Altere as informações do depoimento</p>
+                        </div>
+                    </div>
+                    <a href="depoimentos.php" class="btn-balanced-light">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </a>
+                </div>
+                
+                <!-- Preview do Conteúdo Atual -->
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <div class="form-section">
+                        <h3 class="section-title">Conteúdo Atual</h3>
+                        <p class="section-description">Visualização do depoimento antes da edição</p>
                 <?php 
                 $tipoAtual = $depoimento['tipo_depoimento'] ?? 'video_local';
                 if ($tipoAtual === 'video_local' && !empty($depoimento['video'])): 
@@ -166,57 +186,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php elseif ($tipoAtual === 'texto' && !empty($depoimento['depoimento'])): ?>
                     <div class="text-preview" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #DAA520;">
-                        <p style="font-style: italic; color: #333;"><?= nl2br(htmlspecialchars($depoimento['depoimento'])) ?></p>
+                        <div style="color: #333;"><?= $depoimento['depoimento'] ?></div>
                     </div>
+                <?php elseif ($tipoAtual === 'video_com_texto'): ?>
+                    <?php if (!empty($depoimento['video'])): ?>
+                        <div class="video-preview" style="margin-bottom: 20px;">
+                            <video controls style="width: 100%; max-width: 560px; height: auto; border-radius: 8px;">
+                                <source src="<?= htmlspecialchars($depoimento['video']) ?>" type="video/mp4">
+                                Seu navegador não suporta a tag de vídeo.
+                            </video>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($depoimento['depoimento'])): ?>
+                        <div class="text-preview" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #DAA520;">
+                            <div style="color: #333;"><?= $depoimento['depoimento'] ?></div>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
-            </div>
-            
-            <!-- Form -->
-            <div class="card">
-                <?php if ($erro): ?>
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <?= htmlspecialchars($erro) ?>
                     </div>
-                <?php endif; ?>
+                </div>
                 
-                <form method="POST" enctype="multipart/form-data" class="form">
-                    <div class="form-group">
-                        <label for="nome">Nome <span class="required">*</span></label>
-                        <input 
-                            type="text" 
-                            id="nome" 
-                            name="nome" 
-                            required 
-                            maxlength="100"
-                            placeholder="Ex: João Silva"
-                            value="<?= htmlspecialchars($_POST['nome'] ?? $depoimento['nome'] ?? '') ?>"
-                        >
-                        <small>Nome completo da pessoa que está dando o depoimento</small>
-                    </div>
+                <!-- Formulário de Edição -->
+                <div class="form-card">
+                    <form method="POST" enctype="multipart/form-data" class="form-balanced" id="depoimentoForm">
+                        <!-- Seção: Informações Básicas -->
+                        <div class="form-section">
+                            <h3 class="section-title">Informações Básicas</h3>
+                            
+                            <div class="form-group">
+                                <label for="nome">Nome *</label>
+                                <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" value="<?= htmlspecialchars($_POST['nome'] ?? $depoimento['nome'] ?? '') ?>">
+                            </div>
                     
                     <!-- Tipo de Depoimento -->
                     <div class="form-group">
-                        <label for="tipo_depoimento">Tipo de Depoimento <span class="required">*</span></label>
-                        <select id="tipo_depoimento" name="tipo_depoimento" required onchange="toggleDepoimentoFields()">
+                        <label for="tipo_depoimento">Tipo de Depoimento *</label>
+                        <select id="tipo_depoimento" name="tipo_depoimento" onchange="toggleDepoimentoFields()">
                             <?php $tipoSelecionado = $_POST['tipo_depoimento'] ?? $depoimento['tipo_depoimento'] ?? 'video_local'; ?>
                             <option value="video_local" <?= $tipoSelecionado === 'video_local' ? 'selected' : '' ?>>Vídeo Local (MP4)</option>
                             <option value="video_url" <?= $tipoSelecionado === 'video_url' ? 'selected' : '' ?>>YouTube ou Vimeo (URL)</option>
                             <option value="texto" <?= $tipoSelecionado === 'texto' ? 'selected' : '' ?>>Apenas Texto</option>
+                            <option value="video_com_texto" <?= $tipoSelecionado === 'video_com_texto' ? 'selected' : '' ?>>Vídeo com Texto</option>
                         </select>
-                        <small>Escolha o tipo de depoimento</small>
                     </div>
+                        </div>
                     
+                        <!-- Seção: Conteúdo do Depoimento -->
+                        <div class="form-section">
+                            <h3 class="section-title">Conteúdo do Depoimento</h3>
+                            <p class="section-description">Atualize o formato do conteúdo (deixe em branco para manter o atual)</p>
+                            
                     <!-- Campo Vídeo Local -->
                     <div class="form-group" id="field-video-local">
                         <label for="video">Novo Vídeo (MP4)</label>
-                        <input 
-                            type="file" 
-                            id="video" 
-                            name="video" 
-                            accept="video/mp4"
-                        >
-                        <small>Deixe em branco para manter o vídeo atual. Máximo: <?= ini_get('upload_max_filesize') ?></small>
+                        <div class="image-upload-box">
+                            <input type="file" id="video" name="video" accept="video/mp4">
+                            <label for="video" class="upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Clique para selecionar o vídeo</span>
+                                <small>Arquivo MP4 (máx: <?= ini_get('upload_max_filesize') ?>)</small>
+                            </label>
+                        </div>
                         <div id="videoPreview" style="display: none; margin-top: 12px;">
                             <video id="previewVideo" controls style="max-width: 100%; height: auto; border-radius: 8px;"></video>
                         </div>
@@ -224,15 +254,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Campo URL YouTube/Vimeo -->
                     <div class="form-group" id="field-video-url" style="display: none;">
-                        <label for="video_url">URL do Vídeo (YouTube ou Vimeo)</label>
-                        <input 
-                            type="url" 
-                            id="video_url" 
-                            name="video_url" 
-                            placeholder="Ex: https://www.youtube.com/watch?v=..."
-                            value="<?= htmlspecialchars($_POST['video_url'] ?? $depoimento['video_url'] ?? '') ?>"
-                        >
-                        <small>Cole a URL completa do vídeo do YouTube ou Vimeo</small>
+                        <label for="video_url">URL do Vídeo (YouTube ou Vimeo) *</label>
+                        <input type="url" id="video_url" name="video_url" placeholder="Ex: https://www.youtube.com/watch?v=..." value="<?= htmlspecialchars($_POST['video_url'] ?? $depoimento['video_url'] ?? '') ?>">
                         <div id="urlPreview" style="display: none; margin-top: 12px;">
                             <iframe id="previewIframe" width="100%" height="315" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
                         </div>
@@ -240,51 +263,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Campo Texto do Depoimento -->
                     <div class="form-group" id="field-depoimento-texto" style="display: none;">
-                        <label for="depoimento">Texto do Depoimento</label>
-                        <textarea 
-                            id="depoimento" 
-                            name="depoimento" 
-                            rows="5"
-                            placeholder="Digite aqui o depoimento completo..."
-                        ><?= htmlspecialchars($_POST['depoimento'] ?? $depoimento['depoimento'] ?? '') ?></textarea>
-                        <small>Texto completo do depoimento (será exibido com aspas)</small>
+                        <label for="depoimento">Conteúdo *</label>
+                        <textarea id="depoimento" name="depoimento" rows="10"><?= htmlspecialchars($_POST['depoimento'] ?? $depoimento['depoimento'] ?? '') ?></textarea>
+                        <small style="display: block; margin-top: 8px; color: #666;">Use o editor para formatar o conteúdo do depoimento</small>
                     </div>
+                        </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="ordem">Ordem de Exibição</label>
-                            <input 
-                                type="number" 
-                                id="ordem" 
-                                name="ordem" 
-                                min="0"
-                                value="<?= htmlspecialchars($_POST['ordem'] ?? $depoimento['ordem'] ?? '0') ?>"
-                            >
-                            <small>Defina a ordem em que o depoimento será exibido (0 = primeiro)</small>
+                        <!-- Seção: Configurações -->
+                        <div class="form-section">
+                            <h3 class="section-title">Configurações</h3>
+                            
+                            <div class="form-group">
+                                <label for="ordem">Ordem de Exibição</label>
+                                <input type="number" id="ordem" name="ordem" min="0" value="<?= htmlspecialchars($_POST['ordem'] ?? $depoimento['ordem'] ?? '0') ?>" placeholder="0">
+                            </div>
+                            
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox-item">
+                                    <label for="ativo">
+                                        <input type="checkbox" id="ativo" name="ativo" <?= isset($_POST['ativo']) || (!$_POST && $depoimento['ativo']) ? 'checked' : '' ?>>
+                                        <div class="checkbox-label-text">
+                                            <strong>Depoimento Ativo</strong>
+                                            <small>Apenas depoimentos ativos são exibidos no site</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input 
-                                    type="checkbox" 
-                                    name="ativo" 
-                                    <?= isset($_POST['ativo']) || (!$_POST && $depoimento['ativo']) ? 'checked' : '' ?>
-                                >
-                                <span>Ativo</span>
-                            </label>
-                            <small>Apenas depoimentos ativos são exibidos no site</small>
-                        </div>
-                    </div>
                     
                     <div class="form-actions">
-                        <a href="depoimentos.php" class="btn btn-light">
-                            <i class="fas fa-arrow-left"></i>
-                            Cancelar
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check"></i>
-                            Salvar Alterações
+                        <button type="submit" class="btn-balanced">
+                            <i class="fas fa-check"></i> Salvar Alterações
                         </button>
+                        <a href="depoimentos.php" class="btn-balanced-light">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
                     </div>
                 </form>
             </div>
@@ -483,6 +496,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else if (tipo === 'texto') {
                 depoimentoTexto.style.display = 'block';
                 depoimentoInput.setAttribute('required', 'required');
+            } else if (tipo === 'video_com_texto') {
+                videoLocal.style.display = 'block';
+                depoimentoTexto.style.display = 'block';
+                depoimentoInput.setAttribute('required', 'required');
             }
         }
         
@@ -529,6 +546,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Inicializar ao carregar
         document.addEventListener('DOMContentLoaded', toggleDepoimentoFields);
+    </script>
+    
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/pjivdo2bif18etpq2hxcq117ejq55w9zlu2aa2u669mwgdpl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        // Inicializar TinyMCE
+        tinymce.init({
+            selector: '#depoimento',
+            language: 'pt_BR',
+            height: 400,
+            menubar: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | link | code',
+            content_style: 'body { font-family: Lato, Arial, sans-serif; font-size: 14px; line-height: 1.6; }',
+            branding: false,
+            promotion: false,
+            setup: function(editor) {
+                editor.on('init', function() {
+                    console.log('TinyMCE inicializado com sucesso no campo depoimento!');
+                });
+            }
+        });
+        
+        // Sincronizar TinyMCE antes de submeter o formulário
+        document.querySelector('form')?.addEventListener('submit', function(e) {
+            if (tinymce.get('depoimento')) {
+                tinymce.get('depoimento').save();
+            }
+        });
     </script>
 </body>
 </html>

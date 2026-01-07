@@ -117,8 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/jogadores.css">
-    <link rel="stylesheet" href="assets/css/alerts.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -134,59 +133,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php endif; ?>
 
-                <div class="page-header">
-                    <div>
-                        <h1><i class="fas fa-edit"></i> Editar Banner</h1>
-                        <p>Atualize as informações do banner</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Editar Banner</h1>
+                            <p>Atualize as informações do banner</p>
+                        </div>
                     </div>
-                    <a href="banners.php" class="btn btn-light">
+                    <a href="banners.php" class="btn-balanced-light">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
                 </div>
 
+                <?php if (!empty($banner['imagem'])): ?>
+                    <div class="form-card" style="margin-bottom: 24px;">
+                        <h3 style="margin-bottom: 16px;">Imagem Atual</h3>
+                        <div class="foto-preview" style="max-width: 600px;">
+                            <img src="../<?= htmlspecialchars($banner['imagem']) ?>" alt="Banner atual" onerror="this.src='../assets/hero.png'" style="width: 100%; height: auto; border-radius: 8px;">
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <div class="form-card">
-                    <form method="POST" enctype="multipart/form-data" class="form-grid">
-                        <div class="form-group col-span-2">
-                            <label for="titulo"><i class="fas fa-heading"></i> Título *</label>
-                            <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($banner['titulo']) ?>" required maxlength="100">
-                            <small>Nome para identificação interna do banner</small>
+                    <form method="POST" enctype="multipart/form-data" class="form-balanced" id="bannerForm">
+                        <!-- Seção: Informações Básicas -->
+                        <div class="form-section">
+                            <h3 class="section-title">Informações Básicas</h3>
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label for="titulo">Título *</label>
+                                    <input type="text" id="titulo" name="titulo" placeholder="Digite o título do banner" value="<?= htmlspecialchars($banner['titulo']) ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ordem">Ordem de Exibição</label>
+                                    <input type="number" id="ordem" name="ordem" min="1" max="99" value="<?= $banner['ordem'] ?>" placeholder="1">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group col-span-2">
-                            <label><i class="fas fa-image"></i> Imagem Atual</label>
-                            <div style="margin-bottom: 15px;">
-                                <img src="../<?= htmlspecialchars($banner['imagem']) ?>" alt="Banner atual" 
-                                     style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
-                                     onerror="this.src='../assets/hero.png'">
+                        <!-- Seção: Atualizar Imagem Desktop -->
+                        <div class="form-section">
+                            <h3 class="section-title">Atualizar Imagem Desktop</h3>
+                            <p class="section-description">Envie uma nova imagem ou mantenha a atual</p>
+                            
+                            <div class="image-upload-box">
+                                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/gif,image/webp" onchange="previewImage(this, 'imagemPreview', 'imagemPreviewContainer')">
+                                <label for="imagem" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Clique para selecionar uma nova imagem</span>
+                                    <small>JPG, PNG, GIF ou WEBP • Recomendado: 1400x600px (máx. 10MB)</small>
+                                </label>
                             </div>
                             
-                            <label for="imagem"><i class="fas fa-upload"></i> Alterar Imagem</label>
-                            <input type="file" id="imagem" name="imagem" accept="image/*" onchange="previewImage(this)">
-                            <small>Deixe em branco para manter a imagem atual. Recomendado: 1400x600px (proporção 21:9). Máximo 10MB</small>
-                            <div id="imagePreview" style="margin-top: 15px; display: none;">
-                                <img id="preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+                            <div id="imagemPreviewContainer" class="image-preview-container" style="display: none;">
+                                <img id="imagemPreview" src="" alt="Preview">
+                                <button type="button" class="remove-preview" onclick="removePreview('imagem', 'imagemPreviewContainer')">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="ordem"><i class="fas fa-sort-numeric-down"></i> Ordem de Exibição *</label>
-                            <input type="number" id="ordem" name="ordem" value="<?= $banner['ordem'] ?>" min="1" max="99" required>
-                            <small>Define a sequência no carrossel (1 = primeiro)</small>
+                        <!-- Seção: Configurações -->
+                        <div class="form-section">
+                            <h3 class="section-title">Configurações</h3>
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox-item">
+                                    <label for="ativo">
+                                        <input type="checkbox" id="ativo" name="ativo" <?= $banner['ativo'] ? 'checked' : '' ?>>
+                                        <div class="checkbox-label-text">
+                                            <strong>Banner Ativo</strong>
+                                            <small>Apenas banners ativos são exibidos no carrossel do site</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="ativo" <?= $banner['ativo'] ? 'checked' : '' ?>>
-                                <span><i class="fas fa-eye"></i> Banner Ativo</span>
-                            </label>
-                            <small>Apenas banners ativos são exibidos no site</small>
-                        </div>
-
-                        <div class="form-actions col-span-2">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="form-actions">
+                            <button type="submit" class="btn-balanced">
                                 <i class="fas fa-save"></i> Salvar Alterações
                             </button>
-                            <a href="banners.php" class="btn btn-light">
+                            <a href="banners.php" class="btn-balanced-light">
                                 <i class="fas fa-times"></i> Cancelar
                             </a>
                         </div>
@@ -196,24 +226,104 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="error-modal">
+        <div class="error-content">
+            <div class="error-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Atenção</h3>
+            </div>
+            <div class="error-body">
+                <ul id="errorList"></ul>
+            </div>
+            <button onclick="closeErrorModal()" class="btn-balanced">
+                <i class="fas fa-check"></i> Entendi
+            </button>
+        </div>
+    </div>
+
     <script>
-        function previewImage(input) {
-            const preview = document.getElementById('imagePreview');
-            const previewImg = document.getElementById('preview');
+        const form = document.getElementById('bannerForm');
+        const errorModal = document.getElementById('errorModal');
+        const errorList = document.getElementById('errorList');
+
+        function previewImage(input, previewId, containerId) {
+            const previewContainer = document.getElementById(containerId);
+            const previewImg = document.getElementById(previewId);
             
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+                const file = input.files[0];
                 
+                if (file.size > 10 * 1024 * 1024) {
+                    showError(['A imagem não pode ter mais de 10MB']);
+                    input.value = '';
+                    return;
+                }
+                
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    showError(['Formato inválido. Use JPG, PNG, GIF ou WEBP']);
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
-                    preview.style.display = 'block';
+                    previewContainer.style.display = 'block';
                 };
-                
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                preview.style.display = 'none';
+                reader.readAsDataURL(file);
             }
         }
+
+        function removePreview(inputId, containerId) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            input.value = '';
+            container.style.display = 'none';
+        }
+
+        form.addEventListener('submit', function(e) {
+            const errors = [];
+            
+            const titulo = document.getElementById('titulo').value.trim();
+            if (!titulo) {
+                errors.push('O título é obrigatório');
+            } else if (titulo.length < 3) {
+                errors.push('O título deve ter pelo menos 3 caracteres');
+            }
+            
+            const ordem = parseInt(document.getElementById('ordem').value);
+            if (!ordem || ordem < 1 || ordem > 99) {
+                errors.push('A ordem deve estar entre 1 e 99');
+            }
+            
+            if (errors.length > 0) {
+                e.preventDefault();
+                showError(errors);
+                return false;
+            }
+        });
+
+        function showError(errors) {
+            errorList.innerHTML = '';
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            errorModal.classList.add('show');
+        }
+
+        function closeErrorModal() {
+            errorModal.classList.remove('show');
+        }
+
+        errorModal.addEventListener('click', function(e) {
+            if (e.target === errorModal) {
+                closeErrorModal();
+            }
+        });
     </script>
 </body>
 </html>

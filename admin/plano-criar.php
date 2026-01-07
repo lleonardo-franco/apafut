@@ -58,12 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Plano - Painel Administrativo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/noticias.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -73,14 +71,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php include 'includes/topbar.php'; ?>
 
             <div class="content">
-                <div class="page-header">
-                    <div>
-                        <h1>Criar Novo Plano</h1>
-                        <p>Adicione um novo plano de sócio</p>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Novo Plano</h1>
+                            <p>Adicione um novo plano de sócio</p>
+                        </div>
                     </div>
-                    <a href="planos.php" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i>
-                        Voltar
+                    <a href="planos.php" class="btn-balanced-light">
+                        <i class="fas fa-arrow-left"></i> Voltar
                     </a>
                 </div>
 
@@ -99,122 +101,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <div class="form-card">
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="form-grid">
+                    <form method="POST" enctype="multipart/form-data" class="form-balanced">
+                        <!-- Seção: Informações Básicas -->
+                        <div class="form-section">
+                            <h3 class="section-title">Informações Básicas</h3>
+                            
                             <div class="form-group">
                                 <label for="nome">Nome do Plano *</label>
-                                <input 
-                                    type="text" 
-                                    id="nome" 
-                                    name="nome" 
-                                    value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>"
-                                    placeholder="Ex: Sócio APA Ouro"
-                                    required
-                                >
+                                <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>" placeholder="Ex: Sócio APA Ouro">
                             </div>
 
                             <div class="form-group">
                                 <label for="tipo">Tipo *</label>
-                                <select id="tipo" name="tipo" required>
+                                <select id="tipo" name="tipo">
                                     <option value="">Selecione o tipo</option>
                                     <option value="Prata" <?= ($_POST['tipo'] ?? '') === 'Prata' ? 'selected' : '' ?>>Prata</option>
                                     <option value="Ouro" <?= ($_POST['tipo'] ?? '') === 'Ouro' ? 'selected' : '' ?>>Ouro</option>
                                     <option value="Diamante" <?= ($_POST['tipo'] ?? '') === 'Diamante' ? 'selected' : '' ?>>Diamante</option>
                                 </select>
                             </div>
+                        </div>
+                        
+                        <!-- Seção: Valores -->
 
+                        </div>
+                        
+                        <!-- Seção: Valores -->
+                        <div class="form-section">
+                            <h3 class="section-title">Valores</h3>
+                            
                             <div class="form-group">
                                 <label for="preco_anual">Preço Anual (R$) *</label>
-                                <input 
-                                    type="number" 
-                                    id="preco_anual" 
-                                    name="preco_anual" 
-                                    step="0.01"
-                                    min="0"
-                                    value="<?= htmlspecialchars($_POST['preco_anual'] ?? '') ?>"
-                                    placeholder="Ex: 300.00"
-                                    required
-                                >
+                                <input type="number" id="preco_anual" name="preco_anual" step="0.01" min="0" value="<?= htmlspecialchars($_POST['preco_anual'] ?? '') ?>" placeholder="Ex: 300.00">
                             </div>
 
                             <div class="form-group">
                                 <label for="parcelas">Número de Parcelas *</label>
-                                <input 
-                                    type="number" 
-                                    id="parcelas" 
-                                    name="parcelas" 
-                                    min="1"
-                                    max="12"
-                                    value="<?= htmlspecialchars($_POST['parcelas'] ?? '2') ?>"
-                                    required
-                                >
+                                <input type="number" id="parcelas" name="parcelas" min="1" max="12" value="<?= htmlspecialchars($_POST['parcelas'] ?? '2') ?>">
                             </div>
-
+                        </div>
+                        
+                        <!-- Seção: Benefícios -->
+                        <div class="form-section">
+                            <h3 class="section-title">Benefícios</h3>
+                            
+                            <div class="form-group">
+                                <label for="beneficios">Lista de Benefícios *</label>
+                                <textarea id="beneficios" name="beneficios" rows="6" placeholder="Digite um benefício por linha. Exemplo:&#10;Camiseta oficial exclusiva&#10;Jantar de fim de temporada&#10;Descontos com parceiros"><?= htmlspecialchars($_POST['beneficios'] ?? '') ?></textarea>
+                                <small style="display: block; margin-top: 8px; color: #666;">Digite um benefício por linha</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Seção: Configurações -->
+                        <div class="form-section">
+                            <h3 class="section-title">Configurações</h3>
+                            
                             <div class="form-group">
                                 <label for="ordem">Ordem de Exibição</label>
-                                <input 
-                                    type="number" 
-                                    id="ordem" 
-                                    name="ordem" 
-                                    value="<?= htmlspecialchars($_POST['ordem'] ?? '0') ?>"
-                                    min="0"
-                                >
-                                <small>Define a ordem de exibição no site (menor aparece primeiro)</small>
+                                <input type="number" id="ordem" name="ordem" value="<?= htmlspecialchars($_POST['ordem'] ?? '0') ?>" min="0" placeholder="0">
                             </div>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="beneficios">Benefícios *</label>
-                            <textarea 
-                                id="beneficios" 
-                                name="beneficios" 
-                                rows="6"
-                                placeholder="Digite um benefício por linha. Exemplo:&#10;Camiseta oficial exclusiva&#10;Jantar de fim de temporada&#10;Descontos com parceiros"
-                                required
-                            ><?= htmlspecialchars($_POST['beneficios'] ?? '') ?></textarea>
-                            <small>Digite um benefício por linha</small>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group-checkbox">
-                                <input 
-                                    type="checkbox" 
-                                    id="ativo" 
-                                    name="ativo"
-                                    <?= isset($_POST['ativo']) || !isset($_POST['nome']) ? 'checked' : '' ?>
-                                >
-                                <label for="ativo">Plano Ativo</label>
-                            </div>
-
-                            <div class="form-group-checkbox">
-                                <input 
-                                    type="checkbox" 
-                                    id="destaque" 
-                                    name="destaque"
-                                    <?= isset($_POST['destaque']) ? 'checked' : '' ?>
-                                >
-                                <label for="destaque">Marcar como Destaque</label>
+                            
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox-item">
+                                    <label for="ativo">
+                                        <input type="checkbox" id="ativo" name="ativo" <?= isset($_POST['ativo']) || !isset($_POST['nome']) ? 'checked' : '' ?>>
+                                        <div class="checkbox-label-text">
+                                            <strong>Plano Ativo</strong>
+                                            <small>Apenas planos ativos são exibidos no site</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <label for="destaque">
+                                        <input type="checkbox" id="destaque" name="destaque" <?= isset($_POST['destaque']) ? 'checked' : '' ?>>
+                                        <div class="checkbox-label-text">
+                                            <strong>Marcar como Destaque</strong>
+                                            <small>Plano em destaque recebe maior visibilidade</small>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-actions">
-                            <a href="planos.php" class="btn btn-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i>
-                                Criar Plano
+                            <button type="submit" class="btn-balanced">
+                                <i class="fas fa-check"></i> Criar Plano
                             </button>
+                            <a href="planos.php" class="btn-balanced-light">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
                         </div>
                     </form>
-                </div>
-
-                <div class="help-card">
-                    <h3><i class="fas fa-info-circle"></i> Dicas</h3>
-                    <ul>
-                        <li><strong>Benefícios:</strong> Liste um benefício por linha para facilitar a leitura</li>
-                        <li><strong>Destaque:</strong> Marque apenas um plano como destaque (geralmente o mais vendido)</li>
-                        <li><strong>Ordem:</strong> Use números sequenciais (0, 1, 2...) para organizar a exibição</li>
-                        <li><strong>Tipos:</strong> Use nomes consistentes como Prata, Ouro, Diamante</li>
-                    </ul>
                 </div>
             </div>
         </main>

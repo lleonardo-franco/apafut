@@ -94,12 +94,10 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações - Painel Administrativo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/15d6bd6a1c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/noticias.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         .config-grid {
             display: grid;
@@ -255,13 +253,15 @@ try {
             <?php include 'includes/topbar.php'; ?>
 
             <div class="content">
-                <div class="page-header">
-                    <div>
-                        <h1>
+                <div class="page-header-balanced">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
                             <i class="fas fa-cog"></i>
-                            <span>Configurações</span>
-                        </h1>
-                        <p>Gerencie as configurações do sistema e sua conta</p>
+                        </div>
+                        <div class="header-text">
+                            <h1>Configurações</h1>
+                            <p>Gerencie as configurações do sistema e sua conta</p>
+                        </div>
                     </div>
                 </div>
 
@@ -302,17 +302,10 @@ try {
                             <input type="hidden" name="acao" value="alterar_nome">
                             <div class="form-group">
                                 <label for="nome">Nome Completo</label>
-                                <input 
-                                    type="text" 
-                                    id="nome" 
-                                    name="nome" 
-                                    value="<?= htmlspecialchars($user['nome']) ?>"
-                                    required
-                                >
+                                <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($user['nome']) ?>">
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i>
-                                Salvar Nome
+                            <button type="submit" class="btn-balanced">
+                                <i class="fas fa-check"></i> Salvar Nome
                             </button>
                         </form>
                     </div>
@@ -325,36 +318,19 @@ try {
                             <input type="hidden" name="acao" value="alterar_senha">
                             <div class="form-group">
                                 <label for="senha_atual">Senha Atual</label>
-                                <input 
-                                    type="password" 
-                                    id="senha_atual" 
-                                    name="senha_atual" 
-                                    required
-                                >
+                                <input type="password" id="senha_atual" name="senha_atual">
                             </div>
                             <div class="form-group">
                                 <label for="senha_nova">Nova Senha</label>
-                                <input 
-                                    type="password" 
-                                    id="senha_nova" 
-                                    name="senha_nova" 
-                                    minlength="6"
-                                    required
-                                >
+                                <input type="password" id="senha_nova" name="senha_nova" minlength="6">
+                                <small style="display: block; margin-top: 4px; color: #666;">Mínimo de 6 caracteres</small>
                             </div>
                             <div class="form-group">
                                 <label for="senha_confirmar">Confirmar Nova Senha</label>
-                                <input 
-                                    type="password" 
-                                    id="senha_confirmar" 
-                                    name="senha_confirmar" 
-                                    minlength="6"
-                                    required
-                                >
+                                <input type="password" id="senha_confirmar" name="senha_confirmar" minlength="6">
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-key"></i>
-                                Alterar Senha
+                            <button type="submit" class="btn-balanced">
+                                <i class="fas fa-key"></i> Alterar Senha
                             </button>
                         </form>
                     </div>
