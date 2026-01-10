@@ -34,26 +34,18 @@ if ($id > 0) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome'] ?? '');
-    $depoimentoTexto = trim($_POST['depoimento'] ?? '');
-    $video_url = trim($_POST['video_url'] ?? '');
-    $tipo_depoimento = $_POST['tipo_depoimento'] ?? 'video_local';
+    $tipo_depoimento = 'video_local'; // Fixo em video_local
     $ordem = (int)($_POST['ordem'] ?? 0);
     $ativo = isset($_POST['ativo']) ? 1 : 0;
     
     // Validações
     if (empty($nome)) {
         $erro = 'O nome é obrigatório.';
-    } elseif ($tipo_depoimento === 'video_url' && empty($video_url)) {
-        $erro = 'A URL do vídeo é obrigatória quando o tipo é "YouTube/Vimeo".';
-    } elseif ($tipo_depoimento === 'texto' && empty($depoimentoTexto)) {
-        $erro = 'O texto do depoimento é obrigatório quando o tipo é "Apenas Texto".';
-    } elseif ($tipo_depoimento === 'video_com_texto' && empty($depoimentoTexto)) {
-        $erro = 'O texto é obrigatório quando o tipo é "Vídeo com Texto".';
     } else {
         $videoPath = $depoimento['video']; // Manter vídeo atual por padrão
         
-        // Se um novo vídeo foi enviado (tipo video_local ou video_com_texto)
-        if (($tipo_depoimento === 'video_local' || $tipo_depoimento === 'video_com_texto') && isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
+        // Se um novo vídeo foi enviado
+        if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
             $video = $_FILES['video'];
             $videoExtension = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
             
@@ -67,30 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $newVideoPath = '../assets/videos/' . $videoName;
                 
                 if (move_uploaded_file($video['tmp_name'], $newVideoPath)) {
-                    // Deletar vídeo antigo
-                    if (file_exists('../' . $depoimento['video'])) {
+                    // Deletar vídeo antigo se existir
+                    if ($depoimento['video'] && file_exists('../' . $depoimento['video'])) {
                         unlink('../' . $depoimento['video']);
                     }
-                    $videoPath = '../assets/videos/' . $videoName;
+                    $videoPath = 'assets/videos/' . $videoName;
                 } else {
                     $erro = 'Erro ao fazer upload do novo vídeo.';
                 }
             }
         }
         
-        // Se mudou para tipo diferente de video_local e video_com_texto, limpar video path
-        if ($tipo_depoimento !== 'video_local' && $tipo_depoimento !== 'video_com_texto') {
-            $videoPath = null;
-        }
-        
-        if (!$erro) {
+        if (empty($erro)) {
             try {
                 $pdo = getConnection();
-                $stmt = $pdo->prepare("UPDATE depoimentos SET nome = :nome, depoimento = :depoimento, video = :video, video_url = :video_url, tipo_depoimento = :tipo_depoimento, ordem = :ordem, ativo = :ativo WHERE id = :id");
+                $stmt = $pdo->prepare("UPDATE depoimentos SET nome = :nome, video = :video, tipo_depoimento = :tipo_depoimento, ordem = :ordem, ativo = :ativo WHERE id = :id");
                 $stmt->bindParam(':nome', $nome);
-                $stmt->bindParam(':depoimento', $depoimentoTexto);
                 $stmt->bindParam(':video', $videoPath);
-                $stmt->bindParam(':video_url', $video_url);
                 $stmt->bindParam(':tipo_depoimento', $tipo_depoimento);
                 $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
                 $stmt->bindParam(':ativo', $ativo, PDO::PARAM_INT);

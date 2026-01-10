@@ -109,14 +109,17 @@ try {
                         <?php foreach ($depoimentos as $depoimento): ?>
                             <div class="depoimento-item">
                                 <div class="depoimento-video">
-                                    <video controls>
-                                        <source src="<?= htmlspecialchars($depoimento['video']) ?>" type="video/mp4">
-                                        Seu navegador não suporta a tag de vídeo.
-                                    </video>
+                                    <?php if (!empty($depoimento['video'])): ?>
+                                        <video controls>
+                                            <source src="<?= htmlspecialchars($depoimento['video']) ?>" type="video/mp4">
+                                            Seu navegador não suporta a tag de vídeo.
+                                        </video>
+                                    <?php else: ?>
+                                        <div class="no-video"><i class="fas fa-video-slash"></i> Sem vídeo</div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="depoimento-info">
                                     <h3><?= htmlspecialchars($depoimento['nome']) ?></h3>
-                                    <p><?= htmlspecialchars($depoimento['descricao']) ?></p>
                                     <div class="depoimento-meta">
                                         <span class="status-badge <?= $depoimento['ativo'] ? 'ativo' : 'inativo' ?>">
                                             <?= $depoimento['ativo'] ? 'Ativo' : 'Inativo' ?>
