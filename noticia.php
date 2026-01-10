@@ -162,7 +162,7 @@ try {
                 <p class="lead"><?= htmlspecialchars($noticia['resumo']) ?></p>
                 
                 <?php if (!empty($noticia['conteudo'])): ?>
-                    <?= nl2br(htmlspecialchars($noticia['conteudo'])) ?>
+                    <?= $noticia['conteudo'] ?>
                 <?php else: ?>
                     <p>Em uma disputa emocionante, o time Sub-17 da Apafut mostrou toda sua determinação e técnica para conquistar o título inédito do Regional da Serra. A final foi decidida nos pênaltis após um empate de 2 a 2 no tempo normal.</p>
 

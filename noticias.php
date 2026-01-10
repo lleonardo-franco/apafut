@@ -415,7 +415,7 @@ try {
                         <input type="text" 
                                id="busca-noticia" 
                                class="busca-input" 
-                               placeholder="Buscar por título ou conteúdo..."
+                               placeholder="Buscar por título..."
                                oninput="filtrarNoticias()">
                     </div>
                     
@@ -435,7 +435,6 @@ try {
                     <?php foreach ($noticias as $noticia): ?>
                         <article class="noticia-card" 
                                  data-titulo="<?= strtolower(htmlspecialchars($noticia['titulo'])) ?>"
-                                 data-resumo="<?= strtolower(htmlspecialchars($noticia['resumo'])) ?>"
                                  data-categoria="<?= htmlspecialchars($noticia['categoria']) ?>">
                             <div class="noticia-imagem">
                                 <img src="<?= htmlspecialchars($noticia['imagem']) ?>" 
@@ -537,10 +536,9 @@ try {
             
             cards.forEach(card => {
                 const titulo = card.getAttribute('data-titulo');
-                const resumo = card.getAttribute('data-resumo');
                 const categoria = card.getAttribute('data-categoria');
                 
-                const matchBusca = !busca || titulo.includes(busca) || resumo.includes(busca);
+                const matchBusca = !busca || titulo.includes(busca);
                 const matchCategoria = categoriaAtual === 'todas' || categoria === categoriaAtual;
                 
                 if (matchBusca && matchCategoria) {

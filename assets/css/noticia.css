@@ -21,6 +21,9 @@
     font-weight: 800;
     line-height: 1.3;
     margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .noticia-meta {
@@ -60,6 +63,9 @@
     color: #333;
     line-height: 1.8;
     font-size: 1.05rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .noticia-texto .lead {
@@ -68,6 +74,9 @@
     color: #555;
     margin-bottom: 30px;
     line-height: 1.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .noticia-texto h2 {
@@ -76,10 +85,16 @@
     font-weight: 700;
     margin-top: 35px;
     margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .noticia-texto p {
     margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .noticia-texto blockquote {
@@ -95,6 +110,9 @@
     margin-bottom: 10px;
     font-size: 1.1rem;
     color: var(--azul-secundario);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .noticia-texto blockquote footer {
@@ -379,12 +397,6 @@
 
 .mini-data i {
     color: var(--vermelho-primario);
-}s-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .noticia
-
 /* Responsivo */
 @media (max-width: 768px) {
     .sugestoes-grid {

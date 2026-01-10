@@ -383,7 +383,6 @@ try {
                                 <option value="Categorias de Base" <?= $noticia['categoria'] === 'Categorias de Base' ? 'selected' : '' ?>>Categorias de Base</option>
                                 <option value="Infraestrutura" <?= $noticia['categoria'] === 'Infraestrutura' ? 'selected' : '' ?>>Infraestrutura</option>
                                 <option value="Eventos" <?= $noticia['categoria'] === 'Eventos' ? 'selected' : '' ?>>Eventos</option>
-                                <option value="Depoimentos" <?= $noticia['categoria'] === 'Depoimentos' ? 'selected' : '' ?>>Depoimentos</option>
                                 <option value="Projetos Sociais" <?= $noticia['categoria'] === 'Projetos Sociais' ? 'selected' : '' ?>>Projetos Sociais</option>
                             </select>
                         </div>
@@ -432,6 +431,21 @@ try {
                                     <i class="fas fa-info-circle"></i> Formatos aceitos: JPG, PNG, GIF, WEBP (máx. 5MB)
                                 </small>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Campos de Depoimento (Opcional) -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-quote-left"></i> Depoimento (Opcional)</h3>
+                        
+                        <div class="form-group">
+                            <label for="depoimento_texto">Texto do Depoimento</label>
+                            <textarea id="depoimento_texto" name="depoimento_texto" rows="3" placeholder="Digite o depoimento..."><?= htmlspecialchars($noticia['depoimento_texto'] ?? '') ?></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="depoimento_autor">Nome da Pessoa</label>
+                            <input type="text" id="depoimento_autor" name="depoimento_autor" placeholder="Ex: João Silva" value="<?= htmlspecialchars($noticia['depoimento_autor'] ?? '') ?>">
                         </div>
                     </div>
                     

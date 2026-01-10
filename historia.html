@@ -418,16 +418,36 @@
             </div>
             
             <!-- Notícias de Projetos Sociais -->
-            <div id="projetos-sociais-noticias" class="projetos-noticias-container" style="margin-top: 60px;">
+            <div id="projetos-sociais-noticias" class="projetos-noticias-container" style="margin-top: 60px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 0 20px;">
                 <div class="section-header">
                     <h3 style="font-size: 1.75rem; color: var(--azul-secundario); margin-bottom: 10px;">
                         <i class="fas fa-newspaper"></i> Notícias dos Projetos
                     </h3>
                     <p style="margin-bottom: 30px;">Acompanhe as últimas novidades dos nossos projetos sociais</p>
                 </div>
-                <div id="noticias-grid-projetos" class="projetos-noticias-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
+                <div id="noticias-grid-projetos" class="projetos-noticias-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 100%;">
                     <!-- Carregado via JavaScript -->
                 </div>
+                <style>
+                    #projetos-sociais-noticias {
+                        max-width: 1200px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        padding: 0 20px;
+                    }
+                    @media (max-width: 992px) {
+                        #noticias-grid-projetos {
+                            grid-template-columns: repeat(2, 1fr) !important;
+                            gap: 20px;
+                        }
+                    }
+                    @media (max-width: 640px) {
+                        #noticias-grid-projetos {
+                            grid-template-columns: 1fr !important;
+                            gap: 20px;
+                        }
+                    }
+                </style>
                 <div style="text-align: center; margin-top: 40px;">
                     <a href="noticias.php" class="btn-ver-todas-noticias">
                         Ver todas as notícias <i class="fas fa-arrow-right"></i>
@@ -437,14 +457,17 @@
         </section>
         
         <script>
-        // Carregar notícias de Projetos Sociais
-        fetch('api/get_noticias.php?categoria=Projetos Sociais&limit=3')
+        // Carregar notícias de Projetos Sociais (3 mais antigas)
+        fetch('api/get_noticias.php?categoria=Projetos Sociais&limit=100')
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('noticias-grid-projetos');
                 
                 if (data.success && data.noticias && data.noticias.length > 0) {
-                    container.innerHTML = data.noticias.map(noticia => `
+                    // Pegar as 3 mais antigas (reverter a ordem)
+                    const noticiasAntigas = data.noticias.slice().reverse().slice(0, 3);
+                    
+                    container.innerHTML = noticiasAntigas.map(noticia => `
                         <article style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; height: 350px;" onclick="window.location.href='noticia.php?id=${noticia.id}'" onmouseenter="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 30px rgba(0, 0, 0, 0.2)';" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.15)';">
                             <img src="${noticia.imagem}" alt="${noticia.titulo}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
                             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%); z-index: 2;"></div>
@@ -452,8 +475,8 @@
                                 <time style="display: block; font-size: 0.875rem; opacity: 0.9; margin-bottom: 10px;">
                                     <i class="far fa-calendar-alt"></i> ${new Date(noticia.data_publicacao).toLocaleDateString('pt-BR')}
                                 </time>
-                                <h3 style="font-size: 1.125rem; margin-bottom: 10px; line-height: 1.4; font-weight: 600;">${noticia.titulo}</h3>
-                                <p style="font-size: 0.9375rem; line-height: 1.6; opacity: 0.95;">${noticia.resumo.substring(0, 100)}...</p>
+                                <h3 style="font-size: 1.125rem; margin-bottom: 10px; line-height: 1.4; font-weight: 600; word-wrap: break-word; overflow-wrap: break-word;">${noticia.titulo}</h3>
+                                <p style="font-size: 0.9375rem; line-height: 1.6; opacity: 0.95; word-wrap: break-word; overflow-wrap: break-word;">${noticia.resumo.substring(0, 100)}...</p>
                             </div>
                         </article>
                     `).join('');

@@ -446,7 +446,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="Categorias de Base" <?= ($_POST['categoria'] ?? '') === 'Categorias de Base' ? 'selected' : '' ?>>Categorias de Base</option>
                                 <option value="Infraestrutura" <?= ($_POST['categoria'] ?? '') === 'Infraestrutura' ? 'selected' : '' ?>>Infraestrutura</option>
                                 <option value="Eventos" <?= ($_POST['categoria'] ?? '') === 'Eventos' ? 'selected' : '' ?>>Eventos</option>
-                                <option value="Depoimentos" <?= ($_POST['categoria'] ?? '') === 'Depoimentos' ? 'selected' : '' ?>>Depoimentos</option>
                                 <option value="Projetos Sociais" <?= ($_POST['categoria'] ?? '') === 'Projetos Sociais' ? 'selected' : '' ?>>Projetos Sociais</option>
                             </select>
                         </div>
@@ -483,9 +482,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <!-- Campos específicos para Depoimentos -->
-                    <div id="campos-depoimento" style="display: none;" class="form-section">
-                        <h3><i class="fas fa-quote-left"></i> Depoimento</h3>
+                    <!-- Campos de Depoimento (Opcional) -->
+                    <div id="campos-depoimento" class="form-section">
+                        <h3><i class="fas fa-quote-left"></i> Depoimento (Opcional)</h3>
                         
                         <div class="form-group">
                             <label for="depoimento_texto">Texto do Depoimento</label>
@@ -759,28 +758,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 });
             }
         });
-        
-        // Controlar exibição dos campos de depoimento
-        const categoriaSelect = document.getElementById('categoria');
-        const camposDepoimento = document.getElementById('campos-depoimento');
-        const depoimentoTexto = document.getElementById('depoimento_texto');
-        const depoimentoAutor = document.getElementById('depoimento_autor');
-        
-        function toggleCamposDepoimento() {
-            if (categoriaSelect.value === 'Depoimentos') {
-                camposDepoimento.style.display = 'block';
-                // Campos opcionais, não obrigatórios
-                depoimentoTexto.required = false;
-                depoimentoAutor.required = false;
-            } else {
-                camposDepoimento.style.display = 'none';
-                depoimentoTexto.required = false;
-                depoimentoAutor.required = false;
-            }
-        }
-        
-        categoriaSelect.addEventListener('change', toggleCamposDepoimento);
-        toggleCamposDepoimento(); // Verificar estado inicial
         
         // Preview de imagem
         const imagemInput = document.getElementById('imagem');
