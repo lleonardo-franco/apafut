@@ -123,10 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <!-- Seção: Valores -->
-
-                        </div>
-                        
-                        <!-- Seção: Valores -->
                         <div class="form-section">
                             <h3 class="section-title">Valores</h3>
                             
