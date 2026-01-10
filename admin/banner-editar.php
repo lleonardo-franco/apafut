@@ -112,9 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Banner - Painel Administrativo</title>
+    <link rel="icon" type="image/x-icon" href="/apafut/assets/logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/apafut/assets/logo.ico">
+    <link rel="apple-touch-icon" href="/apafut/assets/logo.png">
     <link rel="icon" href="../assets/logo.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="../assets/logo.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">

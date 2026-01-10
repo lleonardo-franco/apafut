@@ -5,9 +5,12 @@
  */
 
 echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Limpar OPcache</title>
+    <link rel="icon" type="image/x-icon" href="/apafut/assets/logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/apafut/assets/logo.ico">
+    <link rel="apple-touch-icon" href="/apafut/assets/logo.png">
     <link rel="icon" href="../assets/logo.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="../assets/logo.png">";
+    ";
 echo "<style>body{font-family:Arial;padding:40px;background:#f5f5f5;}";
 echo ".box{background:white;padding:30px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);max-width:600px;margin:0 auto;}";
 echo "h1{color:#333;margin-bottom:20px;}";

@@ -8,6 +8,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Teste Sidebar</title>
+    <link rel="icon" type="image/x-icon" href="/apafut/assets/logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/apafut/assets/logo.ico">
+    <link rel="apple-touch-icon" href="/apafut/assets/logo.png">
 </head>
 <body>
     <h1>Teste de Renderização do Sidebar</h1>
